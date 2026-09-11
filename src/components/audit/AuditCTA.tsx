@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
+import { Reveal } from "@/components/motion/Reveal";
 
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -47,8 +48,8 @@ export function AuditCTA() {
       id="audit"
       aria-label="Free Audit Request"
       style={{
-        paddingTop: "clamp(5rem, 10vw, 9rem)",
-        paddingBottom: "clamp(5rem, 10vw, 9rem)",
+        paddingTop: "clamp(3rem, 6vw, 4.5rem)",
+        paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
       }}
     >
       <div className="container">
@@ -56,12 +57,13 @@ export function AuditCTA() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "5rem",
+            gap: "3.5rem",
             alignItems: "start",
           }}
           className="audit-grid"
         >
           {/* Left: copy */}
+          <Reveal>
           <div>
             <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
               Free Audit
@@ -73,13 +75,13 @@ export function AuditCTA() {
               style={{
                 fontSize: "clamp(1.125rem, 2vw, 1.375rem)",
                 color: "var(--text-secondary)",
-                marginBottom: "2rem",
+                marginBottom: "1.5rem",
                 fontWeight: 500,
               }}
             >
               Let&apos;s find out.
             </p>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
               Request a free preliminary audit report. I&apos;ll review your store and identify the
               most impactful QA issues worth addressing — no obligation, no fluff.
             </p>
@@ -121,8 +123,10 @@ export function AuditCTA() {
               ))}
             </div>
           </div>
+          </Reveal>
 
           {/* Right: form */}
+          <Reveal delay={120}>
           <div>
             {submitted ? (
               <div
@@ -173,7 +177,7 @@ export function AuditCTA() {
                 onSubmit={handleSubmit(onSubmit)}
                 noValidate
                 style={{
-                  padding: "2rem",
+                  padding: "1.75rem",
                   border: "1px solid var(--border)",
                   borderRadius: "var(--radius-md)",
                   backgroundColor: "var(--bg-surface)",
@@ -342,6 +346,7 @@ export function AuditCTA() {
               </form>
             )}
           </div>
+          </Reveal>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 
 const EXPERTISE_CATEGORIES = [
   {
@@ -64,18 +65,19 @@ export function ExpertiseSection() {
       id="expertise"
       aria-label="QA Expertise"
       style={{
-        paddingTop: "clamp(5rem, 10vw, 9rem)",
-        paddingBottom: "clamp(5rem, 10vw, 9rem)",
+        paddingTop: "clamp(3rem, 6vw, 4.5rem)",
+        paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
       }}
     >
       <div className="container">
         {/* Header */}
-        <div style={{ marginBottom: "3.5rem", maxWidth: "640px" }}>
+        <Reveal>
+        <div style={{ marginBottom: "2.5rem", maxWidth: "640px" }}>
           <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
             Expertise
           </p>
           <h2 style={{ marginBottom: "1rem" }}>
-            I Don't Test Pages.{" "}
+            I Don&apos;t Test Pages.{" "}
             <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
               I Test Experiences.
             </span>
@@ -85,6 +87,7 @@ export function ExpertiseSection() {
             page load to the final order confirmation.
           </p>
         </div>
+        </Reveal>
 
         {/* Category tabs */}
         <div
@@ -93,7 +96,7 @@ export function ExpertiseSection() {
           style={{
             display: "flex",
             gap: "0.25rem",
-            marginBottom: "2rem",
+            marginBottom: "1.5rem",
             borderBottom: "1px solid var(--border)",
             overflowX: "auto",
             paddingBottom: "0",

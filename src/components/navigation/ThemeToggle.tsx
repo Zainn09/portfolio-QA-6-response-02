@@ -1,52 +1,27 @@
 "use client";
 
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/components/providers/ThemeProvider";
 
+/**
+ * State-free theme toggle: both icons are always rendered and CSS
+ * (driven by html[data-theme]) crossfades + rotates between them.
+ * No React state in the visuals = no hydration mismatch, ever.
+ */
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
 
   return (
     <button
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-      style={{
-        background: "none",
-        border: "1px solid var(--border)",
-        color: "var(--text-secondary)",
-        cursor: "pointer",
-        padding: "0.375rem 0.75rem",
-        borderRadius: "var(--radius-sm)",
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.625rem",
-        letterSpacing: "0.1em",
-        textTransform: "uppercase",
-        transition: "all var(--transition-fast)",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.375rem",
-        whiteSpace: "nowrap",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-strong)";
-        (e.currentTarget as HTMLButtonElement).style.color = "var(--text-primary)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
-        (e.currentTarget as HTMLButtonElement).style.color = "var(--text-secondary)";
-      }}
+      aria-label="Toggle dark and light mode"
+      title="Toggle dark and light mode"
+      className="theme-toggle"
     >
-      {theme === "light" ? (
-        <>
-          <span aria-hidden="true">◐</span>
-          <span>Dark</span>
-        </>
-      ) : (
-        <>
-          <span aria-hidden="true">○</span>
-          <span>Light</span>
-        </>
-      )}
+      <span className="theme-toggle-icons" aria-hidden="true">
+        <Sun size={16} strokeWidth={2} className="theme-icon theme-icon-sun" />
+        <Moon size={16} strokeWidth={2} className="theme-icon theme-icon-moon" />
+      </span>
     </button>
   );
 }

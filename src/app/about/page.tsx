@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AboutStats } from "@/components/about/AboutStats";
 
 export const metadata: Metadata = {
   title: "About — QA Specialist | Shopify & Shopify Plus",
@@ -43,7 +44,7 @@ export default function AboutPage() {
               I Let My Work Speak.
             </span>
           </h1>
-          <p style={{ color: "var(--text-secondary)", maxWidth: "560px", fontSize: "1.125rem" }}>
+          <p style={{ color: "var(--text-secondary)", maxWidth: "560px", fontSize: "1.0625rem" }}>
             A QA specialist focused exclusively on Shopify and Shopify Plus e-commerce experiences.
           </p>
         </div>
@@ -150,52 +151,8 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{ paddingTop: "4rem", borderTop: "1px solid var(--border)", marginBottom: "4rem" }}>
-          <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>By the Numbers</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}>
-            {[
-              { num: "50+", label: "Stores Tested" },
-              { num: "20", label: "Shopify Plus Projects" },
-              { num: "12+", label: "Industries Covered" },
-              { num: "100%", label: "Verified Resolutions" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                style={{
-                  padding: "1.75rem",
-                  border: "1px solid var(--border)",
-                  borderRadius: "var(--radius-sm)",
-                  backgroundColor: "var(--bg-surface)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "2.5rem",
-                    fontWeight: 700,
-                    letterSpacing: "-0.03em",
-                    color: "var(--text-primary)",
-                    marginBottom: "0.25rem",
-                  }}
-                >
-                  {stat.num}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.5625rem",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: "var(--text-tertiary)",
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Stats — numbers count up when the section loads into view */}
+        <AboutStats />
 
         {/* CTA */}
         <div

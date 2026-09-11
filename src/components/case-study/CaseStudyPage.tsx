@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/data/projects";
 
 interface Props {
@@ -68,8 +69,8 @@ export function CaseStudyPage({ project, related }: Props) {
                   </span>
                 ))}
               </div>
-              <h1 style={{ marginBottom: "1.25rem", fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>{project.title}</h1>
-              <p style={{ color: "var(--text-secondary)", maxWidth: "600px", fontSize: "1.125rem" }}>{project.summary}</p>
+              <h1 style={{ marginBottom: "1.25rem", fontSize: "clamp(1.75rem, 3.4vw, 2.5rem)" }}>{project.title}</h1>
+              <p style={{ color: "var(--text-secondary)", maxWidth: "600px", fontSize: "1.0625rem" }}>{project.summary}</p>
             </div>
 
             {/* Status */}
@@ -172,11 +173,13 @@ export function CaseStudyPage({ project, related }: Props) {
                           <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4 }}>{faq.question}</h3>
                           <span style={{ color: "var(--text-tertiary)", transform: activeFaq === i ? "rotate(45deg)" : "rotate(0)", transition: "transform var(--transition-fast)", fontSize: "1.25rem", flexShrink: 0 }} aria-hidden="true">+</span>
                         </button>
-                        {activeFaq === i && (
-                          <div style={{ paddingBottom: "1.25rem", animation: "fade-up 0.25s ease forwards" }}>
-                            <p style={{ color: "var(--text-secondary)", lineHeight: 1.75 }}>{faq.answer}</p>
+                        <div style={{ display: "grid", gridTemplateRows: activeFaq === i ? "1fr" : "0fr", transition: "grid-template-rows 400ms cubic-bezier(0.22, 0.61, 0.36, 1)" }}>
+                          <div style={{ overflow: "hidden" }}>
+                            <div style={{ paddingBottom: activeFaq === i ? "1.25rem" : "0", opacity: activeFaq === i ? 1 : 0, transition: "opacity 300ms ease, padding-bottom 300ms ease" }}>
+                              <p style={{ color: "var(--text-secondary)", lineHeight: 1.75 }}>{faq.answer}</p>
+                            </div>
                           </div>
-                        )}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -260,12 +263,14 @@ export function CaseStudyPage({ project, related }: Props) {
 function Section({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
   return (
     <section style={{ marginBottom: "4rem" }}>
-      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.625rem" }}>
-        <span style={{ width: "20px", height: "1px", backgroundColor: "var(--text-tertiary)", display: "inline-block" }} />
-        {label}
-      </div>
-      <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", marginBottom: "1rem" }}>{title}</h2>
-      {children}
+      <Reveal>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.625rem" }}>
+          <span style={{ width: "20px", height: "1px", backgroundColor: "var(--text-tertiary)", display: "inline-block" }} />
+          {label}
+        </div>
+        <h2 style={{ fontSize: "clamp(1.375rem, 2.6vw, 1.75rem)", marginBottom: "1rem" }}>{title}</h2>
+        {children}
+      </Reveal>
     </section>
   );
 }

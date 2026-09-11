@@ -1,8 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 type Theme = "light" | "dark";
+
+const STORAGE_KEY = "qa-theme";
+const THEME_COLORS: Record<Theme, string> = {
+  light: "#F5F3ED",
+  dark: "#0B0D0C",
+};
 
 interface ThemeContextValue {
   theme: Theme;
@@ -14,29 +20,56 @@ const ThemeContext = createContext<ThemeContextValue>({
   toggleTheme: () => {},
 });
 
+function applyTheme(theme: Theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  // Keeps native controls, scrollbars and form widgets in sync
+  document.documentElement.style.colorScheme = theme;
+  try {
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    /* storage unavailable — theme still applies for the session */
+  }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", THEME_COLORS[theme]);
+}
+
+/**
+ * Reads the theme the pre-hydration head script already resolved.
+ * Lazy state initialiser = zero flash, zero override of the correct value.
+ */
+function getInitialTheme(): Theme {
+  if (typeof document !== "undefined") {
+    const attr = document.documentElement.getAttribute("data-theme");
+    if (attr === "light" || attr === "dark") return attr;
+  }
+  if (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    return "dark";
+  }
+  return "light";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
+  // Keep DOM, persistence and meta in sync whenever the theme changes.
+  // On mount this writes the same value the head script set — a harmless no-op.
   useEffect(() => {
-    const stored = localStorage.getItem("qa-theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const next: Theme = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    localStorage.setItem("qa-theme", next);
-    document.documentElement.setAttribute("data-theme", next);
-  };
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    applyTheme(theme);
   }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next = prev === "light" ? "dark" : "light";
+      // Apply to the DOM synchronously so the switch feels instant,
+      // even before React flushes the state update (idempotent).
+      if (typeof document !== "undefined") applyTheme(next);
+      return next;
+    });
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

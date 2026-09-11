@@ -1,23 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -54,6 +39,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Brand fonts load progressively: exact type when online,
+            graceful system-font fallback when offline. */}
+        <meta name="theme-color" content="#F5F3ED" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -70,7 +64,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${ibmPlexMono.variable}`} style={{ fontFamily: "var(--font-inter, Inter), system-ui, sans-serif" }}>
+      <body style={{ fontFamily: "var(--font-sans)" }}>
         <ThemeProvider>
           <Navbar />
           <main id="main-content">{children}</main>

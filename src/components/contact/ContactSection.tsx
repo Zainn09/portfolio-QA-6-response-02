@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
+import { Reveal } from "@/components/motion/Reveal";
 
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -47,8 +48,8 @@ export function ContactSection() {
       id="contact"
       aria-label="Contact"
       style={{
-        paddingTop: "clamp(5rem, 10vw, 9rem)",
-        paddingBottom: "clamp(5rem, 10vw, 9rem)",
+        paddingTop: "clamp(3rem, 6vw, 4.5rem)",
+        paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
         backgroundColor: "var(--bg-secondary)",
         borderTop: "1px solid var(--border)",
       }}
@@ -58,12 +59,13 @@ export function ContactSection() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "5rem",
+            gap: "3.5rem",
             alignItems: "start",
           }}
           className="contact-grid"
         >
           {/* Left: copy */}
+          <Reveal>
           <div>
             <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
               Contact
@@ -71,7 +73,7 @@ export function ContactSection() {
             <h2 style={{ marginBottom: "1.25rem" }}>
               Have Something That Needs Breaking?
             </h2>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
               Whether it&apos;s a full QA engagement, a pre-launch audit, a post-migration check, or
               an ongoing testing partnership — I&apos;d like to hear about your store.
             </p>
@@ -132,8 +134,10 @@ export function ContactSection() {
               </ul>
             </div>
           </div>
+          </Reveal>
 
           {/* Right: form */}
+          <Reveal delay={120}>
           <div>
             {submitted ? (
               <div
@@ -262,6 +266,7 @@ export function ContactSection() {
               </form>
             )}
           </div>
+          </Reveal>
         </div>
       </div>
 

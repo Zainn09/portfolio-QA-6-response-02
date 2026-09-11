@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/data/projects";
+import { staticBlogPosts } from "@/data/blogs";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -22,5 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: p.featured ? 0.8 : 0.6,
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = staticBlogPosts.map((p) => ({
+    url: `${BASE_URL}/blogs/${p.slug}`,
+    lastModified: new Date(p.publishedAt),
+    changeFrequency: "monthly" as const,
+    priority: p.trending ? 0.8 : 0.7,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...blogRoutes];
 }

@@ -4,50 +4,95 @@ import Link from "next/link";
 import { db } from "@/db";
 import { blogPosts } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { getStaticPost } from "@/data/blogs";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  try {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
-    if (!post) return {};
-    return {
-      title: post.seoTitle || post.title,
-      description: post.seoDescription || post.excerpt || undefined,
-      alternates: { canonical: `/blogs/${slug}` },
-      openGraph: {
-        title: post.seoTitle || post.title,
-        description: post.seoDescription || post.excerpt || undefined,
-        type: "article",
-        publishedTime: post.publishedAt?.toISOString(),
-      },
-    };
-  } catch {
-    return {};
-  }
+interface ResolvedPost {
+  title: string;
+  excerpt: string | null;
+  category: string | null;
+  tags: string[];
+  author: string;
+  publishedAt: Date | null;
+  updatedAt: Date | null;
+  readMinutes: number | null;
+  content: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
 }
 
-export const dynamic = "force-dynamic";
-
-export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
-
-  let post: typeof blogPosts.$inferSelect | undefined;
+async function resolvePost(slug: string): Promise<ResolvedPost | null> {
+  // 1. Try the database first (admin-published posts win)
   try {
     const [result] = await db
       .select()
       .from(blogPosts)
       .where(eq(blogPosts.slug, slug))
       .limit(1);
-    post = result;
+    if (result && result.status === "published") {
+      return {
+        title: result.title,
+        excerpt: result.excerpt,
+        category: result.category,
+        tags: Array.isArray(result.tags) ? (result.tags as string[]) : [],
+        author: result.author || "QA Specialist",
+        publishedAt: result.publishedAt,
+        updatedAt: result.updatedAt,
+        readMinutes: null,
+        content: result.content,
+        seoTitle: result.seoTitle,
+        seoDescription: result.seoDescription,
+      };
+    }
   } catch {
-    notFound();
+    // Database unavailable — fall through to the static library
   }
 
-  if (!post || post.status !== "published") notFound();
+  // 2. Fall back to the built-in article library
+  const staticPost = getStaticPost(slug);
+  if (!staticPost) return null;
+  return {
+    title: staticPost.title,
+    excerpt: staticPost.excerpt,
+    category: staticPost.category,
+    tags: staticPost.tags,
+    author: staticPost.author,
+    publishedAt: new Date(staticPost.publishedAt),
+    updatedAt: staticPost.updatedAt ? new Date(staticPost.updatedAt) : null,
+    readMinutes: staticPost.readMinutes,
+    content: staticPost.content,
+    seoTitle: staticPost.seoTitle,
+    seoDescription: staticPost.seoDescription,
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await resolvePost(slug);
+  if (!post) return {};
+  return {
+    title: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt || undefined,
+    alternates: { canonical: `/blogs/${slug}` },
+    openGraph: {
+      title: post.seoTitle || post.title,
+      description: post.seoDescription || post.excerpt || undefined,
+      type: "article",
+      publishedTime: post.publishedAt?.toISOString(),
+    },
+  };
+}
+
+export const dynamic = "force-dynamic";
+
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = await resolvePost(slug);
+
+  if (!post) notFound();
 
   return (
     <div style={{ paddingTop: "var(--nav-height)" }}>
@@ -102,15 +147,31 @@ export default async function BlogPostPage({ params }: Props) {
                 >
                   {post.category}
                 </span>
+                {post.readMinutes && (
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.5625rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      border: "1px solid var(--border)",
+                      padding: "0.25rem 0.625rem",
+                      borderRadius: "2px",
+                      color: "var(--text-tertiary)",
+                    }}
+                  >
+                    {post.readMinutes} min read
+                  </span>
+                )}
               </div>
             )}
 
-            <h1 style={{ marginBottom: "1.25rem", fontSize: "clamp(2rem, 4vw, 3.25rem)" }}>
+            <h1 style={{ marginBottom: "1.25rem", fontSize: "clamp(1.75rem, 3.4vw, 2.5rem)" }}>
               {post.title}
             </h1>
 
             {post.excerpt && (
-              <p style={{ fontSize: "1.125rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+              <p style={{ fontSize: "1.0625rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "1.5rem" }}>
                 {post.excerpt}
               </p>
             )}

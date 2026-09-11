@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Reveal } from "@/components/motion/Reveal";
 
 const PROCESS_STEPS = [
   {
@@ -9,6 +10,7 @@ const PROCESS_STEPS = [
     headline: "Know the store before touching it.",
     desc: "Review the store's purpose, audience, key user journeys, recent changes, and known issues. Understand what matters most — before testing anything.",
     icon: "◎",
+    tags: ["Discovery", "User journeys"],
   },
   {
     num: "02",
@@ -16,6 +18,7 @@ const PROCESS_STEPS = [
     headline: "Build the test surface.",
     desc: "Map every testable surface: pages, flows, components, integrations, and edge cases. Create a structured test plan prioritised by business impact.",
     icon: "⊞",
+    tags: ["Test plan", "Prioritisation"],
   },
   {
     num: "03",
@@ -23,6 +26,7 @@ const PROCESS_STEPS = [
     headline: "Walk through it like a real user.",
     desc: "Exploratory testing first — no script, no assumptions. Follow intuition and prior experience to find the issues that scripts would miss.",
     icon: "◉",
+    tags: ["Exploratory", "Real devices"],
   },
   {
     num: "04",
@@ -30,6 +34,7 @@ const PROCESS_STEPS = [
     headline: "Systematically push every boundary.",
     desc: "Scripted functional, responsive, cross-browser, and checkout testing. Edge cases. Unusual inputs. Unexpected paths. Real device testing.",
     icon: "⊘",
+    tags: ["Functional", "Checkout", "Cross-browser"],
   },
   {
     num: "05",
@@ -37,6 +42,7 @@ const PROCESS_STEPS = [
     headline: "Document exactly how it breaks.",
     desc: "Every issue gets a precise reproduction path, severity rating, environment details, and root-cause hypothesis. No vague bug reports.",
     icon: "⊕",
+    tags: ["Bug reports", "Severity rating"],
   },
   {
     num: "06",
@@ -44,6 +50,7 @@ const PROCESS_STEPS = [
     headline: "Work with the team to fix it right.",
     desc: "Clear, actionable reports. Available for questions during the fix. Second opinion on proposed solutions when needed.",
     icon: "◈",
+    tags: ["Dev handoff", "Fix review"],
   },
   {
     num: "07",
@@ -51,19 +58,86 @@ const PROCESS_STEPS = [
     headline: "Confirm the fix. Then re-test everything.",
     desc: "Re-test each resolved issue. Run regression testing to ensure fixes didn't break anything else. Only then: verified.",
     icon: "✓",
+    tags: ["Re-test", "Regression"],
   },
 ];
 
 export function ProcessSection() {
   const [activeStep, setActiveStep] = useState(0);
+  const stepRefs = useRef<(HTMLElement | null)[]>([]);
+  const navRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-spy v2: position-based, rAF-throttled. The card whose centre is
+  // nearest the viewport focus line owns the active step — deterministic,
+  // never skips, works at any scroll speed or viewport size.
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const section = sectionRef.current;
+      if (!section) return;
+      const sectionRect = section.getBoundingClientRect();
+      // Before the section: pin to step 0. Past it: pin to step 6.
+      if (sectionRect.top > window.innerHeight * 0.6) {
+        setActiveStep((prev) => (prev === 0 ? prev : 0));
+        return;
+      }
+      if (sectionRect.bottom < window.innerHeight * 0.4) {
+        setActiveStep((prev) => (prev === PROCESS_STEPS.length - 1 ? prev : PROCESS_STEPS.length - 1));
+        return;
+      }
+      const focusLine = window.innerHeight * 0.45;
+      let best = 0;
+      let bestDist = Infinity;
+      stepRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - focusLine);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      setActiveStep((prev) => (prev === best ? prev : best));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Keep the active nav pill in view inside the sticky rail
+  useEffect(() => {
+    const rail = navRef.current;
+    if (!rail) return;
+    const active = rail.querySelector<HTMLElement>(`[data-step="${activeStep}"]`);
+    active?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [activeStep]);
+
+  const scrollToStep = (i: number) => {
+    setActiveStep(i);
+    stepRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  const progress = ((activeStep + 1) / PROCESS_STEPS.length) * 100;
+  const current = PROCESS_STEPS[activeStep];
 
   return (
     <section
       id="process"
+      ref={sectionRef}
       aria-label="QA Process"
       style={{
-        paddingTop: "clamp(5rem, 10vw, 9rem)",
-        paddingBottom: "clamp(5rem, 10vw, 9rem)",
+        paddingTop: "clamp(3rem, 6vw, 4.5rem)",
+        paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
         backgroundColor: "var(--bg-secondary)",
         borderTop: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
@@ -71,207 +145,372 @@ export function ProcessSection() {
     >
       <div className="container">
         {/* Header */}
-        <div style={{ marginBottom: "3.5rem" }}>
-          <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
-            The Process
-          </p>
-          <h2 style={{ maxWidth: "580px" }}>
-            How I Break a Store{" "}
-            <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
-              Before Your Customers Do.
-            </span>
-          </h2>
-        </div>
+        <Reveal>
+          <div style={{ marginBottom: "2.25rem", maxWidth: "620px" }}>
+            <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
+              The Process
+            </p>
+            <h2>
+              How I Break a Store{" "}
+              <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
+                Before Your Customers Do.
+              </span>
+            </h2>
+            <p style={{ color: "var(--text-secondary)", marginTop: "1rem" }}>
+              Scroll through the journey — the tracker follows you from step 01
+              to 07.
+            </p>
+          </div>
+        </Reveal>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "320px 1fr",
-            gap: "4rem",
+            gridTemplateColumns: "300px 1fr",
+            gap: "clamp(2rem, 4vw, 3.5rem)",
             alignItems: "start",
           }}
           className="process-grid"
         >
-          {/* Step list */}
-          <div>
-            {PROCESS_STEPS.map((step, i) => (
-              <button
-                key={step.num}
-                onClick={() => setActiveStep(i)}
-                aria-selected={activeStep === i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1rem",
-                  width: "100%",
-                  padding: "1rem 0",
-                  background: "none",
-                  border: "none",
-                  borderBottom: "1px solid var(--border)",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "all var(--transition-fast)",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.6875rem",
-                    letterSpacing: "0.1em",
-                    color: activeStep === i ? "var(--accent)" : "var(--text-tertiary)",
-                    width: "24px",
-                    flexShrink: 0,
-                    fontWeight: 600,
-                    transition: "color var(--transition-fast)",
-                  }}
-                >
-                  {step.num}
-                </span>
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "0.9375rem",
-                      fontWeight: activeStep === i ? 700 : 500,
-                      color: activeStep === i ? "var(--text-primary)" : "var(--text-secondary)",
-                      transition: "all var(--transition-fast)",
-                    }}
-                  >
-                    {step.label}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "1rem",
-                      color: activeStep === i ? "var(--accent)" : "var(--border-strong)",
-                      transition: "color var(--transition-fast)",
-                    }}
-                    aria-hidden="true"
-                  >
-                    {step.icon}
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Active step detail */}
+          {/* Sticky scroll tracker */}
           <div
             style={{
               position: "sticky",
-              top: "calc(var(--nav-height) + 2rem)",
+              top: "calc(var(--nav-height) + 1.5rem)",
             }}
+            className="process-rail"
           >
             <div
               style={{
-                padding: "2.5rem",
-                border: "1px solid var(--border-strong)",
+                border: "1px solid var(--border)",
                 borderRadius: "var(--radius-md)",
                 backgroundColor: "var(--bg-surface)",
+                padding: "1.25rem",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-                <span
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: "var(--accent-muted)",
-                    border: "1px solid var(--accent)",
-                    borderRadius: "var(--radius-sm)",
-                    fontSize: "1.25rem",
-                    color: "var(--accent)",
-                  }}
-                  aria-hidden="true"
-                >
-                  {PROCESS_STEPS[activeStep].icon}
-                </span>
-                <div>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.5625rem",
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      color: "var(--text-tertiary)",
-                    }}
-                  >
-                    Step {PROCESS_STEPS[activeStep].num}
-                  </p>
-                  <h3
-                    style={{
-                      fontSize: "1.375rem",
-                      letterSpacing: "-0.02em",
-                      color: "var(--text-primary)",
-                    }}
-                  >
-                    {PROCESS_STEPS[activeStep].label}
-                  </h3>
-                </div>
-              </div>
-
-              <p
+              <span
                 style={{
-                  fontSize: "1.125rem",
-                  fontWeight: 600,
-                  color: "var(--text-primary)",
-                  marginBottom: "0.875rem",
-                  lineHeight: 1.4,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.5625rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--text-tertiary)",
                 }}
               >
-                {PROCESS_STEPS[activeStep].headline}
-              </p>
+                Journey
+              </span>
 
-              <p style={{ color: "var(--text-secondary)", lineHeight: 1.75 }}>
-                {PROCESS_STEPS[activeStep].desc}
-              </p>
-
-              {/* Progress indicators */}
+              {/* Big live step number — ticks over as you scroll */}
               <div
                 style={{
-                  marginTop: "2rem",
-                  paddingTop: "1.5rem",
-                  borderTop: "1px solid var(--border)",
                   display: "flex",
-                  gap: "0.25rem",
+                  alignItems: "baseline",
+                  gap: "0.5rem",
+                  marginTop: "0.25rem",
+                  marginBottom: "0.125rem",
                 }}
               >
-                {PROCESS_STEPS.map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      height: "3px",
-                      flex: 1,
-                      borderRadius: "2px",
-                      backgroundColor:
-                        i < activeStep
-                          ? "var(--verified)"
-                          : i === activeStep
-                          ? "var(--accent)"
-                          : "var(--border)",
-                      transition: "background-color var(--transition-base)",
-                    }}
-                  />
-                ))}
+                <span
+                  key={activeStep}
+                  aria-live="polite"
+                  aria-label={`Current step ${current.num} of 07: ${current.label}`}
+                  className="journey-num-tick"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "2.75rem",
+                    fontWeight: 700,
+                    letterSpacing: "-0.04em",
+                    lineHeight: 1,
+                    color: "var(--text-primary)",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {current.num}
+                </span>
+                <span
+                  aria-hidden="true"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.875rem",
+                    color: "var(--text-tertiary)",
+                  }}
+                >
+                  / 07
+                </span>
+              </div>
+              <p
+                key={`label-${activeStep}`}
+                className="journey-num-tick"
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  color: "var(--accent)",
+                  marginBottom: "1rem",
+                }}
+              >
+                {current.label}
+              </p>
+
+              {/* Progress track */}
+              <div
+                aria-hidden="true"
+                style={{
+                  height: "4px",
+                  borderRadius: "2px",
+                  backgroundColor: "var(--border)",
+                  overflow: "hidden",
+                  marginBottom: "1rem",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${progress}%`,
+                    borderRadius: "2px",
+                    backgroundColor: "var(--accent)",
+                    transition:
+                      "width 450ms cubic-bezier(0.22, 0.61, 0.36, 1)",
+                  }}
+                />
+              </div>
+
+              <div
+                ref={navRef}
+                role="tablist"
+                aria-label="Process steps"
+                className="process-nav no-scrollbar"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.25rem",
+                  maxHeight: "40vh",
+                  overflowY: "auto",
+                }}
+              >
+                {PROCESS_STEPS.map((step, i) => {
+                  const isActive = activeStep === i;
+                  const isPast = i < activeStep;
+                  return (
+                    <button
+                      key={step.num}
+                      role="tab"
+                      aria-selected={isActive}
+                      data-step={i}
+                      onClick={() => scrollToStep(i)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.75rem",
+                        width: "100%",
+                        padding: "0.625rem 0.75rem",
+                        backgroundColor: isActive
+                          ? "var(--accent-muted)"
+                          : "transparent",
+                        border: "1px solid",
+                        borderColor: isActive ? "var(--accent)" : "transparent",
+                        borderRadius: "var(--radius-sm)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        transition: "all 300ms ease",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.625rem",
+                          letterSpacing: "0.08em",
+                          color: isActive
+                            ? "var(--accent)"
+                            : isPast
+                            ? "var(--verified)"
+                            : "var(--text-tertiary)",
+                          fontWeight: 700,
+                          width: "20px",
+                          flexShrink: 0,
+                          transition: "color 300ms ease",
+                        }}
+                      >
+                        {isPast ? "✓" : step.num}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.875rem",
+                          fontWeight: isActive ? 700 : 500,
+                          color: isActive
+                            ? "var(--text-primary)"
+                            : "var(--text-secondary)",
+                          transition: "all 300ms ease",
+                        }}
+                      >
+                        {step.label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
+          </div>
+
+          {/* Scrolling step cards */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
+            {PROCESS_STEPS.map((step, i) => {
+              const isActive = activeStep === i;
+              return (
+                <article
+                  key={step.num}
+                  ref={(el) => {
+                    stepRefs.current[i] = el;
+                  }}
+                  data-index={i}
+                  aria-label={`Step ${step.num}: ${step.label}`}
+                  style={{
+                    padding: "clamp(1.25rem, 2.5vw, 1.75rem)",
+                    border: "1px solid",
+                    borderColor: isActive
+                      ? "var(--accent)"
+                      : "var(--border)",
+                    borderRadius: "var(--radius-md)",
+                    backgroundColor: "var(--bg-surface)",
+                    boxShadow: isActive ? "var(--shadow-md)" : "none",
+                    transform: isActive ? "translateY(-2px)" : "none",
+                    opacity: isActive ? 1 : 0.72,
+                    transition:
+                      "border-color 400ms ease, box-shadow 400ms ease, transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 400ms ease",
+                    scrollMarginTop: "calc(var(--nav-height) + 1rem)",
+                    scrollMarginBottom: "20vh",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                      marginBottom: "1.25rem",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: isActive
+                          ? "var(--accent)"
+                          : "var(--accent-muted)",
+                        border: "1px solid var(--accent)",
+                        borderRadius: "var(--radius-sm)",
+                        fontSize: "1.25rem",
+                        color: isActive ? "#000" : "var(--accent)",
+                        flexShrink: 0,
+                        transition: "all 400ms ease",
+                      }}
+                      aria-hidden="true"
+                    >
+                      {step.icon}
+                    </span>
+                    <div>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.5625rem",
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          color: "var(--text-tertiary)",
+                        }}
+                      >
+                        Step {step.num} of 07
+                      </p>
+                      <h3
+                        style={{
+                          fontSize: "1.25rem",
+                          letterSpacing: "-0.02em",
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        {step.label}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: "1.0625rem",
+                      fontWeight: 600,
+                      color: "var(--text-primary)",
+                      marginBottom: "0.625rem",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {step.headline}
+                  </p>
+
+                  <p
+                    style={{
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.75,
+                      marginBottom: "1.25rem",
+                    }}
+                  >
+                    {step.desc}
+                  </p>
+
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
+                    {step.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.5rem",
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          color: "var(--text-tertiary)",
+                          backgroundColor: "var(--bg-surface-2)",
+                          padding: "0.25rem 0.625rem",
+                          borderRadius: "2px",
+                          border: "1px solid var(--border)",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </div>
 
       <style jsx>{`
+        @keyframes journey-num-tick {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .journey-num-tick {
+          display: inline-block;
+          animation: journey-num-tick 380ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+        }
         @media (max-width: 900px) {
           .process-grid {
             grid-template-columns: 1fr !important;
             gap: 2rem !important;
+          }
+          .process-rail {
+            position: static !important;
+          }
+          .process-nav {
+            flex-direction: row !important;
+            max-height: none !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            padding-bottom: 0.25rem;
+          }
+          .process-nav button {
+            width: auto !important;
+            flex-shrink: 0;
           }
         }
       `}</style>
