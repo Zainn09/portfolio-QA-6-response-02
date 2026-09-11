@@ -1,0 +1,275 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import type { Project } from "@/data/projects";
+
+interface Props {
+  project: Project;
+  related: Project[];
+}
+
+function SeverityBadge({ severity }: { severity: "critical" | "major" | "minor" }) {
+  const config = {
+    critical: { color: "var(--critical)", label: "Critical" },
+    major: { color: "var(--major)", label: "Major" },
+    minor: { color: "var(--minor)", label: "Minor" },
+  };
+  const { color, label } = config[severity];
+  return (
+    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color, border: `1px solid ${color}`, padding: "0.25rem 0.625rem", borderRadius: "2px", fontWeight: 600 }}>
+      {label}
+    </span>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.625rem" }}>
+      <span style={{ width: "20px", height: "1px", backgroundColor: "var(--text-tertiary)", display: "inline-block" }} />
+      {children}
+    </p>
+  );
+}
+
+export function CaseStudyPage({ project, related }: Props) {
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  return (
+    <div style={{ paddingTop: "var(--nav-height)" }}>
+      <style>{`
+        .cs-related-link { display: block; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background-color: var(--bg-surface); text-decoration: none; transition: all var(--transition-fast); }
+        .cs-related-link:hover { border-color: var(--accent); background-color: var(--accent-muted); }
+        .cs-audit-link { display: block; padding: 1.25rem; background-color: var(--accent); color: #000; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.875rem; letter-spacing: 0.02em; transition: all var(--transition-fast); }
+        .cs-audit-link:hover { background-color: var(--accent-hover); }
+        .breadcrumb-link:hover { color: var(--text-primary) !important; }
+      `}</style>
+
+      {/* Hero */}
+      <header style={{ paddingTop: "5rem", paddingBottom: "4rem", borderBottom: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)" }}>
+        <div className="container">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" style={{ marginBottom: "2rem" }}>
+            <ol role="list" style={{ listStyle: "none", display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+              <li><Link href="/" className="breadcrumb-link" style={{ color: "var(--text-tertiary)" }}>Home</Link></li>
+              <li aria-hidden="true">→</li>
+              <li><Link href="/work" className="breadcrumb-link" style={{ color: "var(--text-tertiary)" }}>Work</Link></li>
+              <li aria-hidden="true">→</li>
+              <li aria-current="page" style={{ color: "var(--text-secondary)" }}>{project.title}</li>
+            </ol>
+          </nav>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "3rem", alignItems: "end" }} className="case-hero-grid">
+            <div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.5rem" }}>
+                {[project.platform, project.industry, ...project.testingScope.slice(0, 2)].map((tag) => (
+                  <span key={tag} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.25rem 0.625rem", borderRadius: "2px", color: "var(--text-secondary)" }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <h1 style={{ marginBottom: "1.25rem", fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>{project.title}</h1>
+              <p style={{ color: "var(--text-secondary)", maxWidth: "600px", fontSize: "1.125rem" }}>{project.summary}</p>
+            </div>
+
+            {/* Status */}
+            <div style={{ padding: "1.5rem", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)", minWidth: "180px" }}>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem" }}>Project Status</p>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--verified)" }} />
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--verified)", fontWeight: 700 }}>Verified</span>
+              </div>
+              <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+                {[{ label: "Issues", value: String(project.issues.length) }, { label: "Scope", value: project.testingScope.length + " areas" }].map((s) => (
+                  <div key={s.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.375rem" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{s.label}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-primary)", fontWeight: 700 }}>{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <div className="container" style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "5rem", alignItems: "start" }} className="case-content-grid">
+          {/* Main column */}
+          <div>
+            <Section label="01 — The Challenge" title="What Was Wrong?">
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.challenge}</p>
+            </Section>
+
+            <Divider />
+
+            <Section label="02 — The Investigation" title="How Was It Discovered?">
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.investigation}</p>
+            </Section>
+
+            <Divider />
+
+            <Section label="03 — Root Cause" title="Why Did It Happen?">
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.rootCause}</p>
+            </Section>
+
+            {project.issues.length > 0 && (
+              <>
+                <Divider />
+                <Section label="04 — Issues Discovered" title="What Was Found?">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {project.issues.map((issue, i) => (
+                      <div key={issue.id} style={{ padding: "1.5rem", border: "1px solid var(--border)", borderLeft: `3px solid ${issue.severity === "critical" ? "var(--critical)" : issue.severity === "major" ? "var(--major)" : "var(--minor)"}`, borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", marginBottom: "0.875rem", flexWrap: "wrap" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", color: "var(--text-tertiary)", letterSpacing: "0.1em" }}>{String(i + 1).padStart(2, "0")}</span>
+                            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-primary)" }}>{issue.title}</h3>
+                          </div>
+                          <SeverityBadge severity={issue.severity} />
+                        </div>
+                        <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "0.875rem", lineHeight: 1.7 }}>{issue.description}</p>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", paddingTop: "0.875rem", borderTop: "1px solid var(--border)" }}>
+                          <div>
+                            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.375rem" }}>Root Cause</p>
+                            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{issue.rootCause}</p>
+                          </div>
+                          <div>
+                            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.375rem" }}>Resolution</p>
+                            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{issue.resolution}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Section>
+              </>
+            )}
+
+            <Divider />
+
+            <Section label="05 — The Resolution" title="What Was Fixed?">
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.resolution}</p>
+            </Section>
+
+            <Divider />
+
+            <Section label="06 — The Outcome" title="What Changed?">
+              <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.outcome}</p>
+            </Section>
+
+            {project.faqs.length > 0 && (
+              <>
+                <Divider />
+                <Section label="07 — FAQ" title="Questions About This Audit">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+                    {project.faqs.map((faq, i) => (
+                      <div key={i} style={{ borderBottom: "1px solid var(--border)" }}>
+                        <button
+                          onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                          aria-expanded={activeFaq === i}
+                          style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "1.25rem 0", background: "none", border: "none", cursor: "pointer", textAlign: "left", gap: "1rem" }}
+                        >
+                          <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4 }}>{faq.question}</h3>
+                          <span style={{ color: "var(--text-tertiary)", transform: activeFaq === i ? "rotate(45deg)" : "rotate(0)", transition: "transform var(--transition-fast)", fontSize: "1.25rem", flexShrink: 0 }} aria-hidden="true">+</span>
+                        </button>
+                        {activeFaq === i && (
+                          <div style={{ paddingBottom: "1.25rem", animation: "fade-up 0.25s ease forwards" }}>
+                            <p style={{ color: "var(--text-secondary)", lineHeight: 1.75 }}>{faq.answer}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </Section>
+              </>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <aside style={{ position: "sticky", top: "calc(var(--nav-height) + 2rem)", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {project.verification.length > 0 && (
+              <div style={{ padding: "1.5rem", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Verification Status</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+                  {project.verification.map((v) => (
+                    <div key={v.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{v.label}</span>
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: v.status === "verified" ? "var(--verified)" : v.status === "failed" ? "var(--critical)" : "var(--text-tertiary)", display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                        {v.status === "verified" ? "✓" : v.status === "failed" ? "✗" : "○"} {v.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {project.testingScope.length > 0 && (
+              <div style={{ padding: "1.5rem", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Testing Scope</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {project.testingScope.map((s) => (
+                    <div key={s} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <div style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "var(--accent)", flexShrink: 0 }} />
+                      <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{s}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {project.technologies.length > 0 && (
+              <div style={{ padding: "1.5rem", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Technologies</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
+                  {project.technologies.map((t) => (
+                    <span key={t} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.25rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)", backgroundColor: "var(--bg-surface-2)" }}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <Link href="/audit" className="cs-audit-link">Get a Free Audit →</Link>
+          </aside>
+        </div>
+
+        {/* Related projects */}
+        {related.length > 0 && (
+          <div style={{ marginTop: "6rem", paddingTop: "4rem", borderTop: "1px solid var(--border)" }}>
+            <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>Related Projects</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+              {related.map((p) => (
+                <Link key={p.id} href={`/work/${p.slug}`} className="cs-related-link">
+                  <div style={{ display: "flex", gap: "0.375rem", marginBottom: "0.75rem" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)" }}>{p.platform}</span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)" }}>{p.industry}</span>
+                  </div>
+                  <h3 style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.375rem" }}>{p.title}</h3>
+                  <p style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{p.summary}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Section({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
+  return (
+    <section style={{ marginBottom: "4rem" }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.625rem" }}>
+        <span style={{ width: "20px", height: "1px", backgroundColor: "var(--text-tertiary)", display: "inline-block" }} />
+        {label}
+      </div>
+      <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)", marginBottom: "1rem" }}>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function Divider() {
+  return <div style={{ height: "1px", backgroundColor: "var(--border)", margin: "3rem 0" }} />;
+}
