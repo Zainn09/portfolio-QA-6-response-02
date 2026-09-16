@@ -329,6 +329,7 @@ export function BugsSection() {
                       >
                         <div style={{ overflow: "hidden" }}>
                           <div
+                            className="bug-desc"
                             style={{
                               padding: "0 1.25rem 1.25rem 4.5rem",
                               opacity: isActive ? 1 : 0,

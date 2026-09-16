@@ -260,7 +260,7 @@ export function ShowreelSection() {
                       animation: "pulse-dot 1.6s ease-in-out infinite",
                     }}
                   />
-                  Live audit
+                  <span className="showreel-live-text">Live audit</span>
                 </span>
               </div>
 
@@ -334,6 +334,7 @@ export function ShowreelSection() {
                         position: "absolute",
                         bottom: "0.75rem",
                         left: "0.75rem",
+                        right: "0.75rem",
                         backgroundColor: "rgba(0,0,0,0.65)",
                         backdropFilter: "blur(6px)",
                         padding: "0.375rem 0.75rem",
@@ -428,6 +429,12 @@ export function ShowreelSection() {
         @media (max-width: 900px) {
           .showreel-grid {
             grid-template-columns: 1fr !important;
+          }
+        }
+        /* On very narrow screens keep only the pulsing dot, not the label */
+        @media (max-width: 480px) {
+          .showreel-live-text {
+            display: none;
           }
         }
       `}</style>

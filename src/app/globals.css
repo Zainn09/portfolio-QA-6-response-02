@@ -658,6 +658,18 @@ a {
   }
 }
 
+/* Two-column form rows stack on narrow phones (!important beats inline styles) */
+@media (max-width: 560px) {
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Bug accordion panels: drop the desktop indent so text never squeezes */
+  .bug-desc {
+    padding-left: 1.25rem !important;
+  }
+}
+
 /* ─── Innovation smoothness ──────────────────────────────────────────────── */
 
 /* Anchored sections clear the fixed navbar when scrolled to */

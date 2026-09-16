@@ -99,7 +99,6 @@ export function Navbar() {
           <ul
             role="list"
             style={{
-              display: "flex",
               alignItems: "center",
               gap: "2rem",
               listStyle: "none",
@@ -141,7 +140,6 @@ export function Navbar() {
                 color: "#000",
                 padding: "0.5rem 1rem",
                 borderRadius: "var(--radius-sm)",
-                display: "inline-flex",
                 alignItems: "center",
                 gap: "0.375rem",
                 transition: "all var(--transition-fast)",

@@ -181,7 +181,7 @@ export function ContactSection() {
                   gap: "1.25rem",
                 }}
               >
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div className="form-row-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                   <div className="form-field">
                     <label htmlFor="contact-name" className="form-label">Name *</label>
                     <input id="contact-name" type="text" className="form-input" placeholder="Your name" autoComplete="name" {...register("name")} />
@@ -194,7 +194,7 @@ export function ContactSection() {
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div className="form-row-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                   <div className="form-field">
                     <label htmlFor="contact-company" className="form-label">Company</label>
                     <input id="contact-company" type="text" className="form-input" placeholder="Your company" autoComplete="organization" {...register("company")} />
