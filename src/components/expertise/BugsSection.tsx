@@ -303,16 +303,15 @@ export function BugsSection() {
                             color: isActive
                               ? "var(--accent)"
                               : "var(--text-tertiary)",
-                            fontSize: "1rem",
-                            lineHeight: 1,
+                            lineHeight: 0,
                             transform: isActive
-                              ? "rotate(135deg)"
+                              ? "rotate(45deg)"
                               : "rotate(0deg)",
                             transition:
                               "transform 350ms cubic-bezier(0.22, 0.61, 0.36, 1), background-color 300ms ease, border-color 300ms ease, color 300ms ease",
                           }}
                         >
-                          +
+                          <Plus size={15} strokeWidth={2.5} aria-hidden="true" />
                         </span>
                       </button>
 
