@@ -57,8 +57,28 @@ const EXPERTISE_CATEGORIES = [
 export function ExpertiseSection() {
   const [activeCategory, setActiveCategory] = useState("storefront");
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [paused, setPaused] = useState(false);
+  const [cycleKey, setCycleKey] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   const category = EXPERTISE_CATEGORIES.find((c) => c.id === activeCategory);
+
+  // Auto-cycle Storefront → Commerce → Experience → Technical every 5s.
+  // Pauses on hover/focus, restarts on manual selection, off for reduced motion.
+  useEffect(() => {
+    if (paused || reduceMotion) return;
+    const t = setTimeout(() => {
+      const i = EXPERTISE_CATEGORIES.findIndex((c) => c.id === activeCategory);
+      const next = EXPERTISE_CATEGORIES[(i + 1) % EXPERTISE_CATEGORIES.length];
+      setActiveCategory(next.id);
+    }, CYCLE_MS);
+    return () => clearTimeout(t);
+  }, [activeCategory, cycleKey, paused, reduceMotion]);
+
+  const selectCategory = (id: string) => {
+    setActiveCategory(id);
+    setCycleKey((k) => k + 1);
+  };
 
   return (
     <section
@@ -193,6 +213,30 @@ export function ExpertiseSection() {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        .expertise-panel {
+          animation: expertise-panel-in 450ms cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        @keyframes expertise-panel-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes expertise-cycle {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </section>
   );
 }
