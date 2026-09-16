@@ -10,6 +10,7 @@ import {
   BellOff,
   MousePointerClick,
   Ghost,
+  Plus,
 } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 
