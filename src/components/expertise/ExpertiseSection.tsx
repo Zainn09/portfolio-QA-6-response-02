@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
+
+const CYCLE_MS = 5000;
 
 const EXPERTISE_CATEGORIES = [
   {
@@ -113,6 +116,10 @@ export function ExpertiseSection() {
         <div
           role="tablist"
           aria-label="Expertise categories"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
           style={{
             display: "flex",
             gap: "0.25rem",
@@ -129,7 +136,7 @@ export function ExpertiseSection() {
               aria-selected={activeCategory === cat.id}
               aria-controls={`panel-${cat.id}`}
               id={`tab-${cat.id}`}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => selectCategory(cat.id)}
               style={{
                 padding: "0.75rem 1.25rem",
                 border: "none",
@@ -152,8 +159,37 @@ export function ExpertiseSection() {
           ))}
         </div>
 
+        {/* Auto-cycle progress */}
+        {!reduceMotion && (
+          <div
+            aria-hidden="true"
+            style={{
+              height: "2px",
+              backgroundColor: "var(--border)",
+              borderRadius: "1px",
+              marginTop: "-1.25rem",
+              marginBottom: "1.25rem",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              key={`${activeCategory}-${cycleKey}`}
+              style={{
+                height: "100%",
+                width: "100%",
+                transformOrigin: "left",
+                backgroundColor: "var(--accent)",
+                animation: "expertise-cycle 5s linear forwards",
+                animationPlayState: paused ? "paused" : "running",
+              }}
+            />
+          </div>
+        )}
+
         {/* Items grid */}
         <div
+          key={activeCategory}
+          className="expertise-panel"
           role="tabpanel"
           id={`panel-${activeCategory}`}
           aria-labelledby={`tab-${activeCategory}`}
