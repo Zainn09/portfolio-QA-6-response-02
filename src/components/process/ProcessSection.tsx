@@ -469,7 +469,7 @@ export function ProcessSection() {
                           color: "var(--text-primary)",
                           backgroundColor: "var(--accent-muted)",
                           padding: "0.25rem 0.625rem",
-                          borderRadius: "999px",
+                          borderRadius: "var(--radius-sm)",
                           border: "1px solid var(--accent)",
                         }}
                       >
