@@ -466,11 +466,11 @@ export function ProcessSection() {
                           fontSize: "0.5rem",
                           letterSpacing: "0.08em",
                           textTransform: "uppercase",
-                          color: "var(--text-tertiary)",
-                          backgroundColor: "var(--bg-surface-2)",
+                          color: "var(--text-primary)",
+                          backgroundColor: "var(--accent-muted)",
                           padding: "0.25rem 0.625rem",
-                          borderRadius: "2px",
-                          border: "1px solid var(--border)",
+                          borderRadius: "999px",
+                          border: "1px solid var(--accent)",
                         }}
                       >
                         {tag}
