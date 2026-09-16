@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/data/projects";
 
@@ -38,20 +38,8 @@ function SeverityBadge({ severity }: { severity: "critical" | "major" | "minor" 
   );
 }
 
-const slideVariants = {
-  enter: (dir: number) => ({ opacity: 0, x: dir >= 0 ? 56 : -56 }),
-  center: { opacity: 1, x: 0 },
-  exit: (dir: number) => ({ opacity: 0, x: dir >= 0 ? -56 : 56 }),
-};
-
-const slideTransition = {
-  duration: 0.35,
-  ease: [0.22, 0.61, 0.36, 1] as const,
-};
-
 export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const trackRef = useRef<HTMLElement>(null);
@@ -81,7 +69,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
       setProgress(p);
       const idx = Math.min(projects.length - 1, Math.floor(p * projects.length));
       if (idx !== prevIdx.current) {
-        setDirection(idx > prevIdx.current ? 1 : -1);
         prevIdx.current = idx;
         setActiveIndex(idx);
       }
@@ -119,7 +106,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
       const clamped = Math.max(0, Math.min(index, projects.length - 1));
       if (isMobile) {
         if (clamped !== activeIndex) {
-          setDirection(clamped > activeIndex ? 1 : -1);
           prevIdx.current = clamped;
           setActiveIndex(clamped);
         }
@@ -158,8 +144,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     }
   };
 
-  const active = projects[activeIndex];
-  const primaryIssue = active.issues[0];
   const displayProgress = isMobile
     ? (activeIndex + 1) / projects.length
     : progress;
@@ -177,7 +161,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
       >
         <div className="featured-stage">
           <div className="container" style={{ width: "100%" }}>
-            {/* Section header */}
+            {/* Section header — static, never moves */}
             <Reveal>
               <div
                 style={{
@@ -222,7 +206,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
               </div>
             </Reveal>
 
-            {/* Store index rail — jump straight to any store */}
+            {/* Store index rail — static row, active pill updates in place */}
             <Reveal delay={80}>
               <div
                 ref={railRef}
@@ -302,7 +286,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
               }}
               className="featured-grid"
             >
-              {/* Left: Project visual/info */}
+              {/* Left column — frame stays fixed, only the visual swaps */}
               <div>
                 {/* Project counter + scroll progress */}
                 <div style={{ marginBottom: "1rem" }}>
@@ -374,128 +358,119 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                   </div>
                 </div>
 
-                <AnimatePresence custom={direction} initial={false}>
-                  <motion.div
-                    key={active.id}
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={slideTransition}
-                  >
-                    {/* Visual placeholder with QA annotations */}
-                    <div
-                      style={{
-                        position: "relative",
-                        aspectRatio: "16/10",
-                        backgroundColor: "var(--bg-surface)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "var(--radius-md)",
-                        overflow: "hidden",
-                        marginBottom: "1.25rem",
-                      }}
-                    >
-                      {/* Stylized store interface */}
+                {/* Fixed visual frame — slides crossfade INSIDE, box never moves */}
+                <div className="featured-visual-box">
+                  {projects.map((p, i) => {
+                    const isActive = i === activeIndex;
+                    return (
                       <div
-                        style={{
-                          padding: "1rem",
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "0.5rem",
-                          opacity: 0.7,
-                        }}
+                        key={p.id}
+                        aria-hidden={!isActive}
+                        data-active={isActive}
+                        className="featured-visual-slide"
                       >
+                        {/* Stylized store interface */}
                         <div
                           style={{
-                            height: "28px",
-                            backgroundColor: "var(--bg-surface-2)",
-                            borderRadius: "3px",
+                            padding: "1rem",
+                            height: "100%",
                             display: "flex",
-                            alignItems: "center",
-                            paddingLeft: "0.75rem",
+                            flexDirection: "column",
                             gap: "0.5rem",
+                            opacity: 0.7,
                           }}
                         >
-                          <div style={{ width: "40px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                          <div style={{ flex: 1 }} />
-                          <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                          <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                          <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                        </div>
+                          <div
+                            style={{
+                              height: "28px",
+                              backgroundColor: "var(--bg-surface-2)",
+                              borderRadius: "3px",
+                              display: "flex",
+                              alignItems: "center",
+                              paddingLeft: "0.75rem",
+                              gap: "0.5rem",
+                            }}
+                          >
+                            <div style={{ width: "40px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
+                            <div style={{ flex: 1 }} />
+                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
+                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
+                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
+                          </div>
 
-                        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                          <div style={{ backgroundColor: "var(--bg-surface-2)", borderRadius: "3px" }} />
-                          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", padding: "0.5rem" }}>
-                            <div style={{ height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px", width: "80%" }} />
-                            <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "60%" }} />
-                            <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "70%" }} />
-                            <div style={{ marginTop: "auto", height: "28px", backgroundColor: "var(--accent)", borderRadius: "3px", opacity: 0.5 }} />
+                          <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                            <div style={{ backgroundColor: "var(--bg-surface-2)", borderRadius: "3px" }} />
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", padding: "0.5rem" }}>
+                              <div style={{ height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px", width: "80%" }} />
+                              <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "60%" }} />
+                              <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "70%" }} />
+                              <div style={{ marginTop: "auto", height: "28px", backgroundColor: "var(--accent)", borderRadius: "3px", opacity: 0.5 }} />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Issue markers */}
-                      {active.issues.slice(0, 2).map((issue, i) => (
+                        {/* Issue markers — mount on activation so they pop in */}
+                        {isActive &&
+                          p.issues.slice(0, 2).map((issue, j) => (
+                            <div
+                              key={issue.id}
+                              title={issue.title}
+                              aria-label={`Issue ${issue.id}: ${issue.title}`}
+                              style={{
+                                position: "absolute",
+                                ...(j === 0 ? { top: "12%", right: "30%" } : { bottom: "35%", left: "55%" }),
+                                width: "22px",
+                                height: "22px",
+                                borderRadius: "50%",
+                                backgroundColor:
+                                  issue.severity === "critical"
+                                    ? "var(--critical)"
+                                    : issue.severity === "major"
+                                    ? "var(--major)"
+                                    : "var(--minor)",
+                                color: "white",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontFamily: "var(--font-mono)",
+                                fontSize: "0.5625rem",
+                                fontWeight: 700,
+                                cursor: "default",
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                                animation: "marker-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                                animationDelay: `${j * 150 + 250}ms`,
+                                opacity: 0,
+                              }}
+                            >
+                              {String(j + 1).padStart(2, "0")}
+                            </div>
+                          ))}
+
+                        {/* Industry tag */}
                         <div
-                          key={issue.id}
-                          title={issue.title}
-                          aria-label={`Issue ${issue.id}: ${issue.title}`}
                           style={{
                             position: "absolute",
-                            ...(i === 0 ? { top: "12%", right: "30%" } : { bottom: "35%", left: "55%" }),
-                            width: "22px",
-                            height: "22px",
-                            borderRadius: "50%",
-                            backgroundColor:
-                              issue.severity === "critical"
-                                ? "var(--critical)"
-                                : issue.severity === "major"
-                                ? "var(--major)"
-                                : "var(--minor)",
-                            color: "white",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            top: "0.75rem",
+                            left: "0.75rem",
+                            backgroundColor: "var(--bg-primary)",
+                            border: "1px solid var(--border)",
+                            padding: "0.25rem 0.625rem",
+                            borderRadius: "var(--radius-sm)",
                             fontFamily: "var(--font-mono)",
                             fontSize: "0.5625rem",
-                            fontWeight: 700,
-                            cursor: "default",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                            animation: "marker-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
-                            animationDelay: `${i * 150 + 200}ms`,
-                            opacity: 0,
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: "var(--text-secondary)",
                           }}
                         >
-                          {String(i + 1).padStart(2, "0")}
+                          {p.industry}
                         </div>
-                      ))}
-
-                      {/* Industry tag */}
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "0.75rem",
-                          left: "0.75rem",
-                          backgroundColor: "var(--bg-primary)",
-                          border: "1px solid var(--border)",
-                          padding: "0.25rem 0.625rem",
-                          borderRadius: "var(--radius-sm)",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.5625rem",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                          color: "var(--text-secondary)",
-                        }}
-                      >
-                        {active.industry}
                       </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                    );
+                  })}
+                </div>
 
-                {/* Navigation controls */}
+                {/* Navigation controls — static */}
                 <div style={{ display: "flex", gap: "0.75rem" }}>
                   <button
                     onClick={prev}
@@ -567,199 +542,204 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                 </p>
               </div>
 
-              {/* Right: Project details */}
-              <AnimatePresence custom={direction} initial={false}>
-                <motion.div
-                  key={active.id}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ ...slideTransition, delay: 0.05 }}
-                >
-                  {/* Meta tags */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.5625rem",
-                        letterSpacing: "0.1em",
-                        textTransform: "uppercase",
-                        border: "1px solid var(--border)",
-                        padding: "0.25rem 0.625rem",
-                        borderRadius: "2px",
-                        color: "var(--text-secondary)",
-                      }}
+              {/* Right column — details crossfade in a fixed stack, column never moves */}
+              <div className="featured-details-stack">
+                {projects.map((p, i) => {
+                  const isActive = i === activeIndex;
+                  const primaryIssue = p.issues[0];
+                  return (
+                    <article
+                      key={p.id}
+                      aria-hidden={!isActive}
+                      data-active={isActive}
+                      className="featured-details-slide"
                     >
-                      {active.platform}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.5625rem",
-                        letterSpacing: "0.1em",
-                        textTransform: "uppercase",
-                        border: "1px solid var(--border)",
-                        padding: "0.25rem 0.625rem",
-                        borderRadius: "2px",
-                        color: "var(--text-secondary)",
-                      }}
-                    >
-                      {active.industry}
-                    </span>
-                    {active.testingScope.slice(0, 2).map((scope) => (
-                      <span
-                        key={scope}
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.5625rem",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                          border: "1px solid var(--border)",
-                          padding: "0.25rem 0.625rem",
-                          borderRadius: "2px",
-                          color: "var(--text-tertiary)",
-                        }}
-                      >
-                        {scope}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3
-                    style={{
-                      fontSize: "clamp(1.375rem, 2.6vw, 2rem)",
-                      letterSpacing: "-0.03em",
-                      marginBottom: "0.75rem",
-                      color: "var(--text-primary)",
-                    }}
-                  >
-                    {active.title}
-                  </h3>
-
-                  <p style={{ color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: 1.7 }}>
-                    {active.summary}
-                  </p>
-
-                  {/* Primary issue highlight */}
-                  {primaryIssue && (
-                    <div
-                      style={{
-                        border: "1px solid var(--border)",
-                        borderLeft: `3px solid ${
-                          primaryIssue.severity === "critical"
-                            ? "var(--critical)"
-                            : primaryIssue.severity === "major"
-                            ? "var(--major)"
-                            : "var(--minor)"
-                        }`,
-                        borderRadius: "var(--radius-sm)",
-                        padding: "1rem 1.25rem",
-                        backgroundColor: "var(--bg-surface)",
-                        marginBottom: "1rem",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.625rem" }}>
+                      {/* Meta tags */}
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
                         <span
                           style={{
                             fontFamily: "var(--font-mono)",
                             fontSize: "0.5625rem",
                             letterSpacing: "0.1em",
                             textTransform: "uppercase",
-                            color: "var(--text-tertiary)",
+                            border: "1px solid var(--border)",
+                            padding: "0.25rem 0.625rem",
+                            borderRadius: "2px",
+                            color: "var(--text-secondary)",
                           }}
                         >
-                          Primary Issue
+                          {p.platform}
                         </span>
-                        <SeverityBadge severity={primaryIssue.severity} />
-                      </div>
-                      <p
-                        style={{
-                          fontSize: "0.9375rem",
-                          fontWeight: 600,
-                          color: "var(--text-primary)",
-                          marginBottom: "0.5rem",
-                        }}
-                      >
-                        {primaryIssue.title}
-                      </p>
-                      <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                        {primaryIssue.description}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Verification summary */}
-                  <div style={{ marginBottom: "1rem" }}>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.5625rem",
-                        letterSpacing: "0.1em",
-                        textTransform: "uppercase",
-                        color: "var(--text-tertiary)",
-                        marginBottom: "0.75rem",
-                      }}
-                    >
-                      Status
-                    </p>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                      {active.verification.slice(0, 4).map((v) => (
-                        <div
-                          key={v.label}
+                        <span
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.375rem",
                             fontFamily: "var(--font-mono)",
                             fontSize: "0.5625rem",
-                            letterSpacing: "0.08em",
+                            letterSpacing: "0.1em",
                             textTransform: "uppercase",
-                            color:
-                              v.status === "verified"
-                                ? "var(--verified)"
-                                : v.status === "failed"
-                                ? "var(--critical)"
-                                : "var(--text-tertiary)",
+                            border: "1px solid var(--border)",
+                            padding: "0.25rem 0.625rem",
+                            borderRadius: "2px",
+                            color: "var(--text-secondary)",
                           }}
                         >
-                          <span>{v.status === "verified" ? "✓" : v.status === "failed" ? "✗" : "○"}</span>
-                          {v.label}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                          {p.industry}
+                        </span>
+                        {p.testingScope.slice(0, 2).map((scope) => (
+                          <span
+                            key={scope}
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: "0.5625rem",
+                              letterSpacing: "0.1em",
+                              textTransform: "uppercase",
+                              border: "1px solid var(--border)",
+                              padding: "0.25rem 0.625rem",
+                              borderRadius: "2px",
+                              color: "var(--text-tertiary)",
+                            }}
+                          >
+                            {scope}
+                          </span>
+                        ))}
+                      </div>
 
-                  <Link
-                    href={`/work/${active.slug}`}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.625rem",
-                      backgroundColor: "var(--text-primary)",
-                      color: "var(--bg-primary)",
-                      fontWeight: 600,
-                      fontSize: "0.9375rem",
-                      padding: "0.875rem 1.75rem",
-                      borderRadius: "var(--radius-sm)",
-                      transition: "all var(--transition-fast)",
-                      letterSpacing: "0.01em",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--accent)";
-                      (e.currentTarget as HTMLAnchorElement).style.color = "#000";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--text-primary)";
-                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--bg-primary)";
-                    }}
-                  >
-                    View Case Study
-                    <span aria-hidden="true">→</span>
-                  </Link>
-                </motion.div>
-              </AnimatePresence>
+                      <h3
+                        style={{
+                          fontSize: "clamp(1.375rem, 2.6vw, 2rem)",
+                          letterSpacing: "-0.03em",
+                          marginBottom: "0.75rem",
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        {p.title}
+                      </h3>
+
+                      <p style={{ color: "var(--text-secondary)", marginBottom: "1rem", lineHeight: 1.7 }}>
+                        {p.summary}
+                      </p>
+
+                      {/* Primary issue highlight */}
+                      {primaryIssue && (
+                        <div
+                          style={{
+                            border: "1px solid var(--border)",
+                            borderLeft: `3px solid ${
+                              primaryIssue.severity === "critical"
+                                ? "var(--critical)"
+                                : primaryIssue.severity === "major"
+                                ? "var(--major)"
+                                : "var(--minor)"
+                            }`,
+                            borderRadius: "var(--radius-sm)",
+                            padding: "1rem 1.25rem",
+                            backgroundColor: "var(--bg-surface)",
+                            marginBottom: "1rem",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.625rem" }}>
+                            <span
+                              style={{
+                                fontFamily: "var(--font-mono)",
+                                fontSize: "0.5625rem",
+                                letterSpacing: "0.1em",
+                                textTransform: "uppercase",
+                                color: "var(--text-tertiary)",
+                              }}
+                            >
+                              Primary Issue
+                            </span>
+                            <SeverityBadge severity={primaryIssue.severity} />
+                          </div>
+                          <p
+                            style={{
+                              fontSize: "0.9375rem",
+                              fontWeight: 600,
+                              color: "var(--text-primary)",
+                              marginBottom: "0.5rem",
+                            }}
+                          >
+                            {primaryIssue.title}
+                          </p>
+                          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                            {primaryIssue.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Verification summary */}
+                      <div style={{ marginBottom: "1rem" }}>
+                        <p
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.5625rem",
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: "var(--text-tertiary)",
+                            marginBottom: "0.75rem",
+                          }}
+                        >
+                          Status
+                        </p>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                          {p.verification.slice(0, 4).map((v) => (
+                            <div
+                              key={v.label}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.375rem",
+                                fontFamily: "var(--font-mono)",
+                                fontSize: "0.5625rem",
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
+                                color:
+                                  v.status === "verified"
+                                    ? "var(--verified)"
+                                    : v.status === "failed"
+                                    ? "var(--critical)"
+                                    : "var(--text-tertiary)",
+                              }}
+                            >
+                              <span>{v.status === "verified" ? "✓" : v.status === "failed" ? "✗" : "○"}</span>
+                              {v.label}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {isActive && (
+                        <Link
+                          href={`/work/${p.slug}`}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.625rem",
+                            backgroundColor: "var(--text-primary)",
+                            color: "var(--bg-primary)",
+                            fontWeight: 600,
+                            fontSize: "0.9375rem",
+                            padding: "0.875rem 1.75rem",
+                            borderRadius: "var(--radius-sm)",
+                            transition: "all var(--transition-fast)",
+                            letterSpacing: "0.01em",
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--accent)";
+                            (e.currentTarget as HTMLAnchorElement).style.color = "#000";
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--text-primary)";
+                            (e.currentTarget as HTMLAnchorElement).style.color = "var(--bg-primary)";
+                          }}
+                        >
+                          View Case Study
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -781,6 +761,70 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
             align-items: center;
             overflow-y: auto;
             scrollbar-width: thin;
+          }
+          /* Fixed visual frame: slides crossfade inside, the box never moves */
+          .featured-visual-box {
+            position: relative;
+            aspect-ratio: 16/10;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+          }
+          .featured-visual-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: scale(1.02);
+            visibility: hidden;
+            transition:
+              opacity 500ms ease,
+              transform 600ms ease,
+              visibility 0s linear 500ms;
+            pointer-events: none;
+          }
+          .featured-visual-slide[data-active="true"] {
+            opacity: 1;
+            transform: none;
+            visibility: visible;
+            transition:
+              opacity 500ms ease,
+              transform 600ms ease,
+              visibility 0s;
+            pointer-events: auto;
+          }
+          /* Details stack: height = tallest panel, so the column never jumps */
+          .featured-details-stack {
+            display: grid;
+          }
+          .featured-details-slide {
+            grid-area: 1 / 1;
+            opacity: 0;
+            transform: translateY(14px);
+            visibility: hidden;
+            transition:
+              opacity 450ms ease,
+              transform 450ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              visibility 0s linear 450ms;
+            pointer-events: none;
+          }
+          .featured-details-slide[data-active="true"] {
+            opacity: 1;
+            transform: none;
+            visibility: visible;
+            transition:
+              opacity 450ms ease,
+              transform 450ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              visibility 0s;
+            pointer-events: auto;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .featured-visual-slide,
+            .featured-details-slide {
+              transition: none;
+              transform: none;
+            }
           }
           @media (max-width: 900px) {
             .featured-track {
