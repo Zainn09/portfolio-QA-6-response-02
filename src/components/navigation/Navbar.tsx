@@ -1,24 +1,62 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
+import { MegaMenu } from "./MegaMenu";
 
 const navLinks = [
-  { href: "/work", label: "Work" },
-  { href: "/#expertise", label: "Expertise" },
-  { href: "/about", label: "About" },
-  { href: "/#process", label: "Process" },
-  { href: "/blogs", label: "Blogs" },
-  { href: "/contact", label: "Contact" },
+  { href: "/work", label: "Work", menu: "work" },
+  { href: "/#expertise", label: "Expertise", menu: "expertise" },
+  { href: "/about", label: "About", menu: "about" },
+  { href: "/#process", label: "Process", menu: "process" },
+  { href: "/blogs", label: "Blogs", menu: "blogs" },
+  { href: "/contact", label: "Contact", menu: null },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
+  const openTimer = useRef<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
+
+  const clearMegaTimers = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    openTimer.current = null;
+    closeTimer.current = null;
+  };
+
+  const closeMega = () => {
+    clearMegaTimers();
+    setOpenMenu(null);
+  };
+
+  // Hover intent: slight delay opening, grace period closing — no flicker
+  const scheduleOpen = (menu: string) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+    if (openMenu === menu) return;
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    openTimer.current = window.setTimeout(() => setOpenMenu(menu), 110);
+  };
+
+  const scheduleClose = () => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    openTimer.current = null;
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setOpenMenu(null), 160);
+  };
+
+  const cancelClose = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+  };
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -28,12 +66,27 @@ export function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setOpenMenu(null);
   }, [pathname]);
+
+  useEffect(() => clearMegaTimers, []);
+
+  const solid = scrolled || openMenu !== null;
+
+  const handleNavKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") closeMega();
+  };
+
+  const handleNavBlur = (e: React.FocusEvent) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) closeMega();
+  };
 
   return (
     <>
       <nav
         aria-label="Main navigation"
+        onKeyDown={handleNavKeyDown}
+        onBlur={handleNavBlur}
         style={{
           position: "fixed",
           top: 0,
@@ -41,11 +94,11 @@ export function Navbar() {
           right: 0,
           zIndex: 100,
           height: scrolled ? "60px" : "var(--nav-height)",
-          backgroundColor: scrolled
+          backgroundColor: solid
             ? "rgba(var(--bg-primary-raw, 245,243,237), 0.95)"
             : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+          backdropFilter: solid ? "blur(12px)" : "none",
+          borderBottom: solid ? "1px solid var(--border)" : "1px solid transparent",
           transition: "all var(--transition-base)",
         }}
       >
@@ -98,6 +151,7 @@ export function Navbar() {
           {/* Desktop links */}
           <ul
             role="list"
+            onMouseLeave={scheduleClose}
             style={{
               alignItems: "center",
               gap: "2rem",
@@ -105,23 +159,49 @@ export function Navbar() {
             }}
             className="hidden md:flex"
           >
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="nav-link"
-                  style={{
-                    color:
-                      pathname === link.href
-                        ? "var(--text-primary)"
-                        : "var(--text-secondary)",
-                    fontWeight: pathname === link.href ? 600 : 500,
-                  }}
+            {navLinks.map((link) => {
+              const isOpen = openMenu === link.menu;
+              const isActive = pathname === link.href;
+              return (
+                <li
+                  key={link.href}
+                  onMouseEnter={() => (link.menu ? scheduleOpen(link.menu) : closeMega())}
                 >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    href={link.href}
+                    className="nav-link"
+                    aria-haspopup={link.menu ? "true" : undefined}
+                    aria-expanded={link.menu ? isOpen : undefined}
+                    onFocus={() => (link.menu ? setOpenMenu(link.menu) : closeMega())}
+                    onClick={closeMega}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.3rem",
+                      color:
+                        isActive || isOpen
+                          ? "var(--text-primary)"
+                          : "var(--text-secondary)",
+                      fontWeight: isActive ? 600 : 500,
+                    }}
+                  >
+                    {link.label}
+                    {link.menu && (
+                      <ChevronDown
+                        size={12}
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                        style={{
+                          transition: "transform 200ms ease",
+                          transform: isOpen ? "rotate(180deg)" : "none",
+                          color: isOpen ? "var(--accent)" : "var(--text-tertiary)",
+                        }}
+                      />
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Right side */}
@@ -180,6 +260,12 @@ export function Navbar() {
             </button>
           </div>
         </div>
+        <MegaMenu
+          open={openMenu}
+          onEnterPanel={cancelClose}
+          onLeavePanel={scheduleClose}
+          onNavigate={closeMega}
+        />
       </nav>
 
       <MobileMenu open={menuOpen} links={navLinks} onClose={() => setMenuOpen(false)} />
