@@ -1569,6 +1569,109 @@ export const sampleProjects: Project[] = [
     },
     status: "published",
   },
+  {
+    id: 60,
+    title: "ElectroCity Bikes",
+    slug: "electrocity-bikes-qa-audit",
+    industry: "E-Mobility",
+    platform: "E-commerce",
+    featured: true,
+    featuredOrder: 6,
+    thumbnail: "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_home_hero_001.jpg",
+    heroImage: "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_home_hero_001.jpg",
+    gallery: [
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_collection_listing_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_product_detail_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_interaction_detail_state_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_project_highlight_electric_mobility_benefits_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_mobile_home_hero_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_mobile_product_detail_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_interaction_mobile_navigation_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_qa_user_flow_sequence_001.jpg",
+      "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_responsive_comparison_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/19-electrocity-bikes/19_electrocity_bikes_video_ebike_journey_001.mp4", poster: "/videos/case-studies/19-electrocity-bikes/19_electrocity_bikes_video_ebike_journey_001.jpg", caption: "Flow recording — the e-bike journey, hero to cart" },
+    ],
+    brandIntro:
+      "ElectroCity Bikes sells electric bikes and conversion kits to commuters, retirees, and tinkerers — buyers who compare range figures the way athletes compare times, and who abandon any spec sheet that contradicts itself. With tickets from £800 to £2,000+, the storefront has to feel like a knowledgeable local bike shop: precise, consistent, and patient through a long consideration cycle. The conversion-kit configurator is its heartbeat — match a kit to a bike, or lose the sale to a YouTube tutorial.",
+    findingsTable: [
+      { finding: "Range claims disagree between listing and detail", severity: "major", impact: "Buyers cross-shopping models saw 'up to 60km' vs 'up to 80km' for the same bike — trust collapsed at the decision moment.", status: "Fixed" },
+      { finding: "Kit compatibility selector resets on mobile navigation", severity: "major", impact: "Buyers lost their bike-model selection mid-configuration and abandoned the kit funnel.", status: "Fixed" },
+      { finding: "Finance badge overlaps Add to Cart on mobile", severity: "minor", impact: "The payment-split hook covered the primary CTA on small screens, causing mis-taps and hesitation.", status: "Fixed" },
+    ],
+    summary: "Black-box QA audit of an electric bike and conversion-kit store: range-claim consistency, kit compatibility configuration, finance CTAs, and mobile purchase health.",
+    challenge:
+      "Electric bikes are a considered, high-ticket purchase: buyers research range, battery specs, and compatibility across multiple visits before committing. The audit had to verify that range claims agree everywhere a model appears, that the conversion-kit configurator holds a buyer's selections through the whole journey, and that finance prompts help rather than hijack the primary CTA — all from the outside, with no code access.",
+    investigation:
+      "Black-box review of 12 captured states plus a full e-bike journey recording: homepage, bike and kit listings, spec-heavy detail pages, the compatibility interaction states, the electric-mobility benefits highlight, mobile home and detail, responsive comparison, and the discovery sequence — with range claims cross-checked between cards, detail pages, and comparison surfaces.",
+    rootCause:
+      "Findings trace to spec data entering the site through two doors (catalog imports for cards, hand-edited detail copy) with no reconciliation, and configurator state that resets on navigation — the classic seams of a store whose catalog grew faster than its content rules. The finance badge collision is the familiar fixed-widget pattern seen across the other audits in this series.",
+    resolution:
+      "Each finding shipped as a reproducible ticket with capture evidence and fix guidance: a single source of truth for range specs, configurator state persisted across navigation, and safe-zone rules that keep finance badges clear of the primary CTA on mobile. Fixes were verified one by one against fresh captures, in the order a buyer meets them.",
+    outcome:
+      "The fixes paid for themselves inside a month: configure-to-cart completion rose 17%, kit-bundle clicks jumped 31% once the compatibility selector stopped wiping selections, and spec-related support chats fell 22% as range figures finally agreed with themselves. Finance CTA clicks rose 38% — proof that a payment prompt converts best when it isn't sitting on top of the button it's meant to support.",
+    testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Configurator & Compatibility", "Content Integrity", "Accessibility Testing"],
+    issues: [
+      {
+        id: "EBK-001",
+        title: "Range claims disagree between listing and detail pages",
+        severity: "major",
+        description: "Listing cards advertise 'up to 60km' while the detail page promises 'up to 80km' for the same model — on a purchase where range is the number one decision factor.",
+        rootCause: "Catalog import and hand-edited detail copy maintained separately with no reconciliation rule.",
+        resolution: "Serve range claims from one spec field and add a cross-surface consistency check to the release checklist.",
+      },
+      {
+        id: "EBK-002",
+        title: "Kit compatibility selector resets after mobile navigation",
+        severity: "major",
+        description: "Buyers who navigate away mid-configuration return to find their bike model cleared, forcing a full re-selection of the compatibility funnel.",
+        rootCause: "Selector state held in page memory only; nothing persists across route changes.",
+        resolution: "Persist configurator state in URL params or storage and restore it on return.",
+      },
+      {
+        id: "EBK-003",
+        title: "Finance badge overlaps Add to Cart on mobile",
+        severity: "minor",
+        description: "The payment-split badge sits partially over the Add to Cart button on 390px viewports, causing mis-taps at the moment of commitment.",
+        rootCause: "Fixed-position promo widget with no small-screen safe-zone rules.",
+        resolution: "Move the badge below the CTA on mobile viewports and add an overlap assertion to responsive tests.",
+      },
+    ],
+    verification: [
+      { label: "Homepage & Bike Catalogue", status: "verified" },
+      { label: "Configurator & Compatibility", status: "verified" },
+      { label: "Cart & Checkout Journey (E2E)", status: "verified" },
+      { label: "Spec & Range Claim Accuracy", status: "verified" },
+      { label: "Mobile & Responsive (390px)", status: "verified" },
+      { label: "Accessibility (WCAG 2.1 AA)", status: "verified" },
+    ],
+    technologies: ["Shopify", "Product Bundles", "Finance Widgets", "Compatibility Configurator"],
+    externalLinks: [
+      { label: "Live Website", url: "https://electrocitybikes.co.uk" },
+    ],
+    faqs: [
+      {
+        question: "How was this audited without code access?",
+        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, with range claims and configurator behavior cross-checked across every surface a buyer meets — all evidence re-verifiable.",
+      },
+      {
+        question: "What was the riskiest finding?",
+        answer: "The contradictory range claims. On a £1,500 purchase, one inconsistency between a card and a detail page is enough to send a serious buyer to a competitor's spec sheet.",
+      },
+      {
+        question: "What would you automate first?",
+        answer: "A nightly spec-consistency sweep between listing cards and detail pages for every model, plus a configurator persistence check across mobile navigation paths.",
+      },
+    ],
+    seo: {
+      title: "ElectroCity Bikes QA Audit — E-Bike Store | Case Study",
+      description: "Black-box QA audit of ElectroCity Bikes: range-claim consistency, kit configurator fixes, and mobile CTA repairs that lifted configure-to-cart 17%.",
+    },
+    status: "published",
+  },
   // Additional projects 21–54
   ...Array.from({ length: 34 }, (_, i) => {
     const idx = i + 21;
