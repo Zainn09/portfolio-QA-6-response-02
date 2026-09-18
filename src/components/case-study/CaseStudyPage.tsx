@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
+import { PORTRAIT_EVIDENCE } from "@/data/evidence-aspects";
 import type { Project } from "@/data/projects";
 
 interface Props {
@@ -145,24 +146,17 @@ export function CaseStudyPage({ project, related }: Props) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "5rem", alignItems: "start" }} className="case-content-grid">
           {/* Main column */}
           <div>
-            <Section label="01 — The Challenge" title="What Was Wrong?">
+            <Section label="01 — The Challenge" title={project.headings?.challenge ?? "What Was Wrong?"}>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.challenge}</p>
             </Section>
 
             <Divider />
 
-            <Section label="02 — The Investigation" title="How Was It Discovered?">
+            <Section label="02 — The Investigation" title={project.headings?.investigation ?? "How Was It Discovered?"}>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.investigation}</p>
             </Section>
 
-            {numberedChunks[0].map(({ src, no }) => (
-              <EvidenceFigure
-                key={src}
-                src={src}
-                alt={`${project.title} — ${EVIDENCE_LABELS[0].toLowerCase()} capture`}
-                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[0]}`}
-              />
-            ))}
+            {<EvidenceBlock items={numberedChunks[0]} project={project} label={EVIDENCE_LABELS[0]} />}
 
             {project.videos?.[0] && (
               <EvidenceVideo
@@ -174,23 +168,16 @@ export function CaseStudyPage({ project, related }: Props) {
 
             <Divider />
 
-            <Section label="03 — Root Cause" title="Why Did It Happen?">
+            <Section label="03 — Root Cause" title={project.headings?.rootCause ?? "Why Did It Happen?"}>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.rootCause}</p>
             </Section>
 
-            {numberedChunks[1].map(({ src, no }) => (
-              <EvidenceFigure
-                key={src}
-                src={src}
-                alt={`${project.title} — ${EVIDENCE_LABELS[1].toLowerCase()} capture`}
-                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[1]}`}
-              />
-            ))}
+            {<EvidenceBlock items={numberedChunks[1]} project={project} label={EVIDENCE_LABELS[1]} />}
 
             {project.issues.length > 0 && (
               <>
                 <Divider />
-                <Section label="04 — Issues Discovered" title="What Was Found?">
+                <Section label="04 — Issues Discovered" title={project.headings?.issues ?? "What Was Found?"}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                     {project.issues.map((issue, i) => (
                       <div key={issue.id} style={{ padding: "1.5rem", border: "1px solid var(--border)", borderLeft: `3px solid ${issue.severity === "critical" ? "var(--critical)" : issue.severity === "major" ? "var(--major)" : "var(--minor)"}`, borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
@@ -250,33 +237,19 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {numberedChunks[2].map(({ src, no }) => (
-              <EvidenceFigure
-                key={src}
-                src={src}
-                alt={`${project.title} — ${EVIDENCE_LABELS[2].toLowerCase()} capture`}
-                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[2]}`}
-              />
-            ))}
+            {<EvidenceBlock items={numberedChunks[2]} project={project} label={EVIDENCE_LABELS[2]} />}
 
             <Divider />
 
-            <Section label="05 — The Resolution" title="What Was Fixed?">
+            <Section label="05 — The Resolution" title={project.headings?.resolution ?? "What Was Fixed?"}>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.resolution}</p>
             </Section>
 
-            {numberedChunks[3].map(({ src, no }) => (
-              <EvidenceFigure
-                key={src}
-                src={src}
-                alt={`${project.title} — ${EVIDENCE_LABELS[3].toLowerCase()} capture`}
-                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[3]}`}
-              />
-            ))}
+            {<EvidenceBlock items={numberedChunks[3]} project={project} label={EVIDENCE_LABELS[3]} />}
 
             <Divider />
 
-            <Section label="06 — The Outcome" title="What Changed?">
+            <Section label="06 — The Outcome" title={project.headings?.outcome ?? "What Changed?"}>
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.outcome}</p>
             </Section>
 
@@ -306,14 +279,7 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {numberedChunks[4].map(({ src, no }) => (
-              <EvidenceFigure
-                key={src}
-                src={src}
-                alt={`${project.title} — ${EVIDENCE_LABELS[4].toLowerCase()} capture`}
-                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[4]}`}
-              />
-            ))}
+            {<EvidenceBlock items={numberedChunks[4]} project={project} label={EVIDENCE_LABELS[4]} />}
 
             {project.videos?.slice(1).map((v) => (
               <EvidenceVideo key={v.src} src={v.src} poster={v.poster} caption={v.caption} />
@@ -472,6 +438,65 @@ function EvidenceVideo({ src, poster, caption }: { src: string; poster?: string;
       </figure>
     </Reveal>
   );
+}
+
+function evidenceFile(src: string) {
+  return src.split("/").pop() ?? "";
+}
+
+function EvidenceItem({ src, alt, caption, framed }: { src: string; alt: string; caption: string; framed?: boolean }) {
+  return (
+    <figure style={framed ? { margin: 0, minWidth: 0 } : { margin: 0 }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }}
+      />
+      <figcaption style={{ marginTop: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+function EvidenceBlock({ items, project, label }: { items: { src: string; no: number }[]; project: Project; label: string }) {
+  if (items.length === 0) return null;
+  const blocks: React.ReactNode[] = [];
+  let i = 0;
+  while (i < items.length) {
+    const alt = (no: number) => `${project.title} — ${label.toLowerCase()} capture ${no}`;
+    const cap = (no: number) => `Evidence ${String(no).padStart(2, "0")} — ${label}`;
+    if (PORTRAIT_EVIDENCE.has(evidenceFile(items[i].src))) {
+      const run: { src: string; no: number }[] = [];
+      while (i < items.length && PORTRAIT_EVIDENCE.has(evidenceFile(items[i].src))) run.push(items[i++]);
+      if (run.length === 1) {
+        blocks.push(
+          <Reveal key={run[0].src}>
+            <div style={{ margin: "0 0 3rem", maxWidth: "440px", marginLeft: "auto", marginRight: "auto" }}>
+              <EvidenceItem src={run[0].src} alt={alt(run[0].no)} caption={cap(run[0].no)} />
+            </div>
+          </Reveal>
+        );
+      } else {
+        blocks.push(
+          <Reveal key={run[0].src}>
+            <div style={{ margin: "0 0 3rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", alignItems: "start" }}>
+              {run.map(({ src, no }) => (
+                <EvidenceItem key={src} src={src} alt={alt(no)} caption={cap(no)} framed />
+              ))}
+            </div>
+          </Reveal>
+        );
+      }
+    } else {
+      const it = items[i++];
+      blocks.push(<EvidenceFigure key={it.src} src={it.src} alt={`${project.title} — ${label.toLowerCase()} capture`} caption={cap(it.no)} />);
+    }
+  }
+  return <>{blocks}</>;
 }
 
 function EvidenceFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {

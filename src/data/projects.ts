@@ -30,6 +30,7 @@ export type Project = {
   heroImage: string;
   gallery: string[];
   videos?: { src: string; poster?: string; caption: string }[];
+  headings?: { challenge: string; investigation: string; rootCause: string; issues: string; resolution: string; outcome: string };
   brandIntro?: string;
   highlights?: { label: string; text: string }[];
   findingsTable?: { finding: string; severity: string; impact: string; status: string }[];
