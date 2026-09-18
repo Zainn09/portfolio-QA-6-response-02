@@ -5,10 +5,12 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { PORTRAIT_EVIDENCE } from "@/data/evidence-aspects";
 import type { Project } from "@/data/projects";
+import type { ArticleStub } from "@/data/articles";
 
 interface Props {
   project: Project;
   related: Project[];
+  relatedArticles: ArticleStub[];
 }
 
 function SeverityBadge({ severity }: { severity: "critical" | "major" | "minor" }) {
@@ -34,7 +36,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function CaseStudyPage({ project, related }: Props) {
+export function CaseStudyPage({ project, related, relatedArticles }: Props) {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   let evidenceNo = 0;
   const numberedChunks = distributeEvidence(project.gallery, EVIDENCE_LABELS.length).map((chunk) =>
@@ -383,6 +385,23 @@ export function CaseStudyPage({ project, related }: Props) {
             <Link href="/audit" className="cs-audit-link">Get a Free Audit →</Link>
           </aside>
         </div>
+
+        {/* Related reading */}
+        {relatedArticles.length > 0 && (
+          <div style={{ marginTop: "6rem", paddingTop: "4rem", borderTop: "1px solid var(--border)" }}>
+            <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>Related Reading</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+              {relatedArticles.map((a) => (
+                <Link key={a.slug} href={`/blogs/${a.slug}`} className="cs-related-link">
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)", display: "inline-block", marginBottom: "0.75rem" }}>{a.category}</span>
+                  <h3 style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.375rem" }}>{a.title}</h3>
+                  <p style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{a.excerpt}</p>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)", display: "inline-block", marginTop: "0.5rem" }}>Read article →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Related projects */}
         {related.length > 0 && (
