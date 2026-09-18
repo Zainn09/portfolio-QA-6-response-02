@@ -1059,6 +1059,14 @@ export const sampleProjects: Project[] = [
     platform: "Custom Platform",
     featured: true,
     featuredOrder: 1,
+    headings: {
+      challenge: "The Challenge — Turning Fan Excitement Into Verified Donations",
+      investigation: "How the Sweepstakes Funnel Was Tested, State by State",
+      rootCause: "Why the Bugs Happened",
+      issues: "What We Caught: 4 Confirmed Defects on the Entry Path",
+      resolution: "The Fixes — Overlay Rules, Honest Deadlines, Safe Entries",
+      outcome: "CRO Results: +18% Entry Completion, +31% Donation Clicks",
+    },
     thumbnail: "/images/case-studies/01-fandiem/01_fandiem_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/01-fandiem/01_fandiem_desktop_home_hero_001.jpg",
     gallery: [
@@ -1167,6 +1175,14 @@ export const sampleProjects: Project[] = [
     platform: "B2B Commerce",
     featured: true,
     featuredOrder: 2,
+    headings: {
+      challenge: "The Challenge",
+      investigation: "Auditing the Configurator-to-Quote Funnel",
+      rootCause: "Root Cause: Widgets vs. Conversion Surfaces",
+      issues: "3 Defects on the Money Path",
+      resolution: "What Was Fixed",
+      outcome: "CRO Boosted: +22% Quote Completion",
+    },
     thumbnail: "/images/case-studies/03-kcaps/03_kcaps_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/03-kcaps/03_kcaps_desktop_home_hero_001.jpg",
     gallery: [
@@ -1371,6 +1387,14 @@ export const sampleProjects: Project[] = [
     platform: "E-commerce",
     featured: true,
     featuredOrder: 4,
+    headings: {
+      challenge: "The Challenge: Allergen-Safe E-commerce",
+      investigation: "13 States, One Journey Recording, Zero Guesswork",
+      rootCause: "Root Cause",
+      issues: "What We Caught",
+      resolution: "The Fix List: Variants, Navigation, Trust",
+      outcome: "+21% Add-to-Cart After the Fixes",
+    },
     thumbnail: "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_home_hero_001.jpg",
     gallery: [
@@ -1476,6 +1500,14 @@ export const sampleProjects: Project[] = [
     platform: "Bookings & Courses",
     featured: true,
     featuredOrder: 5,
+    headings: {
+      challenge: "The Challenge — Bookings That Leak Students",
+      investigation: "How the Workshop Enquiry Flow Was Tested",
+      rootCause: "Why Enquiries Died",
+      issues: "3 Confirmed Defects",
+      resolution: "The Fixes",
+      outcome: "+27% Enquiry Completion — The Results",
+    },
     thumbnail: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_home_hero_001.jpg",
     gallery: [
@@ -1578,6 +1610,14 @@ export const sampleProjects: Project[] = [
     platform: "E-commerce",
     featured: true,
     featuredOrder: 6,
+    headings: {
+      challenge: "The Challenge: High-Ticket E-commerce Trust",
+      investigation: "12 Captured States, Cross-Checked Specs",
+      rootCause: "Root Cause: Two Doors for One Spec",
+      issues: "Key Findings on the Buyer Path",
+      resolution: "What Was Fixed",
+      outcome: "CRO Boosted: +17% Configure-to-Cart",
+    },
     thumbnail: "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/19-electrocity-bikes/19_electrocity_bikes_desktop_home_hero_001.jpg",
     gallery: [
