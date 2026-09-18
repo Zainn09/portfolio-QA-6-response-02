@@ -123,13 +123,25 @@ function Blocks({ body }: { body: ArticleBlock[] }) {
             );
           case "image":
             return (
-              <figure key={i} style={{ margin: "2.25rem 0" }}>
+              <figure key={i} style={{ margin: "2.25rem 0", ...(b.narrow ? { maxWidth: "340px", marginLeft: "auto", marginRight: "auto" } : {}) }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={b.src} alt={b.alt} loading="lazy" decoding="async" style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }} />
                 {(b.caption || b.alt) && (
                   <figcaption style={{ marginTop: "0.625rem", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>{b.caption ?? b.alt}</figcaption>
                 )}
               </figure>
+            );
+          case "imagePair":
+            return (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "0.75rem", margin: "2.25rem 0" }}>
+                {b.items.map((it, j) => (
+                  <figure key={j} style={{ margin: 0 }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={it.src} alt={it.alt} loading="lazy" decoding="async" style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }} />
+                    <figcaption style={{ marginTop: "0.5rem", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>{it.alt}</figcaption>
+                  </figure>
+                ))}
+              </div>
             );
           case "links":
             return (

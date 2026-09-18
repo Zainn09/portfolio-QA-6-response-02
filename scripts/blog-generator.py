@@ -292,6 +292,41 @@ def _field_note(c, key):
     }
     return {"type":"p","text":fill_text(notes[key], c)}
 
+def _is_mobile(u):
+    return "mobile" in (u or "").lower()
+
+def _mobile_alt(u, p):
+    import re as _re
+    label = "capture"
+    m = _re.search(r"mobile[_-]([a-z_-]+?)_\d+\.(?:jpg|jpeg|png|webp)", (u or "").lower())
+    if m:
+        label = m.group(1).replace("_", " ").strip()
+    return f"{p['title']} — mobile view, {label}"
+
+def pair_mobile_images(blocks, c, p, hero):
+    """Mobile captures never stand alone: pair each into a 2-up grid block."""
+    pool = [u for u in (p['gallery'] or []) if _is_mobile(u) and u != hero]
+    used = {b.get("src") for b in blocks if b.get("type") == "image"}
+    pool = [u for u in pool if u not in used]
+    out = []
+    for b in blocks:
+        if b.get("type") == "image" and _is_mobile(b.get("src")):
+            partner = next((u for u in pool if u not in used), None)
+            if partner:
+                used.add(partner)
+                out.append({"type": "imagePair", "items": [
+                    {"src": b["src"], "alt": b.get("alt") or _mobile_alt(b["src"], p)},
+                    {"src": partner, "alt": _mobile_alt(partner, p)},
+                ]})
+            else:
+                b = dict(b)
+                b["narrow"] = True  # only one mobile capture in this gallery — render phone-width
+                out.append(b)
+        else:
+            out.append(b)
+    return out
+
+
 def inject_stories(blocks, c, ptype, art_id, p):
     """Append work-story sections before the CTA; returns (blocks, source_ref)."""
     k1 = STORY_ORDER[art_id % len(STORY_ORDER)]
@@ -1385,8 +1420,23 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     s = json.dumps(blocks, ensure_ascii=False)
     s = s.replace('{CASE}', f"/work/{p['slug']}")
     blocks = fill_blocks(json.loads(s), c)
+    # hero rotation over LANDSCAPE captures only — mobile portraits never become covers
+    gal = p['gallery'] or [p['hero']]
+    gal_d = [u for u in gal if not _is_mobile(u)] or gal
+    used = _hero_used.setdefault(p['slug'], [])
+    h_idx = aid % len(gal_d)
+    for k in range(len(gal_d)):
+        cand = gal_d[(h_idx + k) % len(gal_d)]
+        if cand not in used:
+            h_idx = (h_idx + k) % len(gal_d)
+            break
+    used.append(gal_d[h_idx])
+    hero = gal_d[h_idx]
+    pos = gal.index(hero)
+    c['img'] = gal[pos + 1:] + gal[:pos + 1]
     blocks, story_ref = inject_stories(blocks, c, ptype, aid, p)
-    words = sum(len(re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', (b.get('text') or '') + ' '.join(b.get('items', []))).split()) for b in blocks)
+    blocks = pair_mobile_images(blocks, c, p, hero)
+    words = sum(len(re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', (b.get('text') or '') + ' '.join(x for x in b.get('items', []) if isinstance(x, str))).split()) for b in blocks)
     rt = max(3, round(words / 200))
     article_word_count = words
     faqs = bp['faq'](c) if callable(bp['faq']) else bp['faq']
@@ -1394,19 +1444,6 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
              "answer": fill_text(f.get('answer') or f.get('a'), c)} for f in faqs]
     meta_title = cap_words(title, 57, "…") if len(title) > 60 else title
     meta_desc = cap_words(lex_fill(fmt(bp['excerpt'], p), p), 155, "…")
-    # hero rotation: consecutive articles of one project get different covers;
-    # the inline image pool starts AFTER the hero so no article repeats its own cover
-    gal = p['gallery'] or [p['hero']]
-    used = _hero_used.setdefault(p['slug'], [])
-    h_idx = aid % len(gal)
-    for k in range(len(gal)):
-        cand = gal[(h_idx + k) % len(gal)]
-        if cand not in used:
-            h_idx = (h_idx + k) % len(gal)
-            break
-    used.append(gal[h_idx])
-    c['img'] = gal[h_idx + 1:] + gal[:h_idx + 1]
-    hero = gal[h_idx]
     bp_sources = bp.get('sources') or []
     own_sources = [EXT[story_ref]] if EXT.get(story_ref) else ([] if bp_sources else [EXT["strategy"]])
     return {
@@ -1483,6 +1520,13 @@ print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup
 if _wc[0] < 950:
     _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 950]
     raise SystemExit(f"ARTICLES UNDER 950 WORDS: {_short[:10]}")
+_mobile_heroes = [a['slug'] for a in ARTICLES if _is_mobile(a['heroImage'])]
+if _mobile_heroes:
+    raise SystemExit(f"MOBILE HEROES: {_mobile_heroes[:10]}")
+_singles = [a['slug'] for a in ARTICLES for b in a['body']
+            if b.get('type') == 'image' and _is_mobile(b.get('src')) and not b.get('narrow')]
+if _singles:
+    raise SystemExit(f"UNPAIRED MOBILE IMAGES: {_singles[:10]}")
 if _leftovers:
     raise SystemExit(f"LEFTOVER TOKENS: {_leftovers[:10]}")
 print("types:", {t: sum(1 for a in ARTICLES if a['articleType']==t) for t in ('insight','guide','case-study')})
@@ -1507,7 +1551,8 @@ export type ArticleBlock =
   | { type: "checklist"; title?: string; items: string[] }
   | { type: "quote"; text: string; cite?: string }
   | { type: "callout"; title: string; text: string }
-  | { type: "image"; src: string; alt: string; caption?: string; full?: boolean }
+  | { type: "image"; src: string; alt: string; caption?: string; full?: boolean; narrow?: boolean }
+  | { type: "imagePair"; items: { src: string; alt: string }[] }
   | { type: "links"; title: string; items: { text: string; href: string }[] }
   | { type: "metrics"; items: { label: string; value: string }[] }
   | { type: "html"; html: string }
