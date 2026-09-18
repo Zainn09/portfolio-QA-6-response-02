@@ -10760,8 +10760,8 @@ export const sampleProjects: Project[] = [
     slug: "tmi-products-qa-audit",
     industry: "Art & Prints",
     platform: "E-commerce",
-    featured: false,
-    featuredOrder: 0,
+    featured: true,
+    featuredOrder: 10,
     thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-10/92-tmi-products/images/92_tmi_products_desktop_restomod_brand_identity_001.jpg",
     heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-10/92-tmi-products/images/92_tmi_products_desktop_restomod_brand_identity_001.jpg",
     gallery: [
