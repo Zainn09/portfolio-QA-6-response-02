@@ -412,15 +412,41 @@ const EVIDENCE_LABELS = [
 ];
 
 function distributeEvidence(items: string[], buckets: number): string[][] {
-  const out: string[][] = Array.from({ length: buckets }, () => []);
-  const base = Math.floor(items.length / buckets);
-  let rem = items.length % buckets;
-  let idx = 0;
-  for (let b = 0; b < buckets; b++) {
-    const take = base + (rem-- > 0 ? 1 : 0);
-    for (let k = 0; k < take; k++) out[b].push(items[idx++]);
+  // Group captures into atomic units first: consecutive tall (portrait) mobile
+  // captures pair up, everything else stands alone — so a pair never splits.
+  const isPortrait = (x: string) => PORTRAIT_EVIDENCE.has(evidenceFile(x));
+  const units: string[][] = [];
+  let i = 0;
+  while (i < items.length) {
+    const unit = [items[i++]];
+    if (isPortrait(unit[0]) && i < items.length && isPortrait(items[i])) unit.push(items[i++]);
+    units.push(unit);
   }
-  return out;
+  // Fill buckets with whole units, keeping sizes balanced.
+  const target = Math.ceil(items.length / buckets);
+  const bucketUnits: string[][][] = Array.from({ length: buckets }, () => []);
+  const counts = new Array(buckets).fill(0);
+  let bi = 0;
+  for (const unit of units) {
+    while (bi < buckets - 1 && counts[bi] > 0 && counts[bi] + unit.length > target) bi++;
+    bucketUnits[bi].push(unit);
+    counts[bi] += unit.length;
+  }
+  // If a bucket ends with a lone portrait and the next starts with one, join
+  // them into a side-by-side pair — no mobile screenshot scrolls alone.
+  for (let b = 0; b < buckets - 1; b++) {
+    const bu = bucketUnits[b];
+    const nxt = bucketUnits[b + 1];
+    if (bu.length && nxt.length) {
+      const last = bu[bu.length - 1];
+      const first = nxt[0];
+      if (last.length === 1 && first.length === 1 && isPortrait(last[0]) && isPortrait(first[0])) {
+        last.push(first[0]);
+        nxt.shift();
+      }
+    }
+  }
+  return bucketUnits.map((bu) => bu.flat());
 }
 
 function EvidenceVideo({ src, poster, caption }: { src: string; poster?: string; caption: string }) {
