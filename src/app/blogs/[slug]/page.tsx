@@ -195,7 +195,7 @@ function ArticleCard({ stub }: { stub: ReturnType<typeof stubOf> }) {
         <p style={{ fontSize: "0.875rem", lineHeight: 1.6, color: "var(--text-secondary)", margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{stub.excerpt}</p>
         <div style={{ marginTop: "auto", paddingTop: "0.75rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{fmtDate(stub.publishedAt)} · {stub.readingTime} min</span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)" }}>Read Article →</span>
+          <span className="read-btn" style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)", border: "1px solid var(--accent)", borderRadius: "9999px", padding: "0.3125rem 0.75rem" }}>Read Article →</span>
         </div>
       </div>
     </Link>
@@ -244,7 +244,7 @@ export default async function ArticlePage({ params }: Props) {
   };
 
   return (
-    <article style={{ paddingTop: "2.5rem" }}>
+    <article style={{ paddingTop: "calc(var(--nav-height) + 2.5rem)" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}

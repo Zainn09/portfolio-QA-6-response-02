@@ -36,7 +36,9 @@ export default async function BlogsPage({ searchParams }: Props) {
   const validCategory = category && ARTICLE_CATEGORIES.includes(category as (typeof ARTICLE_CATEGORIES)[number]) ? category : undefined;
   const sortKey = SORTS.includes((sort ?? "") as (typeof SORTS)[number]) ? (sort as (typeof SORTS)[number]) : "newest";
 
+  const featured = articles.find((a) => a.featured);
   let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
+  if (featured && !q?.trim()) list = list.filter((a) => a.slug !== featured.slug);
   if (validCategory) list = list.filter((a) => a.category === validCategory);
   if (sortKey === "oldest") list = [...list].reverse();
   if (sortKey === "az") list = [...list].sort((x, y) => x.title.localeCompare(y.title));
@@ -44,14 +46,14 @@ export default async function BlogsPage({ searchParams }: Props) {
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const pageItems = list.slice(0, PAGE_SIZE);
   const filtered = Boolean((q && q.trim()) || validCategory);
-  const featured = articles.find((a) => a.featured);
+  const totalCount = (q && q.trim() ? list.length : list.length + (featured && !validCategory ? 1 : 0));
 
   return (
-    <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "5rem" }}>
+    <div className="container" style={{ paddingTop: "calc(var(--nav-height) + 3rem)", paddingBottom: "5rem" }}>
       {/* Masthead */}
       <header style={{ marginBottom: "2.5rem" }}>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, marginBottom: "0.75rem" }}>
-          {list.length} articles · {ARTICLE_CATEGORIES.length} topics · updated weekly
+          {totalCount} articles · {ARTICLE_CATEGORIES.length} topics · updated weekly
         </p>
         <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.25rem)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.1, color: "var(--text-primary)", margin: "0 0 1rem", maxWidth: "52rem" }}>
           The field notes of a store QA specialist

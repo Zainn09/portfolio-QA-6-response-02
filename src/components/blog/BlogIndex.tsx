@@ -34,7 +34,7 @@ export function IndexCard({ a }: { a: ArticleStub }) {
         <p style={{ fontSize: "0.875rem", lineHeight: 1.6, color: "var(--text-secondary)", margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{a.excerpt}</p>
         <div style={{ marginTop: "auto", paddingTop: "0.75rem", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{fmtDate(a.publishedAt)} · {a.readingTime} min</span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)" }}>Read →</span>
+          <span className="read-btn" style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)", border: "1px solid var(--accent)", borderRadius: "9999px", padding: "0.3125rem 0.75rem" }}>Read →</span>
         </div>
       </div>
     </Link>
@@ -57,7 +57,7 @@ export function FeaturedCard({ a }: { a: ArticleStub }) {
         </div>
         <h2 style={{ fontSize: "clamp(1.375rem, 2.5vw, 1.875rem)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.2, color: "var(--text-primary)", margin: 0 }}>{a.title}</h2>
         <p style={{ fontSize: "1rem", lineHeight: 1.7, color: "var(--text-secondary)", margin: 0, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{a.excerpt}</p>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)" }}>Read the article →</span>
+        <span className="read-btn" style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)", border: "1px solid var(--accent)", borderRadius: "9999px", padding: "0.375rem 0.875rem", alignSelf: "flex-start" }}>Read the article →</span>
       </div>
     </Link>
   );

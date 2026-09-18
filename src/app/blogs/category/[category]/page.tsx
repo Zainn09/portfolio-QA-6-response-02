@@ -44,7 +44,7 @@ export default async function CategoryPage({ params }: Props) {
   const copy = CLUSTER_COPY[name]?.deck ?? `All ${name} articles.`;
 
   return (
-    <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "5rem" }}>
+    <div className="container" style={{ paddingTop: "calc(var(--nav-height) + 3rem)", paddingBottom: "5rem" }}>
       <header style={{ marginBottom: "2.5rem" }}>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, marginBottom: "0.75rem" }}>
           Topic cluster · {list.length} articles
