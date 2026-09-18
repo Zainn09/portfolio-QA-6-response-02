@@ -1489,7 +1489,7 @@ export const sampleProjects: Project[] = [
       "/images/case-studies/17-london-flower-academy/17_london_flower_academy_responsive_comparison_001.jpg",
     ],
     videos: [
-      { src: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.mp4", poster: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.jpg", caption: "Flow recording — the workshop journey, hero to enquiry" },
+      { src: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.mp4", poster: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.jpg", caption: "Flow recording — the workshop journey, hero to enquiry" },
     ],
     brandIntro:
       "London Flower Academy turns a love of flowers into a craft — professional floral design workshops where a single booking is the start of a career change. The website is the academy's front door: class listings, workshop detail pages, and an enquiry flow that has to feel as considered as the arrangements on the hero banner. When the enquiry flow leaks, the academy doesn't just lose a booking; it loses a student's momentum at the exact moment they decided to invest in themselves.",
