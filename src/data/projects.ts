@@ -1727,8 +1727,8 @@ export const sampleProjects: Project[] = [
     slug: "revived-smiles-qa-audit",
     industry: "Dental & Health",
     platform: "E-commerce",
-    featured: false,
-    featuredOrder: 0,
+    featured: true,
+    featuredOrder: 7,
     thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/02-revived-smiles/images/02_revived_smiles_desktop_home_hero_001.jpg",
     heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/02-revived-smiles/images/02_revived_smiles_desktop_home_hero_001.jpg",
     gallery: [
