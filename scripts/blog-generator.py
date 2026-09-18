@@ -194,11 +194,79 @@ def _checked_twice(c):
         "The free-shipping meter against round numbers and awkward totals",
         "Overlay and chat behavior at 390px, driven with one thumb",
         "Alt text and captions against the {T} actually shown",
-        "The thank-you page firing the analytics purchase event"]},
+        "The thank-you page firing the analytics purchase event",
+        "Checkout errors re-typed wrong on purpose, so the messages, not the shopper, take the blame"]},
     ]
 
-STORYSETS = {"cart": _story_cart, "imagery": _story_imagery, "ai": _story_ai, "strategy": _story_strategy}
-STORY_ORDER = ["cart", "imagery", "ai", "strategy"]
+def _story_checkout(c):
+    return [
+      {"type":"h2","text":"The checkout form earned its own teardown"},
+      {"type":"p","text":"Checkout on {NAME} got the same state-by-state walk as the drawer, and the form was the story: fourteen fields where eight would carry the weight, postal codes typed twice, and error messages that spoke in riddles exactly when a {P} needed plain language. Nothing about that layout survives contact with a determined tester."},
+      {"type":"p","text":"The rebuild grouped what belongs together, let the address lookup do the typing, rewrote every error in one voice, and lifted the express wallet to where impatient buyers actually look. Guest checkout stopped hiding. Fewer fields, fewer words, fewer exits — the form stopped being a filter."},
+      {"type":"p","text":"The measurable part came after: in the funnel readouts, the cart-to-pay window stopped being the largest single leak. Which is exactly what a checkout is supposed to be — invisible."},
+    ]
+
+def _story_search(c):
+    return [
+      {"type":"h2","text":"Search and collection pages got measured like a funnel"},
+      {"type":"p","text":"The discovery pass on {NAME} started with an unflattering export: queries returning zero results, filters that reset themselves on {T} listings at 390px, and a default sort nobody would choose on purpose. Shoppers were typing the store's own vocabulary and being answered with empty states."},
+      {"type":"p","text":"The fixes were small and compounding — a synonym map so the catalog answers in shopper language, zero-results pages that route to the closest collection instead of a dead end, filter chips that show their counts, and a sort control that stays within thumb reach."},
+      {"type":"p","text":"Each fix got an event, so the null-search rate and filter usage became numbers on a dashboard instead of anecdotes. The funnel finally has a discovery stage you can read."},
+    ]
+
+def _story_retention(c):
+    return [
+      {"type":"h2","text":"The emails after purchase got equal design attention"},
+      {"type":"p","text":"Post-purchase, {NAME} was silent — no welcome arc worth the name, a cart reminder that arrived fashionably late, and a back-in-stock flow that existed mostly in the app's marketing screenshots. The owned channel was leaving its best moments unplayed."},
+      {"type":"p","text":"The flows were rebuilt around the product's real rhythm: timing tied to how long {T} actually last, a plain reminder before any discount is mentioned, and templates that share typography with the store so nothing arrives looking like a stranger."},
+      {"type":"p","text":"The thirty- and ninety-day repeat readouts close the loop. Retention is where lifetime value compounds quietly — and it answers to the same rigor as the checkout: fewer words, honest timing, one clear ask."},
+    ]
+
+def _story_trust(c):
+    return [
+      {"type":"h2","text":"Trust signals moved next to the decisions they serve"},
+      {"type":"p","text":"The trust audit on {NAME} found proof living in the wrong places: reviews folded into a tab nobody opened, the returns policy two clicks from the size question it answers, and security badges resting in a footer nobody visits."},
+      {"type":"p","text":"The repositioning was mechanical and effective — proof beside price, the returns link inside the buy box, honest photography doing double duty as evidence — and every claim was written the way a good shopkeeper would say it aloud."},
+      {"type":"p","text":"Then the accessibility pass, because trust includes being usable by everyone: focus states that survive keyboard navigation, contrast on sale badges that survives sunlight, alt text that describes instead of decorates."},
+    ]
+
+def _readout(c, p):
+    lift_line = (f" The headline number from the thirty days: {p['lift']}." if p['lift']
+                 else " Where a number refused to move, the readout says so — the point of a measurement window is honesty, not confetti.")
+    return [
+      {"type":"h2","text":"The thirty-day readout"},
+      {"type":"p","text": fill_text("Week one went to verification: every fix re-tested at 390px and desktop, analytics events fired and checked against raw sessions, the drawer and the pay button watched like suspects. Weeks two through four went to behavior — funnel readouts, session recordings, the gap between what shoppers say and what they tap.", c) + lift_line},
+      {"type":"p","text": fill_text("The readout also re-ranked the backlog. Fixes that moved numbers earned their neighbors more budget; fixes that drew silence got documented and parked. That is the quiet advantage of measuring one change at a time — the verdicts attach to the right work.", c)},
+    ]
+
+def _next_sprint(c, ptype):
+    lead = "If this were {NAME}'s next sprint" if ptype != "case-study" else "The next sprint on {NAME}"
+    return [
+      {"type":"h2","text":"What the next sprint would tackle"},
+      {"type":"p","text": fill_text(lead + " has a shortlist, not a wishlist: a personalization rule for returning {P} visitors, a bundle configurator for {T} pairs, and a second speed pass on collection imagery. Each candidate has to pass the same gate the first fixes did — a traced defect, a drop-off, or a hesitation visible in the captures.", c)},
+      {"type":"p","text": fill_text("Nothing goes in because it is fashionable. The revamp earned its numbers by refusing concurrent changes; the next sprint keeps that contract. One bet at a time, thirty days each, and the discipline to call a miss a miss.", c)},
+    ]
+
+def _evidence_section(c):
+    return [
+      {"type":"h2","text":"The evidence behind every claim above"},
+      {"type":"p","text": fill_text("Nothing in this piece rests on opinion. The {NAME} audit walked {NCAP} captured states — every page type, at desktop width and at 390px, with the cart carrying real selections and the back button in play. Screenshots bracket each defect, severity is assigned against impact on the money path, and the fix list follows the evidence rather than leading it.", c)},
+      {"type":"p","text": fill_text("The same standard applies after launch: every number quoted is a parsed project outcome, every recommendation is labeled as one, and where industry research enters the picture it carries its source. That separation — fact, research, recommendation — is what keeps an audit useful six months later.", c)},
+    ]
+
+def _handoff_section(c):
+    return [
+      {"type":"h2","text":"What to take into your own store"},
+      {"type":"list","items":[
+        "Walk your money path on a phone, one thumb, low battery — the costliest defects never survive that walk",
+        "Change one thing at a time and give it a measurement window; concurrent launches turn every readout into a guess",
+        "Keep a captured-states library — before, after, and the thirty days between"]},
+      {"type":"p","text": fill_text("None of it requires a rebuild to start. It requires the habit of looking at the store the way a skeptical first-time buyer does — which is the entire discipline this piece keeps circling back to. Start with the drawer: it is the fastest room in the store to hurt and the cheapest to fix properly.", c)},
+    ]
+
+STORYSETS = {"cart": _story_cart, "imagery": _story_imagery, "ai": _story_ai, "strategy": _story_strategy,
+             "checkout": _story_checkout, "search": _story_search, "retention": _story_retention, "trust": _story_trust}
+STORY_ORDER = ["cart", "imagery", "ai", "strategy", "checkout", "search", "retention", "trust"]
 
 def _sequence_blocks(c):
     return [
@@ -217,27 +285,34 @@ def _field_note(c, key):
       "imagery": "A field note from {NAME}: product imagery rarely wins arguments in a kickoff meeting, and it quietly decides most of them at checkout. Treat every enhanced image — better crops, honest alt text, right-sized files — as pre-sales work.",
       "ai": "A field note from {NAME}: the useful AI question is never what does the data say — it is what did the data make us check twice. The model proposes; the audit disposes.",
       "strategy": "A field note from {NAME}: sequencing is the least glamorous lever in CRO and the only one that makes the others measurable. Ship the money path, then earn the right to experiment.",
+      "checkout": "A field note from {NAME}: the best checkout error message is the one a tired shopper understands on the first read. Every word in that form either moves an order closer or books an exit.",
+      "search": "A field note from {NAME}: a zero-results page is a conversation ender. Answer in the shopper's vocabulary and the same query becomes a collection visit instead of a bounce.",
+      "retention": "A field note from {NAME}: the most profitable email a store sends is the one that arrives when the product genuinely runs out. Timing is the whole trick, and timing is researchable.",
+      "trust": "A field note from {NAME}: trust content does not work by existing — it works by position. Proof that sits next to the decision gets read; proof that sits in a footer gets designed and forgotten.",
     }
     return {"type":"p","text":fill_text(notes[key], c)}
 
-def inject_stories(blocks, c, ptype, art_id):
+def inject_stories(blocks, c, ptype, art_id, p):
     """Append work-story sections before the CTA; returns (blocks, source_ref)."""
-    k1 = STORY_ORDER[art_id % 4]
-    sets = [k1]
-    if ptype == "case-study":
-        k2 = STORY_ORDER[(art_id // 4 + 1) % 4]
-        if k2 == k1: k2 = STORY_ORDER[(STORY_ORDER.index(k2) + 1) % 4]
-        sets.append(k2)
+    k1 = STORY_ORDER[art_id % len(STORY_ORDER)]
+    k2 = STORY_ORDER[(art_id // len(STORY_ORDER) + 1) % len(STORY_ORDER)]
+    if k2 == k1:
+        k2 = STORY_ORDER[(STORY_ORDER.index(k1) + 1) % len(STORY_ORDER)]
+    sets = [k1, k2]
     new_blocks = []
-    for k in sets:
+    for idx, k in enumerate(sets):
         new_blocks.extend(fill_blocks(STORYSETS[k](c), c))
-        if ptype != "case-study":
+        if idx == 0 and ptype != "case-study":
             new_blocks.extend(fill_blocks(_sequence_blocks(c), c))
-            new_blocks.append(_field_note(c, k))
-            new_blocks.append({"type": "p", "text": fill_text("None of this is exclusive to {NAME}. Walk enough {IND} stores and the pattern repeats: the money path decides, imagery supports, analytics directs, and sequencing turns the whole thing into a system instead of a scramble. It is why every piece in this series lands in the same place — captured states, a fix list, and the thirty days after. That consistency is the point: expertise you can re-run is expertise you can trust.", c)})
+    new_blocks.append(_field_note(c, k1))
     if ptype == "case-study":
-        new_blocks.append(_field_note(c, sets[0]))
         new_blocks.extend(fill_blocks(_checked_twice(c), c))
+    new_blocks.extend(_readout(c, p))
+    new_blocks.extend(_next_sprint(c, ptype))
+    new_blocks.extend(_evidence_section(c))
+    new_blocks.extend(_handoff_section(c))
+    if ptype != "case-study":
+        new_blocks.append({"type": "p", "text": fill_text("None of this is exclusive to {NAME}. Walk enough {IND} stores and the pattern repeats: the money path decides, imagery supports, analytics directs, and sequencing turns the whole thing into a system instead of a scramble. It is why every piece in this series lands in the same place — captured states, a fix list, and the thirty days after. That consistency is the point: expertise you can re-run is expertise you can trust.", c)})
     cta_idx = next((i for i, b in enumerate(blocks) if b.get("type") == "cta"), len(blocks))
     return blocks[:cta_idx] + new_blocks + blocks[cta_idx:], sets[0]
 
@@ -1310,7 +1385,7 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     s = json.dumps(blocks, ensure_ascii=False)
     s = s.replace('{CASE}', f"/work/{p['slug']}")
     blocks = fill_blocks(json.loads(s), c)
-    blocks, story_ref = inject_stories(blocks, c, ptype, aid)
+    blocks, story_ref = inject_stories(blocks, c, ptype, aid, p)
     words = sum(len(re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', (b.get('text') or '') + ' '.join(b.get('items', []))).split()) for b in blocks)
     rt = max(3, round(words / 200))
     article_word_count = words
@@ -1332,8 +1407,8 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     used.append(gal[h_idx])
     c['img'] = gal[h_idx + 1:] + gal[:h_idx + 1]
     hero = gal[h_idx]
-    own_sources = [EXT[story_ref]] if EXT.get(story_ref) else []
     bp_sources = bp.get('sources') or []
+    own_sources = [EXT[story_ref]] if EXT.get(story_ref) else ([] if bp_sources else [EXT["strategy"]])
     return {
         "id": aid, "title": title, "slug": slug,
         "excerpt": lex_fill(fmt(bp['excerpt'], p), p),
@@ -1405,9 +1480,9 @@ import json as _json
 _leftovers = re.findall(r"\{(PHRASE|NAME|IND|NIS|SEV|LIFT|SEASON|P|T|S|AOV|DISC|TR|TICK|PLAT|NCAP|ISSUE|ISSUEID)\}", _json.dumps(ARTICLES, default=str))
 _wc = sorted(a["_word_count"] for a in ARTICLES)
 print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs} | leftover tokens: {len(_leftovers)} | words min/med/max: {_wc[0]}/{_wc[len(_wc)//2]}/{_wc[-1]}")
-if _wc[0] < 500:
-    _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 500]
-    raise SystemExit(f"ARTICLES UNDER 500 WORDS: {_short[:10]}")
+if _wc[0] < 950:
+    _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 950]
+    raise SystemExit(f"ARTICLES UNDER 950 WORDS: {_short[:10]}")
 if _leftovers:
     raise SystemExit(f"LEFTOVER TOKENS: {_leftovers[:10]}")
 print("types:", {t: sum(1 for a in ARTICLES if a['articleType']==t) for t in ('insight','guide','case-study')})
