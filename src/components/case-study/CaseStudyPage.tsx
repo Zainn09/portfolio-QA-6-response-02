@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/data/projects";
 
@@ -96,23 +95,12 @@ export function CaseStudyPage({ project, related }: Props) {
 
       {/* Hero evidence capture (real audits only — samples have no gallery) */}
       {project.gallery.length > 0 && (
-        <div className="container" style={{ paddingTop: "3rem" }}>
-          <Reveal>
-            <figure style={{ margin: 0 }}>
-              <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }}>
-                <Image
-                  src={project.heroImage}
-                  alt={`${project.title} — homepage capture from the audit evidence set`}
-                  fill
-                  style={{ objectFit: "cover", objectPosition: "top" }}
-                  sizes="(max-width: 900px) 100vw, 1100px"
-                />
-              </div>
-              <figcaption style={{ marginTop: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>
-                Homepage capture — annotated evidence gallery below
-              </figcaption>
-            </figure>
-          </Reveal>
+        <div className="container" style={{ paddingTop: "3rem", paddingBottom: "1rem" }}>
+          <EvidenceFigure
+            src={project.heroImage}
+            alt={`${project.title} — homepage capture from the audit evidence set`}
+            caption="Homepage capture — the audit starting point"
+          />
         </div>
       )}
 
@@ -131,11 +119,27 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.investigation}</p>
             </Section>
 
+            {project.gallery[0] && (
+              <EvidenceFigure
+                src={project.gallery[0]}
+                alt={`${project.title} — catalogue and discovery capture`}
+                caption="Evidence 01 — Catalogue & discovery"
+              />
+            )}
+
             <Divider />
 
             <Section label="03 — Root Cause" title="Why Did It Happen?">
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.rootCause}</p>
             </Section>
+
+            {project.gallery[1] && (
+              <EvidenceFigure
+                src={project.gallery[1]}
+                alt={`${project.title} — detail and configuration capture`}
+                caption="Evidence 02 — Detail & configuration"
+              />
+            )}
 
             {project.issues.length > 0 && (
               <>
@@ -169,11 +173,27 @@ export function CaseStudyPage({ project, related }: Props) {
               </>
             )}
 
+            {project.gallery[2] && (
+              <EvidenceFigure
+                src={project.gallery[2]}
+                alt={`${project.title} — signature experience capture`}
+                caption="Evidence 03 — Signature experience"
+              />
+            )}
+
             <Divider />
 
             <Section label="05 — The Resolution" title="What Was Fixed?">
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.resolution}</p>
             </Section>
+
+            {project.gallery[3] && (
+              <EvidenceFigure
+                src={project.gallery[3]}
+                alt={`${project.title} — responsive behavior capture`}
+                caption="Evidence 04 — Responsive behavior"
+              />
+            )}
 
             <Divider />
 
@@ -181,30 +201,12 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.outcome}</p>
             </Section>
 
-            {project.gallery.length > 0 && (
-              <>
-                <Divider />
-                <Section label="Evidence Captures" title="What Does the Evidence Show?">
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
-                    {project.gallery.map((src, i) => (
-                      <figure key={src} style={{ margin: 0, border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", overflow: "hidden", backgroundColor: "var(--bg-surface)" }}>
-                        <div style={{ position: "relative", height: "220px" }}>
-                          <Image
-                            src={src}
-                            alt={`${project.title} evidence capture ${i + 1}`}
-                            fill
-                            style={{ objectFit: "cover", objectPosition: "top" }}
-                            sizes="(max-width: 900px) 100vw, 50vw"
-                          />
-                        </div>
-                        <figcaption style={{ padding: "0.625rem 0.875rem", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-                          Capture {String(i + 1).padStart(2, "0")}
-                        </figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                </Section>
-              </>
+            {project.gallery[4] && (
+              <EvidenceFigure
+                src={project.gallery[4]}
+                alt={`${project.title} — user flow capture`}
+                caption="Evidence 05 — User flow"
+              />
             )}
 
             {project.faqs.length > 0 && (
@@ -319,6 +321,26 @@ export function CaseStudyPage({ project, related }: Props) {
         )}
       </div>
     </div>
+  );
+}
+
+function EvidenceFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <Reveal>
+      <figure style={{ margin: "0 0 3rem" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }}
+        />
+        <figcaption style={{ marginTop: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>
+          {caption}
+        </figcaption>
+      </figure>
+    </Reveal>
   );
 }
 
