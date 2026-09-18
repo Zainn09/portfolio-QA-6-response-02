@@ -23,7 +23,7 @@ for m in re.finditer(r'^    id: (\d+),$', src, re.M):
     b = src[start:end]
     g = lambda k: (re.search(rf'\n    {k}: "([^"]*)"', b) or [None, ''])[1]
     issues = re.findall(r'id: "([A-Z]+-\d+)",\s*\n\s*title: "([^"]*)",\s*\n\s*severity: "(\w+)"', b)
-    gallery = re.findall(r'      ("(?:https://[^"]+|/images/[^"]+))",', b)
+    gallery = re.findall(r'      "(https://[^"]+|/images/[^"]+)",', b)
     thumb = re.search(r'thumbnail: ("(?:https://[^"]+|/images/[^"]+)")', b).group(1)
     hero = re.search(r'heroImage: ("(?:https://[^"]+|/images/[^"]+)")', b).group(1)
     lift = re.search(r'\+(\d+)% ([a-z\- ]+?)(?:[,."]|$)', g('outcome'))
