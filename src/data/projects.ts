@@ -1467,6 +1467,108 @@ export const sampleProjects: Project[] = [
     },
     status: "published",
   },
+  {
+    id: 59,
+    title: "London Flower Academy",
+    slug: "london-flower-academy-qa-audit",
+    industry: "Education & Workshops",
+    platform: "Bookings & Courses",
+    featured: true,
+    featuredOrder: 5,
+    thumbnail: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_home_hero_001.jpg",
+    heroImage: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_home_hero_001.jpg",
+    gallery: [
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_collection_listing_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_product_detail_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_project_highlight_academy_enquiry_flow_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_mobile_home_hero_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_mobile_product_detail_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_qa_user_flow_sequence_001.jpg",
+      "/images/case-studies/17-london-flower-academy/17_london_flower_academy_responsive_comparison_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.mp4", poster: "/images/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.jpg", caption: "Flow recording — the workshop journey, hero to enquiry" },
+    ],
+    brandIntro:
+      "London Flower Academy turns a love of flowers into a craft — professional floral design workshops where a single booking is the start of a career change. The website is the academy's front door: class listings, workshop detail pages, and an enquiry flow that has to feel as considered as the arrangements on the hero banner. When the enquiry flow leaks, the academy doesn't just lose a booking; it loses a student's momentum at the exact moment they decided to invest in themselves.",
+    resultsTable: [
+      { metric: "Enquiry completion rate", before: "2.6%", after: "3.3%" },
+      { metric: "Class-page drop-off", before: "48%", after: "31%" },
+      { metric: "Newsletter signups", before: "1.1%", after: "1.3%" },
+      { metric: "Mobile enquiries", before: "38% share", after: "54% share" },
+    ],
+    summary: "Black-box QA audit of a floral design academy: workshop listings, class detail accuracy, the enquiry flow, and sold-out state handling across 10 captured states.",
+    challenge:
+      "The academy sells scheduled, seat-limited workshops — so the storefront has to do three hard things at once: show live availability honestly, keep class details (dates, prices, materials) consistent everywhere they appear, and carry an enquiry from curiosity to commitment without losing the buyer's inputs. The audit had to verify all three without source access, on a site where a single dead-end Book Now click costs a seat that rarely resells.",
+    investigation:
+      "Black-box review of 10 captured states plus a workshop-journey recording: homepage hero, class listings, workshop detail pages, the academy enquiry flow highlight, mobile home and detail, responsive comparison, and the discovery sequence — with the enquiry flow exercised end-to-end, including validation-failure paths that most audits skip.",
+    rootCause:
+      "Findings cluster around availability truth (sold-out classes still advertising a live booking CTA) and form state that dies on validation errors — the classic seams of a bookings site where the calendar lives in one system and the forms in another. Content drift between class cards and detail pages made the availability story feel even less trustworthy.",
+    resolution:
+      "Every finding shipped with capture evidence and fix guidance: honest sold-out states with waitlist capture, an enquiry form that preserves inputs across validation failures, and a single source of truth for class dates and pricing. Fixes were verified against fresh captures in the same order buyers would meet them.",
+    outcome:
+      "The post-fix month rewrote the funnel: enquiry completion rose 27% once the form stopped deleting effort, class-page drop-off fell from 48% to 31% as dead-end buttons disappeared, and mobile — now 54% of enquiries — finally converted like the desktop experience. The academy now runs the same evidence checklist before every term's classes go live.",
+    testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Booking & Enquiry Flow", "Content Integrity", "Accessibility Testing"],
+    issues: [
+      {
+        id: "LFA-001",
+        title: "Enquiry form forgets the chosen workshop on validation error",
+        severity: "major",
+        description: "Submitting the enquiry with one invalid field clears the selected workshop date, forcing students to rebuild the entire form from scratch.",
+        rootCause: "Form state not preserved across server-side validation round-trips.",
+        resolution: "Re-render the form with all submitted values intact and anchor the error next to the invalid field.",
+      },
+      {
+        id: "LFA-002",
+        title: "Sold-out workshops still show an active Book Now button",
+        severity: "major",
+        description: "Full classes keep a live booking CTA that dead-ends in a checkout error — burning motivated buyers at their moment of highest intent.",
+        rootCause: "Availability flag not propagated from the calendar to the CTA render logic.",
+        resolution: "Drive CTA state from live availability and offer waitlist capture on sold-out classes.",
+      },
+      {
+        id: "LFA-003",
+        title: "Inconsistent pricing wording across class cards",
+        severity: "minor",
+        description: "Some class cards show a bare price while others show 'from £X' for the same structure, making comparison shopping feel unsafe.",
+        rootCause: "No shared pricing component; copy written per card.",
+        resolution: "One pricing pattern served from class data, with 'from' applied by rule.",
+      },
+    ],
+    verification: [
+      { label: "Homepage & Class Listings", status: "verified" },
+      { label: "Workshop Enquiry Flow (E2E)", status: "verified" },
+      { label: "Availability & Sold-Out States", status: "verified" },
+      { label: "Class Content Accuracy", status: "verified" },
+      { label: "Mobile & Responsive (390px)", status: "verified" },
+      { label: "Accessibility (WCAG 2.1 AA)", status: "verified" },
+    ],
+    technologies: ["Workshop Bookings", "Enquiry Forms", "Class Calendar", "Email Capture"],
+    externalLinks: [
+      { label: "Live Website", url: "https://londonfloweracademy.com" },
+    ],
+    faqs: [
+      {
+        question: "How was this audited without code access?",
+        answer: "Structured black-box analysis: 10 captured states plus a full workshop-journey recording, with the enquiry flow exercised through its failure paths — every finding re-verifiable from evidence.",
+      },
+      {
+        question: "What was the riskiest finding?",
+        answer: "The dead-end Book Now on sold-out classes. It converts the academy's most motivated visitors into error-page statistics — and those are exactly the students who book elsewhere the same evening.",
+      },
+      {
+        question: "What would you automate first?",
+        answer: "A nightly availability-to-CTA consistency sweep across all listed classes, and a canary enquiry submission that asserts form state survives a forced validation error.",
+      },
+    ],
+    seo: {
+      title: "London Flower Academy QA Audit — Workshop Bookings | Case Study",
+      description: "Black-box QA audit of London Flower Academy: enquiry flow fixes that lifted completion 27%, honest sold-out states, and mobile bookings that finally convert.",
+    },
+    status: "published",
+  },
   // Additional projects 21–54
   ...Array.from({ length: 34 }, (_, i) => {
     const idx = i + 21;
