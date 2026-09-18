@@ -335,9 +335,9 @@ export function CaseStudyPage({ project, related }: Props) {
                 <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Verification Status</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
                   {project.verification.map((v) => (
-                    <div key={v.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>{v.label}</span>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: v.status === "verified" ? "var(--verified)" : v.status === "failed" ? "var(--critical)" : "var(--text-tertiary)", display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                    <div key={v.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
+                      <span style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{v.label}</span>
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: v.status === "verified" ? "var(--verified)" : v.status === "failed" ? "var(--critical)" : "var(--text-tertiary)", display: "flex", alignItems: "center", gap: "0.25rem", flexShrink: 0, whiteSpace: "nowrap" }}>
                         {v.status === "verified" ? "✓" : v.status === "failed" ? "✗" : "○"} {v.status}
                       </span>
                     </div>
