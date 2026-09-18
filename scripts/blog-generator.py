@@ -295,6 +295,17 @@ def _field_note(c, key):
 def _is_mobile(u):
     return "mobile" in (u or "").lower()
 
+def _alt_for(u, p):
+    label = "capture"
+    m = re.search(r"desktop[_-]([a-z_-]+?)_\d+\.(?:jpg|jpeg|png|webp)", (u or "").lower())
+    if m:
+        label = m.group(1).replace("_", " ").strip()
+    return f"{p['title']} — desktop view, {label}"
+
+def cat_slug(name):
+    t = (name or "").lower().replace("&", "")
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+
 def _mobile_alt(u, p):
     import re as _re
     label = "capture"
@@ -302,6 +313,105 @@ def _mobile_alt(u, p):
     if m:
         label = m.group(1).replace("_", " ").strip()
     return f"{p['title']} — mobile view, {label}"
+
+FAIL_PATTERNS = [
+    "Variant logic that drifts out of sync with {T} — the image updates, the price does not, and the {P} notices before the dashboard does",
+    "Overlays stacked on the money path: chat, promo, install asks — each defensible alone, unjustifiable together",
+    "Free-shipping thresholds that ignore the arithmetic of {T}, so the meter motivates nobody",
+    "Search that answers in SKU language while {P} type plain words into the box",
+    "Imagery that flatters desktop monitors and amputates the one detail that sells at 390px",
+    "Forms that ask twice for the same information and apologize in error codes",
+    "A cart drawer that forgets the order the moment the back button gets involved",
+    "Speed budgets spent on the homepage while collection pages carry the traffic",
+]
+
+def _deep_section(c, p, cat):
+    """SEO closer: failure-pattern keywords + contextual links to the case study and topic hub."""
+    start = c['v'] % len(FAIL_PATTERNS)
+    picks = [FAIL_PATTERNS[(start + k) % len(FAIL_PATTERNS)] for k in range(0, len(FAIL_PATTERNS), 2)][:4]
+    case_url = f"/work/{p['slug']}"
+    hub_url = f"/blogs/category/{cat_slug(cat)}"
+    return [
+      {"type":"h2","text":"The failure patterns that repeat across " + c['IND']},
+      {"type":"p","text": fill_text("The same handful of failure patterns accounts for most of the revenue leakage we document across {IND} — and they rarely travel alone; the drawer hides a variant problem that hides a trust gap. That is why [the complete " + p['title'] + " case study](" + case_url + ") reads defect by defect instead of page by page, and why the [" + cat + " hub](" + hub_url + ") groups the playbook by problem rather than by project.", c)},
+      {"type":"list","items":[fill_text(x, c) for x in picks]},
+      {"type":"p","text": fill_text("Recognition is always cheaper than discovery: any one of these showing up in your numbers is worth a captured-states walk before the next campaign spends against it. Every fix mentioned here, and the order to run them in, is documented in the case study and its " + cat + " companions — captures, severity calls, and the thirty-day readout included.", c)},
+    ]
+
+
+def insert_image_breaks(blocks, p, hero):
+    """Every article gets mid-content imagery: max 2 per group, 2-col pairs preferred."""
+    gal = p['gallery'] or [p['hero']]
+    used = {hero} | {b.get("src") for b in blocks if b.get("type") == "image"}
+    desk = [u for u in gal if not _is_mobile(u) and u not in used]
+    mob = [u for u in gal if _is_mobile(u) and u not in used]
+    h2s = [i for i, b in enumerate(blocks) if b.get("type") == "h2"]
+    targets = [h2s[k] for k in range(1, len(h2s), 3)][:3]
+    if not targets and h2s:
+        targets = [h2s[len(h2s) // 2]]
+    inserts = {}
+    for t in targets:
+        window = blocks[max(0, t - 2):t + 3]
+        if any(b.get("type") in ("image", "imagePair") for b in window):
+            continue
+        if len(desk) >= 2:
+            u1, u2 = desk.pop(0), desk.pop(0)
+            inserts[t] = {"type": "imagePair", "items": [
+                {"src": u1, "alt": _alt_for(u1, p)}, {"src": u2, "alt": _alt_for(u2, p)}]}
+        elif len(desk) == 1:
+            u1 = desk.pop(0)
+            inserts[t] = {"type": "image", "src": u1, "alt": _alt_for(u1, p)}
+        elif len(mob) >= 2:
+            u1, u2 = mob.pop(0), mob.pop(0)
+            inserts[t] = {"type": "imagePair", "items": [
+                {"src": u1, "alt": _mobile_alt(u1, p)}, {"src": u2, "alt": _mobile_alt(u2, p)}]}
+        elif len(mob) == 1:
+            u1 = mob.pop(0)
+            inserts[t] = {"type": "image", "src": u1, "alt": _mobile_alt(u1, p), "narrow": True}
+        if len(desk) + len(mob) == 0:
+            break
+    out = []
+    for i, b in enumerate(blocks):
+        if i in inserts:
+            out.append(inserts[i])
+        out.append(b)
+    return out
+
+
+def pair_inline_images(blocks, c, p, hero):
+    """Adjacent same-orientation images pair 2-up; lone mobile screenshots pair from the gallery pool."""
+    used = {b.get("src") for b in blocks if b.get("type") == "image"}
+    pool_m = [u for u in (p['gallery'] or []) if _is_mobile(u) and u != hero and u not in used]
+    out = []
+    i = 0
+    while i < len(blocks):
+        b = blocks[i]
+        if b.get("type") == "image":
+            nxt = blocks[i + 1] if i + 1 < len(blocks) else None
+            if nxt and nxt.get("type") == "image" and _is_mobile(b.get("src")) == _is_mobile(nxt.get("src")):
+                out.append({"type": "imagePair", "items": [
+                    {"src": b["src"], "alt": b.get("alt") or _alt_for(b["src"], p)},
+                    {"src": nxt["src"], "alt": nxt.get("alt") or _alt_for(nxt["src"], p)}]})
+                i += 2
+                continue
+            if _is_mobile(b.get("src")):
+                partner = next((u for u in pool_m if u not in used), None)
+                if partner:
+                    used.add(partner)
+                    out.append({"type": "imagePair", "items": [
+                        {"src": b["src"], "alt": b.get("alt") or _mobile_alt(b["src"], p)},
+                        {"src": partner, "alt": _mobile_alt(partner, p)}]})
+                    i += 1
+                    continue
+                b2 = dict(b)
+                b2["narrow"] = True
+                out.append(b2)
+                i += 1
+                continue
+        out.append(b)
+        i += 1
+    return out
+
 
 def pair_mobile_images(blocks, c, p, hero):
     """Mobile captures never stand alone: pair each into a 2-up grid block."""
@@ -1436,7 +1546,9 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     pos = gal.index(hero)
     c['img'] = gal[pos + 1:] + gal[:pos + 1]
     blocks, story_ref = inject_stories(blocks, c, ptype, aid, p)
-    blocks = pair_mobile_images(blocks, c, p, hero)
+    blocks.extend(_deep_section(c, p, cat))
+    blocks = insert_image_breaks(blocks, p, hero)
+    blocks = pair_inline_images(blocks, c, p, hero)
     words = sum(len(re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', (b.get('text') or '') + ' '.join(x for x in b.get('items', []) if isinstance(x, str))).split()) for b in blocks)
     rt = max(3, round(words / 200))
     article_word_count = words
@@ -1518,9 +1630,12 @@ import json as _json
 _leftovers = re.findall(r"\{(PHRASE|NAME|IND|NIS|SEV|LIFT|SEASON|P|T|S|AOV|DISC|TR|TICK|PLAT|NCAP|ISSUE|ISSUEID)\}", _json.dumps(ARTICLES, default=str))
 _wc = sorted(a["_word_count"] for a in ARTICLES)
 print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs} | leftover tokens: {len(_leftovers)} | words min/med/max: {_wc[0]}/{_wc[len(_wc)//2]}/{_wc[-1]}")
-if _wc[0] < 950:
-    _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 950]
-    raise SystemExit(f"ARTICLES UNDER 950 WORDS: {_short[:10]}")
+if _wc[0] < 1150:
+    _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 1150]
+    raise SystemExit(f"ARTICLES UNDER 1150 WORDS: {_short[:10]}")
+_noimg = [a['slug'] for a in ARTICLES if not any(b.get("type") in ("image", "imagePair") for b in a['body'])]
+if _noimg:
+    raise SystemExit(f"ARTICLES WITHOUT INLINE IMAGERY: {_noimg[:10]}")
 _mobile_heroes = [a['slug'] for a in ARTICLES if _is_mobile(a['heroImage'])]
 if _mobile_heroes:
     raise SystemExit(f"MOBILE HEROES: {_mobile_heroes[:10]}")
