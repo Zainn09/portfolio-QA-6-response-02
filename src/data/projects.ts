@@ -1423,7 +1423,7 @@ export const sampleProjects: Project[] = [
       { src: "/videos/case-studies/15-the-bread-essentials/15_the_bread_essentials_video_bakery_journey_001.mp4", poster: "/videos/case-studies/15-the-bread-essentials/15_the_bread_essentials_video_bakery_journey_001.jpg", caption: "Flow recording — the bakery journey, hero to checkout" },
     ],
     brandIntro:
-      "The Bread Essentials is a dedicated gluten-free bakery and grocery: artisan loaves, pantry staples, and a BEST SELLERS wall that does the persuading. Its buyers are not casual browsers — they are people with dietary constraints who read every label twice, reorder what they trust, and abandon anything that feels careless. For this storefront, accuracy is the flavor that matters most.",
+      "The Bread Essentials is a dedicated gluten-free bakery and grocery: artisan loaves, pantry staples, and a BEST SELLERS wall that does the persuading. Its buyers are not casual browsers — they are people with dietary constraints who read every label twice, reorder what they trust, and abandon anything that feels careless. For this storefront, accuracy is the flavor that matters most.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     highlights: [
       { label: "13 states captured", text: "homepage to checkout-adjacent flows, audited on desktop and 390px mobile with a full journey recording." },
       { label: "Diet-critical paths first", text: "weight variants, allergen wording, and the gluten-free collection journey tested before anything cosmetic." },
