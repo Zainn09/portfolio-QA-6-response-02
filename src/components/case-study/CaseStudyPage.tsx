@@ -208,7 +208,7 @@ export function CaseStudyPage({ project, related }: Props) {
             {project.findingsTable && project.findingsTable.length > 0 && (
               <Reveal>
                 <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Key Findings</p>
-                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)", marginBottom: "3rem" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", minWidth: "560px" }}>
                     <thead>
                       <tr style={{ borderBottom: "1px solid var(--border)" }}>
@@ -267,7 +267,7 @@ export function CaseStudyPage({ project, related }: Props) {
             {project.resultsTable && project.resultsTable.length > 0 && (
               <Reveal>
                 <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>The Results — 30 Days After Fixes</p>
-                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)", marginBottom: "3rem" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", minWidth: "480px" }}>
                     <thead>
                       <tr style={{ borderBottom: "1px solid var(--border)" }}>
