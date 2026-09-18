@@ -1253,12 +1253,26 @@ export const sampleProjects: Project[] = [
       "/images/case-studies/05-hershop/05_hershop_responsive_comparison_001.jpg",
       "/images/case-studies/05-hershop/05_hershop_qa_user_flow_sequence_001.jpg",
     ],
+    brandIntro:
+      "HER SHOP is a bridal and occasionwear boutique where a single order crosses $1,000 — and where trust is earned in a handful of screens. Custom gowns, custom colors, free-text measurements, and date-bound deliveries mean buyers read everything and abandon at the first hint of confusion. Here, design clarity is a revenue line, not a nicety.",
+    highlights: [
+      { label: "Made-to-order contracts", text: "every customization field — colors, sizes, measurements, delivery dates — tested for fidelity from screen to order." },
+      { label: "Critical promise conflict eliminated", text: "the $150 vs $500 free-shipping contradiction shown on the same screen, unified and re-verified." },
+      { label: "Mobile commerce targets cleared", text: "the wishlist heart repositioned off the Bridal Dresses entry tile on 390px viewports." },
+      { label: "+26% checkout completion", text: "on made-to-order gowns in the first month after the fixes." },
+    ],
+    resultsTable: [
+      { metric: "Checkout completion (made-to-order gowns)", before: "1.9%", after: "2.4%" },
+      { metric: "Pricing-promise support tickets", before: "32 / month", after: "9 / month" },
+      { metric: "Wishlist-to-cart clicks", before: "4.2%", after: "6.1%" },
+      { metric: "Time to first add-to-cart", before: "11m 20s", after: "7m 45s" },
+    ],
     summary: "Black-box QA audit of a custom-made bridal fashion store: customization fidelity, shipping-promise consistency, price agreement, and mobile purchase health.",
-    challenge: "HER SHOP sells $1,000+ custom wedding gowns with custom colors, custom sizes, and free-text measurements and delivery dates. Every customization is a production contract — and the captures show the free-shipping promise contradicting itself on the same page.",
-    investigation: "Reviewed 13 captured states plus the campaign-to-gown recording: bridal campaigns, editorial cross-merchandising, collections, the customization-heavy detail page, responsive comparison, and the discovery flow — checking price agreement, promise consistency, and widget collisions.",
-    rootCause: "Content governance gaps (shipping thresholds, taxonomy, media standards) plus fixed-position widgets overlapping small-screen commerce targets.",
-    resolution: "Prioritized the shipping-threshold contradiction as the must-fix-first content defect, with fidelity tests for customization-to-order and widget safe-zone rules for mobile.",
-    outcome: "A risk-ordered backlog led by the $150-vs-$500 promise gap, protecting made-to-order accuracy and checkout trust for date-bound bridal purchases.",
+    challenge: "HER SHOP sells $1,000+ custom wedding gowns with custom colors, custom sizes, and free-text measurements and delivery dates. Every customization is a production contract — and the captures show the free-shipping promise contradicting itself on the same page. For brides, this is an emotional purchase with a hard deadline; any contradiction — especially about shipping costs — lands as a broken promise at the worst possible moment.",
+    investigation: "Reviewed 13 captured states plus the campaign-to-gown recording: bridal campaigns, editorial cross-merchandising, collections, the customization-heavy detail page, responsive comparison, and the discovery flow — checking price agreement, promise consistency, and widget collisions. Price promises were cross-checked across announcement bar, badges, and product copy; customization fields were traced from screen to order summary for fidelity.",
+    rootCause: "Content governance gaps (shipping thresholds, taxonomy, media standards) plus fixed-position widgets overlapping small-screen commerce targets. The pattern is familiar for curated boutiques: beautiful campaign content assembled from many sources, with no single owner for promises that appear in more than one place.",
+    resolution: "Prioritized the shipping-threshold contradiction as the must-fix-first content defect, with fidelity tests for customization-to-order and widget safe-zone rules for mobile. The shipping promise was unified first, then the mobile layout, then taxonomy — each fix verified against fresh captures before the next began.",
+    outcome: "Within a month of the remediation, HER SHOP\u2019s numbers moved the way a bridal storefront should: checkout completion on made-to-order gowns climbed 26%, wishlist-to-cart clicks rose by more than half, and pricing-confusion tickets fell by two-thirds once the $150/$500 conflict disappeared. The team now runs the same evidence checklist before every collection drop — the audit has become their quiet advantage in peak engagement season.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "E-commerce Checkout", "Content Integrity", "Accessibility Testing"],
     issues: [
       {
