@@ -5,6 +5,12 @@ import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
+  Bug,
+  Compass,
+  Eye,
+  Hammer,
+  Map,
+  ShieldCheck,
   Store,
   ShoppingBag,
   Sparkles,
@@ -49,13 +55,13 @@ const EXPERTISE_ROWS = [
 ];
 
 const PROCESS_STEPS = [
-  { num: "01", label: "Understand", headline: "Know the store before touching it." },
-  { num: "02", label: "Map", headline: "Build the test surface." },
-  { num: "03", label: "Explore", headline: "Walk through it like a real user." },
-  { num: "04", label: "Break", headline: "Systematically push every boundary." },
-  { num: "05", label: "Reproduce", headline: "Document exactly how it breaks." },
-  { num: "06", label: "Resolve", headline: "Work with the team to fix it right." },
-  { num: "07", label: "Verify", headline: "Confirm the fix. Then re-test everything." },
+  { num: "01", label: "Understand", headline: "Know the store before touching it.", icon: Eye },
+  { num: "02", label: "Map", headline: "Build the test surface.", icon: Map },
+  { num: "03", label: "Explore", headline: "Walk through it like a real user.", icon: Compass },
+  { num: "04", label: "Break", headline: "Systematically push every boundary.", icon: Hammer },
+  { num: "05", label: "Reproduce", headline: "Document exactly how it breaks.", icon: Bug },
+  { num: "06", label: "Resolve", headline: "Work with the team to fix it right.", icon: Wrench },
+  { num: "07", label: "Verify", headline: "Confirm the fix. Then re-test everything.", icon: ShieldCheck },
 ];
 
 const ABOUT_STATS = [
@@ -258,21 +264,29 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
               onNavigate={onNavigate}
             />
             <div className="mega-steps">
-              {PROCESS_STEPS.map((step, i) => (
-                <Link
-                  key={step.num}
-                  href="/#process"
-                  onClick={onNavigate}
-                  className="mega-step mega-rise"
-                  style={{ animationDelay: `${i * 45}ms` }}
-                >
-                  <span className="mega-num">{step.num}</span>
-                  <span className="mega-step-body">
-                    <span className="mega-card-title">{step.label}</span>
-                    <span className="mega-desc-sm">{step.headline}</span>
-                  </span>
-                </Link>
-              ))}
+              {PROCESS_STEPS.map((step, i) => {
+                const Icon = step.icon;
+                return (
+                  <Link
+                    key={step.num}
+                    href="/#process"
+                    onClick={onNavigate}
+                    className="mega-step mega-rise"
+                    style={{ animationDelay: `${i * 45}ms` }}
+                  >
+                    <span className="mega-step-icon" aria-hidden="true">
+                      <Icon size={14} strokeWidth={2} />
+                    </span>
+                    <span className="mega-step-body">
+                      <span className="mega-step-head">
+                        <span className="mega-num">{step.num}</span>
+                        <span className="mega-card-title">{step.label}</span>
+                      </span>
+                      <span className="mega-desc-sm">{step.headline}</span>
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </>
         )}
@@ -430,9 +444,26 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         }
         .mega-step {
           flex-direction: row;
-          align-items: baseline;
+          align-items: flex-start;
           gap: 0.75rem;
           padding: 0.625rem 0.875rem;
+        }
+        .mega-step-icon {
+          width: 28px;
+          height: 28px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: var(--radius-sm);
+          background-color: var(--accent-muted);
+          border: 1px solid var(--accent);
+          color: var(--text-primary);
+        }
+        .mega-step-head {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
         }
         a.mega-card:hover,
         a.mega-row:hover,
