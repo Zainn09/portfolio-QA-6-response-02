@@ -98,6 +98,23 @@ export function CaseStudyPage({ project, related }: Props) {
         </div>
       </header>
 
+      {/* Personal note — deliberately the first thing on the page */}
+      {project.brandIntro && (
+        <div className="container" style={{ paddingTop: "2.5rem" }}>
+          <Reveal>
+            <div style={{ maxWidth: "62rem", borderLeft: "3px solid var(--accent)", paddingLeft: "1.5rem", paddingTop: "0.25rem", paddingBottom: "0.25rem" }}>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#000", backgroundColor: "var(--accent)", display: "inline-block", padding: "0.25rem 0.625rem", borderRadius: "var(--radius-sm)", fontWeight: 700, marginBottom: "1.25rem" }}>A Personal Note</p>
+              <p style={{ fontSize: "1.375rem", lineHeight: 1.75, color: "var(--text-primary)", fontWeight: 500 }}>
+                {project.brandIntro}
+              </p>
+              <p style={{ marginTop: "1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                — Written personally, before a single screen of this revamp was touched
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      )}
+
       {/* Hero evidence capture (real audits only — samples have no gallery) */}
       {project.gallery.length > 0 && (
         <div className="container" style={{ paddingTop: "3rem", paddingBottom: "1rem" }}>
@@ -106,18 +123,6 @@ export function CaseStudyPage({ project, related }: Props) {
             alt={`${project.title} — homepage capture from the audit evidence set`}
             caption="Homepage capture — the audit starting point"
           />
-        </div>
-      )}
-
-      {/* Brand intro + highlights (flagship audits only) */}
-      {project.brandIntro && (
-        <div className="container" style={{ paddingTop: "2.5rem" }}>
-          <Reveal>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1.25rem" }}>The Brand</p>
-            <p style={{ fontSize: "1.375rem", lineHeight: 1.7, color: "var(--text-primary)", fontWeight: 500, maxWidth: "62rem" }}>
-              {project.brandIntro}
-            </p>
-          </Reveal>
         </div>
       )}
 
