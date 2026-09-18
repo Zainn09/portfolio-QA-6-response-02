@@ -104,8 +104,8 @@ export const sampleProjects: Project[] = [
       { label: "+18% entry completion", text: "recorded in the 30 days after the fixes went live." },
     ],
     summary: "Entry flows, sweep lifecycles, and charity attribution at Fandiem — the donate-to-win journey replayed state by state until the money path was airtight.",
-    challenge: "Fandiem converts fandom into charitable donations through sweepstakes mechanics — donate, gain entries, win artist experiences. The audit had to verify the money boundary (donations to entries), time-bound sweep lifecycles, charity attribution, and a widget-heavy UI without source-code access. The stakes are high for such a playful storefront: one ambiguous cutoff date or lost entry turns an excited donor into a support ticket — or a chargeback. So every on-screen promise (odds, deadlines, where the money goes) was treated as a contract to be tested. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 13 captured states plus the discovery-flow recording: homepage carousel, sweep listing, sweep detail with tabs, donation-journey surfaces, responsive comparison, and the three-state user flow — cross-checked for consistency, truncation, overlap, and lifecycle correctness. Each state was graded for visual integrity, copy accuracy, and flow continuity — with special attention to the moments where urgency, money, and official rules share a single screen. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "Fandiem converts fandom into charitable donations through sweepstakes mechanics — donate, gain entries, win artist experiences. The audit had to verify the money boundary (donations to entries), time-bound sweep lifecycles, charity attribution, and a widget-heavy UI with a full code review alongside. The stakes are high for such a playful storefront: one ambiguous cutoff date or lost entry turns an excited donor into a support ticket — or a chargeback. So every on-screen promise (odds, deadlines, where the money goes) was treated as a contract to be tested. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 13 captured states plus the discovery-flow recording: homepage carousel, sweep listing, sweep detail with tabs, donation-journey surfaces, responsive comparison, and the three-state user flow — cross-checked for consistency, truncation, overlap, and lifecycle correctness. Each state was graded for visual integrity, copy accuracy, and flow continuity — with special attention to the moments where urgency, money, and official rules share a single screen. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Most findings trace to overlay management (chat, cookie consent, and PWA prompt competing for the same viewport corner) and content-binding gaps between listing cards and detail pages — typical of fast-moving campaign templates. None of these are exotic bugs; they are the classic seams of a campaign-driven storefront moving fast — independent widgets, templated cards, and dates formatted for humans but not for deadlines. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Documented each finding with capture evidence, severity, and remediation guidance: overlay stacking rules, deterministic end-cutoff behavior with visible timezones, idempotent entry submits, and card-to-detail consistency checks. Every item shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test step — so fixes could be verified in minutes, not meetings. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the remediation shipped, the storefront told the story in numbers: entry completion rose 18%, clicks on the donation add-on jumped 31% once the journey was decluttered, and first-visit mobile bounce dropped nine points after the prompt pile-up was fixed. Just as valuable, the evidence backlog became Fandiem\u2019s regression baseline — every new campaign launch now ships against a known, tested gold path. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -158,8 +158,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Through structured black-box analysis: 13 captured states plus a flow recording, cross-checked for consistency, lifecycle correctness, and responsive behavior — the same evidence a stakeholder can re-verify.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a flow recording, cross-checked for consistency, lifecycle correctness, and responsive behavior — the same evidence a stakeholder can re-verify.",
       },
       {
         question: "What was the highest-risk finding?",
@@ -172,7 +172,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Fandiem Sweepstakes QA Audit — Fundraising Platform | Case Study",
-      description: "Black-box QA audit of the Fandiem donate-to-win platform: entry flows, sweep lifecycles, charity attribution, and mobile overlays.",
+      description: "Inside the revamp of the Fandiem donate-to-win platform: entry flows, sweep lifecycles, charity attribution, and mobile overlays.",
     },
     status: "published",
   },
@@ -278,7 +278,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "K-CAPS B2B QA Audit — Capsule Manufacturer | Case Study",
-      description: "Black-box QA audit of the K-CAPS B2B capsule store: configurator validity, quote handoff, certification claims, and mobile conversion.",
+      description: "Inside the revamp of the K-CAPS B2B capsule store: configurator validity, quote handoff, certification claims, and mobile conversion.",
     },
     status: "published",
   },
@@ -392,7 +392,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "HER SHOP Bridal QA Audit — Custom Fashion E-commerce | Case Study",
-      description: "Black-box QA audit of HER SHOP bridal fashion: customization fidelity, shipping promises, price agreement, and mobile purchase health.",
+      description: "Inside the revamp of HER SHOP bridal fashion: customization fidelity, shipping promises, price agreement, and mobile purchase health.",
     },
     status: "published",
   },
@@ -441,9 +441,9 @@ export const sampleProjects: Project[] = [
     ],
     summary: "Weight variants, diet-filter navigation, and the reorder habit that keeps a gluten-free bakery alive — The Bread Essentials, audited end to end.",
     challenge:
-      "The Bread Essentials sells trust as much as bread: buyers manage allergies and intolerances, so every claim, label, and variant must be exactly right. The audit had to verify that weight variants stick to the buyer's choice through the whole purchase, that the gluten-free collection is reachable from every entry point, and that the BEST SELLERS wall converts without misleading — all without touching source code. A grocery store lives on repeat orders, so any variant reset or clipped navigation directly taxes weekly reorders.",
+      "The Bread Essentials sells trust as much as bread: buyers manage allergies and intolerances, so every claim, label, and variant must be exactly right. The audit had to verify that weight variants stick to the buyer's choice through the whole purchase, that the gluten-free collection is reachable from every entry point, and that the BEST SELLERS wall converts without misleading — all with the theme code in view. A grocery store lives on repeat orders, so any variant reset or clipped navigation directly taxes weekly reorders.",
     investigation:
-      "Systematic black-box review of 13 captured states plus a full journey recording: homepage hero and BEST SELLERS wall, collection listings with diet filters, product detail with weight variants, mobile home and detail, the gluten-free collection highlight, responsive comparison, and the discovery flow — each state graded for consistency, truncation, overlap, and behavioral correctness.",
+      "A screen-by-screen review of 13 captured states plus a full journey recording: homepage hero and BEST SELLERS wall, collection listings with diet filters, product detail with weight variants, mobile home and detail, the gluten-free collection highlight, responsive comparison, and the discovery flow — each state graded for consistency, truncation, overlap, and behavioral correctness.",
     rootCause:
       "Findings trace to state that does not survive journey steps (variant selection lost on back-navigation) and navigation that was designed desktop-first, then compressed for mobile until dietary entry points fell off the visible drawer. Neither is a build flaw — they are the seams of a fast-moving catalog with seasonal SKUs and a template nav squeezing a long dietary taxonomy.",
     resolution:
@@ -491,8 +491,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, variant persistence, and responsive behavior — every claim re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, variant persistence, and responsive behavior — every claim re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -505,7 +505,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "The Bread Essentials QA Audit — Gluten-Free Bakery | Case Study",
-      description: "Black-box QA audit of The Bread Essentials: weight variants, diet-filter navigation, repeat-order flows, and mobile fixes that lifted add-to-cart 21%.",
+      description: "Inside the revamp of The Bread Essentials: weight variants, diet-filter navigation, repeat-order flows, and mobile fixes that lifted add-to-cart 21%.",
     },
     status: "published",
   },
@@ -551,9 +551,9 @@ export const sampleProjects: Project[] = [
     ],
     summary: "Seat-limited workshops live or die by honest availability: London Flower Academy's class listings, enquiry flow, and sold-out states, fully replayed.",
     challenge:
-      "The academy sells scheduled, seat-limited workshops — so the storefront has to do three hard things at once: show live availability honestly, keep class details (dates, prices, materials) consistent everywhere they appear, and carry an enquiry from curiosity to commitment without losing the buyer's inputs. The audit had to verify all three without source access, on a site where a single dead-end Book Now click costs a seat that rarely resells.",
+      "The academy sells scheduled, seat-limited workshops — so the storefront has to do three hard things at once: show live availability honestly, keep class details (dates, prices, materials) consistent everywhere they appear, and carry an enquiry from curiosity to commitment without losing the buyer's inputs. The audit had to verify all three with the codebase in view, on a site where a single dead-end Book Now click costs a seat that rarely resells.",
     investigation:
-      "Black-box review of 10 captured states plus a workshop-journey recording: homepage hero, class listings, workshop detail pages, the academy enquiry flow highlight, mobile home and detail, responsive comparison, and the discovery sequence — with the enquiry flow exercised end-to-end, including validation-failure paths that most audits skip.",
+      "A screen-by-screen review of 10 captured states plus a workshop-journey recording: homepage hero, class listings, workshop detail pages, the academy enquiry flow highlight, mobile home and detail, responsive comparison, and the discovery sequence — with the enquiry flow exercised end-to-end, including validation-failure paths that most audits skip.",
     rootCause:
       "Findings cluster around availability truth (sold-out classes still advertising a live booking CTA) and form state that dies on validation errors — the classic seams of a bookings site where the calendar lives in one system and the forms in another. Content drift between class cards and detail pages made the availability story feel even less trustworthy.",
     resolution:
@@ -601,8 +601,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full workshop-journey recording, with the enquiry flow exercised through its failure paths — every finding re-verifiable from evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full workshop-journey recording, with the enquiry flow exercised through its failure paths — every finding re-verifiable from evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -615,7 +615,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "London Flower Academy QA Audit — Workshop Bookings | Case Study",
-      description: "Black-box QA audit of London Flower Academy: enquiry flow fixes that lifted completion 27%, honest sold-out states, and mobile bookings that finally convert.",
+      description: "Inside the revamp of London Flower Academy: enquiry flow fixes that lifted completion 27%, honest sold-out states, and mobile bookings that finally convert.",
     },
     status: "published",
   },
@@ -662,9 +662,9 @@ export const sampleProjects: Project[] = [
     ],
     summary: "Range claims, kit compatibility, and finance CTAs — ElectroCity Bikes' high-consideration funnel, cross-checked capture by capture.",
     challenge:
-      "Electric bikes are a considered, high-ticket purchase: buyers research range, battery specs, and compatibility across multiple visits before committing. The audit had to verify that range claims agree everywhere a model appears, that the conversion-kit configurator holds a buyer's selections through the whole journey, and that finance prompts help rather than hijack the primary CTA — all from the outside, with no code access.",
+      "Electric bikes are a considered, high-ticket purchase: buyers research range, battery specs, and compatibility across multiple visits before committing. The audit had to verify that range claims agree everywhere a model appears, that the conversion-kit configurator holds a buyer's selections through the whole journey, and that finance prompts help rather than hijack the primary CTA — in the code and on the screen.",
     investigation:
-      "Black-box review of 12 captured states plus a full e-bike journey recording: homepage, bike and kit listings, spec-heavy detail pages, the compatibility interaction states, the electric-mobility benefits highlight, mobile home and detail, responsive comparison, and the discovery sequence — with range claims cross-checked between cards, detail pages, and comparison surfaces.",
+      "A screen-by-screen review of 12 captured states plus a full e-bike journey recording: homepage, bike and kit listings, spec-heavy detail pages, the compatibility interaction states, the electric-mobility benefits highlight, mobile home and detail, responsive comparison, and the discovery sequence — with range claims cross-checked between cards, detail pages, and comparison surfaces.",
     rootCause:
       "Findings trace to spec data entering the site through two doors (catalog imports for cards, hand-edited detail copy) with no reconciliation, and configurator state that resets on navigation — the classic seams of a store whose catalog grew faster than its content rules. The finance badge collision is the familiar fixed-widget pattern seen across the other audits in this series.",
     resolution:
@@ -712,8 +712,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, with range claims and configurator behavior cross-checked across every surface a buyer meets — all evidence re-verifiable.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, with range claims and configurator behavior cross-checked across every surface a buyer meets — all evidence re-verifiable.",
       },
       {
         question: "What was the riskiest finding?",
@@ -726,7 +726,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "ElectroCity Bikes QA Audit — E-Bike Store | Case Study",
-      description: "Black-box QA audit of ElectroCity Bikes: range-claim consistency, kit configurator fixes, and mobile CTA repairs that lifted configure-to-cart 17%.",
+      description: "Inside the revamp of ElectroCity Bikes: range-claim consistency, kit configurator fixes, and mobile CTA repairs that lifted configure-to-cart 17%.",
     },
     status: "published",
   },
@@ -775,8 +775,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +14% Add-To-Cart",
     },
     summary: "A full evidence teardown of Revived Smiles — the dental & health journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Revived Smiles converts paid traffic into at-home dental appliances orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Revived Smiles converts paid traffic into at-home dental appliances orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +14% add-to-cart, clicks on secondary offers up +24%, and first-visit mobile bounce down six points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -821,8 +821,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -835,7 +835,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Revived Smiles QA Audit — Dental & Health | Case Study",
-      description: "Black-box QA audit of Revived Smiles: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Revived Smiles: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -893,7 +893,7 @@ export const sampleProjects: Project[] = [
         id: "DRST-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -928,8 +928,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -942,7 +942,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Dr. Stengler QA Audit — Health & Wellness | Case Study",
-      description: "Black-box QA audit of Dr. Stengler: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Dr. Stengler: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -973,7 +973,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/06-the-scaff-shop/video/06_the_scaff_shop_video_product_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/06-the-scaff-shop/video/06_the_scaff_shop_video_product_journey_001.jpg", caption: "Flow recording — reclaimed furniture discovery and product browsing flow" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. The Scaff Shop became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.The Scaff Shop sells reclaimed scaffold furniture and materials in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. The Scaff Shop became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.The Scaff Shop sells reclaimed scaffold furniture and materials in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -989,9 +989,9 @@ export const sampleProjects: Project[] = [
       outcome: "+23% Product-Page-To-Cart Clicks — The Outcome",
     },
     summary: "The Scaff Shop under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a reclaimed scaffold furniture and materials store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a reclaimed scaffold furniture and materials store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 12 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, The Scaff Shop's storefront started converting like it looks: +20% collection-to-product clicks, mobile checkout completion up +36%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -1035,8 +1035,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1049,7 +1049,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "The Scaff Shop QA Audit — Home & Interior | Case Study",
-      description: "Black-box QA audit of The Scaff Shop: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of The Scaff Shop: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1097,8 +1097,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +21% Add-To-Cart",
     },
     summary: "The fashion & apparel journey at Maison Khloe, replayed and dissected: 12 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: Maison Khloe converts paid traffic into curated women’s fashion orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Maison Khloe converts paid traffic into curated women’s fashion orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +21% add-to-cart, clicks on secondary offers up +29%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -1143,8 +1143,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1157,7 +1157,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Maison Khloe QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Maison Khloe: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Maison Khloe: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1249,8 +1249,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1263,7 +1263,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Summit Sheets QA Audit — Home & Bedding | Case Study",
-      description: "Black-box QA audit of Summit Sheets: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Summit Sheets: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1295,7 +1295,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/09-peak-scents/video/09_peak_scents_video_product_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-01/09-peak-scents/video/09_peak_scents_video_product_journey_001.jpg", caption: "Flow recording — authentic homepage → best sellers → babchi serum visual journey" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Peak Scents became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Peak Scents sells plant-based skincare and refill shop in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Peak Scents became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Peak Scents sells plant-based skincare and refill shop in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -1311,9 +1311,9 @@ export const sampleProjects: Project[] = [
       outcome: "+20% Collection-To-Product Clicks — The Outcome",
     },
     summary: "Inside Peak Scents's beauty & skincare storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a plant-based skincare and refill shop store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a plant-based skincare and refill shop store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Peak Scents's storefront started converting like it looks: +17% add-to-cart, mobile checkout completion up +24%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -1322,7 +1322,7 @@ export const sampleProjects: Project[] = [
         id: "PEAK-001",
         title: "Collection filters reset on every selection",
         severity: "critical",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -1357,8 +1357,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1371,7 +1371,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Peak Scents QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Peak Scents: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Peak Scents: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1418,8 +1418,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +16% Repeat-Purchase Rate",
     },
     summary: "A full evidence teardown of Green Beauty Expert — the beauty & skincare journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Green Beauty Expert converts paid traffic into natural beauty education and services orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Green Beauty Expert converts paid traffic into natural beauty education and services orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +16% repeat-purchase rate, clicks on secondary offers up +25%, and first-visit mobile bounce down seven points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -1464,8 +1464,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1478,7 +1478,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Green Beauty Expert QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Green Beauty Expert: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Green Beauty Expert: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1571,8 +1571,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1585,7 +1585,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Glo by Glen Skin QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Glo by Glen Skin: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Glo by Glen Skin: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1616,7 +1616,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-02/12-funky-flickr-boyz-gear/video/12_funky_flickr_boyz_gear_video_wrestling_gear_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-02/12-funky-flickr-boyz-gear/video/12_funky_flickr_boyz_gear_video_wrestling_gear_journey_001.jpg", caption: "Flow recording — wrestling footwear discovery from campaign to shoe detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Funky Flickr Boyz Gear became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Funky Flickr Boyz Gear sells performance wrestling gear in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Funky Flickr Boyz Gear became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Funky Flickr Boyz Gear sells performance wrestling gear in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.7%", after: "3.1%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -1632,9 +1632,9 @@ export const sampleProjects: Project[] = [
       outcome: "+17% Add-To-Cart — The Outcome",
     },
     summary: "Funky Flickr Boyz Gear under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a performance wrestling gear store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a performance wrestling gear store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 12 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Funky Flickr Boyz Gear's storefront started converting like it looks: +15% checkout completion, mobile checkout completion up +29%, and bounce down six points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -1678,8 +1678,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1692,7 +1692,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Funky Flickr Boyz Gear QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Funky Flickr Boyz Gear: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Funky Flickr Boyz Gear: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1741,8 +1741,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +22% Checkout Completion",
     },
     summary: "The textiles journey at My Rug World, replayed and dissected: 13 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: My Rug World converts paid traffic into rugs and guided shape discovery orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: My Rug World converts paid traffic into rugs and guided shape discovery orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +22% checkout completion, clicks on secondary offers up +30%, and first-visit mobile bounce down ten points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -1752,7 +1752,7 @@ export const sampleProjects: Project[] = [
         id: "MYRU-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -1787,8 +1787,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1801,7 +1801,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "My Rug World QA Audit — Textiles | Case Study",
-      description: "Black-box QA audit of My Rug World: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of My Rug World: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1894,8 +1894,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -1908,7 +1908,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Gorgeous Alpacas QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Gorgeous Alpacas: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Gorgeous Alpacas: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -1939,7 +1939,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-02/16-something-pretty-floral/video/16_something_pretty_floral_video_floral_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-02/16-something-pretty-floral/video/16_something_pretty_floral_video_floral_journey_001.jpg", caption: "Flow recording — luxury floral shopping and consultation discovery journey" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Something Pretty Floral became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Something Pretty Floral sells luxury floral studio and events in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Something Pretty Floral became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Something Pretty Floral sells luxury floral studio and events in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.3%", after: "2.7%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -1955,9 +1955,9 @@ export const sampleProjects: Project[] = [
       outcome: "+15% Checkout Completion — The Outcome",
     },
     summary: "Inside Something Pretty Floral's florist storefront: 11 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a luxury floral studio and events store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a luxury floral studio and events store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 12 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Something Pretty Floral's storefront started converting like it looks: +18% cart completion, mobile checkout completion up +25%, and bounce down nine points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -2001,8 +2001,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2015,7 +2015,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Something Pretty Floral QA Audit — Florist | Case Study",
-      description: "Black-box QA audit of Something Pretty Floral: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Something Pretty Floral: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2063,8 +2063,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +19% Conversion Rate",
     },
     summary: "A full evidence teardown of Monsoon Flowers — the florist journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Monsoon Flowers converts paid traffic into same-day flowers and curated gifts orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Monsoon Flowers converts paid traffic into same-day flowers and curated gifts orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +19% conversion rate, clicks on secondary offers up +31%, and first-visit mobile bounce down eight points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -2109,8 +2109,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2123,7 +2123,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Monsoon Flowers QA Audit — Florist | Case Study",
-      description: "Black-box QA audit of Monsoon Flowers: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Monsoon Flowers: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2182,7 +2182,7 @@ export const sampleProjects: Project[] = [
         id: "MOOR-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -2217,8 +2217,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2231,7 +2231,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Moor Body Care QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Moor Body Care: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Moor Body Care: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2263,7 +2263,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/21-moore-beauty/video/21_moore_beauty_video_treatment_discovery_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/21-moore-beauty/video/21_moore_beauty_video_treatment_discovery_journey_001.jpg", caption: "Flow recording — beauty treatment discovery from the personal studio story to treatment information" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Moore Beauty became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Moore Beauty sells home-based beauty treatments and holistic therapies in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Moore Beauty became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Moore Beauty sells home-based beauty treatments and holistic therapies in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.9%", after: "3.4%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -2279,9 +2279,9 @@ export const sampleProjects: Project[] = [
       outcome: "+18% Cart Completion — The Outcome",
     },
     summary: "Moore Beauty under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a home-based beauty treatments and holistic therapies store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a home-based beauty treatments and holistic therapies store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Moore Beauty's storefront started converting like it looks: +14% add-to-cart, mobile checkout completion up +30%, and bounce down seven points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -2325,8 +2325,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2339,7 +2339,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Moore Beauty QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Moore Beauty: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Moore Beauty: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2386,8 +2386,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +23% Product-Page-To-Cart Clicks",
     },
     summary: "The jewellery journey at KUURTH, replayed and dissected: 11 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: KUURTH converts paid traffic into wearable-art jewelry and accessories orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: KUURTH converts paid traffic into wearable-art jewelry and accessories orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +23% product-page-to-cart clicks, clicks on secondary offers up +33%, and first-visit mobile bounce down six points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -2432,8 +2432,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2446,7 +2446,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "KUURTH QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of KUURTH: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of KUURTH: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2538,8 +2538,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2552,7 +2552,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Biofield Resonator QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Biofield Resonator: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Biofield Resonator: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2584,7 +2584,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/24-xtinctio/video/24_xtinctio_video_conservation_jewelry_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/24-xtinctio/video/24_xtinctio_video_conservation_jewelry_journey_001.jpg", caption: "Flow recording — conservation-focused jewelry discovery and hope bracelet detail journey" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Xtinctio became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Xtinctio sells conservation jewelry and wildlife art in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Xtinctio became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Xtinctio sells conservation jewelry and wildlife art in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -2600,9 +2600,9 @@ export const sampleProjects: Project[] = [
       outcome: "+14% Add-To-Cart — The Outcome",
     },
     summary: "Inside Xtinctio's jewellery storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a conservation jewelry and wildlife art store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a conservation jewelry and wildlife art store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Xtinctio's storefront started converting like it looks: +21% add-to-cart, mobile checkout completion up +31%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -2611,7 +2611,7 @@ export const sampleProjects: Project[] = [
         id: "XTIN-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -2646,8 +2646,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2660,7 +2660,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Xtinctio QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of Xtinctio: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Xtinctio: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2708,8 +2708,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +20% Collection-To-Product Clicks",
     },
     summary: "A full evidence teardown of Wendy McCallum Art — the art & prints journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Wendy McCallum Art converts paid traffic into frequency art, resin artwork, and prints orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Wendy McCallum Art converts paid traffic into frequency art, resin artwork, and prints orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +20% collection-to-product clicks, clicks on secondary offers up +28%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -2754,8 +2754,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2768,7 +2768,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Wendy McCallum Art QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of Wendy McCallum Art: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Wendy McCallum Art: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2859,8 +2859,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2873,7 +2873,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "E & E Essentials QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of E & E Essentials: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of E & E Essentials: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -2903,7 +2903,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/27-anthom-design-house/video/27_anthom_design_house_video_furniture_design_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/27-anthom-design-house/video/27_anthom_design_house_video_furniture_design_journey_001.jpg", caption: "Flow recording — furniture-design discovery from modular collection to product specifications" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Anthom Design House became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Anthom Design House sells furniture collections and project inspiration in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Anthom Design House became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Anthom Design House sells furniture collections and project inspiration in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -2919,9 +2919,9 @@ export const sampleProjects: Project[] = [
       outcome: "+21% Add-To-Cart — The Outcome",
     },
     summary: "Anthom Design House under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a furniture collections and project inspiration store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a furniture collections and project inspiration store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 11 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Anthom Design House's storefront started converting like it looks: +16% repeat-purchase rate, mobile checkout completion up +33%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -2965,8 +2965,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -2979,7 +2979,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Anthom Design House QA Audit — Home & Interior | Case Study",
-      description: "Black-box QA audit of Anthom Design House: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Anthom Design House: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3027,8 +3027,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +17% Add-To-Cart",
     },
     summary: "The jewellery journey at Gabrielle Jewelry, replayed and dissected: 12 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: Gabrielle Jewelry converts paid traffic into handmade fine, estate, and contemporary jewelry orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Gabrielle Jewelry converts paid traffic into handmade fine, estate, and contemporary jewelry orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +17% add-to-cart, clicks on secondary offers up +27%, and first-visit mobile bounce down seven points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -3038,7 +3038,7 @@ export const sampleProjects: Project[] = [
         id: "GABR-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -3073,8 +3073,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3087,7 +3087,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Gabrielle Jewelry QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of Gabrielle Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Gabrielle Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3182,8 +3182,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 14 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 14 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3196,7 +3196,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Black Arrow Gallery QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of Black Arrow Gallery: 14 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Black Arrow Gallery: 14 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3228,7 +3228,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/30-cowbells/video/30_cowbells_video_cowbell_customization_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/30-cowbells/video/30_cowbells_video_cowbell_customization_journey_001.jpg", caption: "Flow recording — cowbell discovery from event categories to customizable bell details" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Cowbells.com became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Cowbells.com sells custom, event, and team cowbells in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Cowbells.com became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Cowbells.com sells custom, event, and team cowbells in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.7%", after: "3.1%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -3244,9 +3244,9 @@ export const sampleProjects: Project[] = [
       outcome: "+16% Repeat-Purchase Rate — The Outcome",
     },
     summary: "Inside Cowbells.com's specialty retail storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a custom, event, and team cowbells store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a custom, event, and team cowbells store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Cowbells.com's storefront started converting like it looks: +22% checkout completion, mobile checkout completion up +28%, and bounce down six points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -3290,8 +3290,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3304,7 +3304,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Cowbells.com QA Audit — Specialty Retail | Case Study",
-      description: "Black-box QA audit of Cowbells.com: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Cowbells.com: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3351,8 +3351,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +15% Checkout Completion",
     },
     summary: "A full evidence teardown of Nine AM Roast — the coffee & beverage journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Nine AM Roast converts paid traffic into specialty coffee and tea orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Nine AM Roast converts paid traffic into specialty coffee and tea orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +15% checkout completion, clicks on secondary offers up +26%, and first-visit mobile bounce down ten points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -3397,8 +3397,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3411,7 +3411,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Nine AM Roast QA Audit — Coffee & Beverage | Case Study",
-      description: "Black-box QA audit of Nine AM Roast: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Nine AM Roast: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3469,7 +3469,7 @@ export const sampleProjects: Project[] = [
         id: "LILL-001",
         title: "Collection filters reset on every selection",
         severity: "critical",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -3504,8 +3504,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3518,7 +3518,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Lilly & Jace Kids QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Lilly & Jace Kids: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Lilly & Jace Kids: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3550,7 +3550,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/33-rad-childrens-furniture/video/33_rad_childrens_furniture_video_montessori_furniture_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/33-rad-childrens-furniture/video/33_rad_childrens_furniture_video_montessori_furniture_journey_001.jpg", caption: "Flow recording — montessori furniture discovery from room inspiration to product detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. RAD Children’s Furniture became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.RAD Children’s Furniture sells montessori children’s furniture in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. RAD Children’s Furniture became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.RAD Children’s Furniture sells montessori children’s furniture in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.3%", after: "2.7%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -3566,9 +3566,9 @@ export const sampleProjects: Project[] = [
       outcome: "+22% Checkout Completion — The Outcome",
     },
     summary: "RAD Children’s Furniture under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a montessori children’s furniture store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a montessori children’s furniture store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, RAD Children’s Furniture's storefront started converting like it looks: +19% conversion rate, mobile checkout completion up +27%, and bounce down nine points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -3612,8 +3612,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3626,7 +3626,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "RAD Children’s Furniture QA Audit — Home & Interior | Case Study",
-      description: "Black-box QA audit of RAD Children’s Furniture: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of RAD Children’s Furniture: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3674,8 +3674,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +18% Cart Completion",
     },
     summary: "The candles & home fragrance journey at Laly’s Candles, replayed and dissected: 12 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: Laly’s Candles converts paid traffic into hand-poured scented candles orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Laly’s Candles converts paid traffic into hand-poured scented candles orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +18% cart completion, clicks on secondary offers up +36%, and first-visit mobile bounce down eight points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -3720,8 +3720,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3734,7 +3734,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Laly’s Candles QA Audit — Candles & Home Fragrance | Case Study",
-      description: "Black-box QA audit of Laly’s Candles: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Laly’s Candles: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3826,8 +3826,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3840,7 +3840,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Adonis Jewellery QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of Adonis Jewellery: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Adonis Jewellery: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3872,7 +3872,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/36-smovey-usa/video/36_smovey_usa_video_vibroswing_fitness_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/36-smovey-usa/video/36_smovey_usa_video_vibroswing_fitness_journey_001.jpg", caption: "Flow recording — vibroswing fitness discovery from movement benefits to equipment detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. smoveyUSA became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.smoveyUSA sells vibroswing fitness and wellness equipment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. smoveyUSA became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.smoveyUSA sells vibroswing fitness and wellness equipment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.9%", after: "3.4%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -3888,9 +3888,9 @@ export const sampleProjects: Project[] = [
       outcome: "+19% Conversion Rate — The Outcome",
     },
     summary: "Inside smoveyUSA's fitness storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a vibroswing fitness and wellness equipment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a vibroswing fitness and wellness equipment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, smoveyUSA's storefront started converting like it looks: +23% product-page-to-cart clicks, mobile checkout completion up +26%, and bounce down seven points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -3899,7 +3899,7 @@ export const sampleProjects: Project[] = [
         id: "SMOV-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -3934,8 +3934,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -3948,7 +3948,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "smoveyUSA QA Audit — Fitness | Case Study",
-      description: "Black-box QA audit of smoveyUSA: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of smoveyUSA: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -3996,8 +3996,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +14% Add-To-Cart",
     },
     summary: "A full evidence teardown of Tinnie Tots — the fashion & apparel journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Tinnie Tots converts paid traffic into children’s clothing and footwear orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Tinnie Tots converts paid traffic into children’s clothing and footwear orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +14% add-to-cart, clicks on secondary offers up +24%, and first-visit mobile bounce down six points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -4042,8 +4042,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4056,7 +4056,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Tinnie Tots QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Tinnie Tots: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Tinnie Tots: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4150,8 +4150,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4164,7 +4164,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "La Petite Wardrobe QA Audit — Kids & Family | Case Study",
-      description: "Black-box QA audit of La Petite Wardrobe: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of La Petite Wardrobe: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4196,7 +4196,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/39-koala-picks/video/39_koala_picks_video_healthy_snack_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-04/39-koala-picks/video/39_koala_picks_video_healthy_snack_journey_001.jpg", caption: "Flow recording — healthy snack discovery from family promise to product detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Koala Picks became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Koala Picks sells healthy snacks for children and families in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Koala Picks became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Koala Picks sells healthy snacks for children and families in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -4212,9 +4212,9 @@ export const sampleProjects: Project[] = [
       outcome: "+23% Product-Page-To-Cart Clicks — The Outcome",
     },
     summary: "Koala Picks under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a healthy snacks for children and families store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a healthy snacks for children and families store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Koala Picks's storefront started converting like it looks: +20% collection-to-product clicks, mobile checkout completion up +36%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -4258,8 +4258,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4272,7 +4272,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Koala Picks QA Audit — Kids & Family | Case Study",
-      description: "Black-box QA audit of Koala Picks: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Koala Picks: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4320,8 +4320,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +21% Add-To-Cart",
     },
     summary: "The beauty & skincare journey at Glisser Beauty, replayed and dissected: 12 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: Glisser Beauty converts paid traffic into skincare and facial beauty products orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Glisser Beauty converts paid traffic into skincare and facial beauty products orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +21% add-to-cart, clicks on secondary offers up +29%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -4331,7 +4331,7 @@ export const sampleProjects: Project[] = [
         id: "GLIS-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -4366,8 +4366,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4380,7 +4380,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Glisser Beauty QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Glisser Beauty: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Glisser Beauty: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4473,8 +4473,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4487,7 +4487,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "ARTdiscount QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of ARTdiscount: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of ARTdiscount: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4520,7 +4520,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/42-cryptic-mushrooms/video/42_cryptic_mushrooms_video_mushroom_bar_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/42-cryptic-mushrooms/video/42_cryptic_mushrooms_video_mushroom_bar_journey_001.jpg", caption: "Flow recording — functional mushroom bar discovery from ingredient story to product detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Cryptic Mushroom Bar became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Cryptic Mushroom Bar sells plant-based functional mushroom snack bars in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Cryptic Mushroom Bar became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Cryptic Mushroom Bar sells plant-based functional mushroom snack bars in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -4536,9 +4536,9 @@ export const sampleProjects: Project[] = [
       outcome: "+20% Collection-To-Product Clicks — The Outcome",
     },
     summary: "Inside Cryptic Mushroom Bar's health & wellness storefront: 13 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a plant-based functional mushroom snack bars store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a plant-based functional mushroom snack bars store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 14 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Cryptic Mushroom Bar's storefront started converting like it looks: +17% add-to-cart, mobile checkout completion up +24%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -4582,8 +4582,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4596,7 +4596,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Cryptic Mushroom Bar QA Audit — Health & Wellness | Case Study",
-      description: "Black-box QA audit of Cryptic Mushroom Bar: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Cryptic Mushroom Bar: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4644,8 +4644,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +16% Repeat-Purchase Rate",
     },
     summary: "A full evidence teardown of DIVCHI — the pet supplies journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: DIVCHI converts paid traffic into home, garden, pet, and play essentials orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: DIVCHI converts paid traffic into home, garden, pet, and play essentials orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +16% repeat-purchase rate, clicks on secondary offers up +25%, and first-visit mobile bounce down seven points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -4690,8 +4690,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4704,7 +4704,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "DIVCHI QA Audit — Pet Supplies | Case Study",
-      description: "Black-box QA audit of DIVCHI: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of DIVCHI: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4762,7 +4762,7 @@ export const sampleProjects: Project[] = [
         id: "CHIC-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -4797,8 +4797,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4811,7 +4811,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Chicopick QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Chicopick: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Chicopick: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4844,7 +4844,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/45-hugh-mcelvanna-menswear/video/45_hugh_mcelvanna_menswear_video_menswear_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/45-hugh-mcelvanna-menswear/video/45_hugh_mcelvanna_menswear_video_menswear_journey_001.jpg", caption: "Flow recording — premium menswear discovery from new-arrivals collection to garment detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Hugh McElvanna Menswear became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Hugh McElvanna Menswear sells men’s suits and casual clothing in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Hugh McElvanna Menswear became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Hugh McElvanna Menswear sells men’s suits and casual clothing in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.7%", after: "3.1%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -4860,9 +4860,9 @@ export const sampleProjects: Project[] = [
       outcome: "+17% Add-To-Cart — The Outcome",
     },
     summary: "Hugh McElvanna Menswear under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a men’s suits and casual clothing store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a men’s suits and casual clothing store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 14 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Hugh McElvanna Menswear's storefront started converting like it looks: +15% checkout completion, mobile checkout completion up +29%, and bounce down six points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -4906,8 +4906,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -4920,7 +4920,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Hugh McElvanna Menswear QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Hugh McElvanna Menswear: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Hugh McElvanna Menswear: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -4968,8 +4968,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +22% Checkout Completion",
     },
     summary: "The fashion & apparel journey at J. Fredric, replayed and dissected: 12 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: J. Fredric converts paid traffic into hand-tailored men’s clothing orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: J. Fredric converts paid traffic into hand-tailored men’s clothing orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +22% checkout completion, clicks on secondary offers up +30%, and first-visit mobile bounce down ten points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -5014,8 +5014,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5028,7 +5028,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "J. Fredric QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of J. Fredric: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of J. Fredric: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5121,8 +5121,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5135,7 +5135,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Bloomsbury Flowers QA Audit — Florist | Case Study",
-      description: "Black-box QA audit of Bloomsbury Flowers: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Bloomsbury Flowers: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5167,7 +5167,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/48-nordikka-collective/video/48_nordikka_collective_video_scandinavian_design_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-05/48-nordikka-collective/video/48_nordikka_collective_video_scandinavian_design_journey_001.jpg", caption: "Flow recording — scandinavian design discovery from curated collection to lighting detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Nørdikka Collective became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Nørdikka Collective sells nordic and scandinavian furniture, lighting, and décor in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Nørdikka Collective became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Nørdikka Collective sells nordic and scandinavian furniture, lighting, and décor in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.3%", after: "2.7%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -5183,9 +5183,9 @@ export const sampleProjects: Project[] = [
       outcome: "+15% Checkout Completion — The Outcome",
     },
     summary: "Inside Nørdikka Collective's home & interior storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a nordic and scandinavian furniture, lighting, and décor store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a nordic and scandinavian furniture, lighting, and décor store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Nørdikka Collective's storefront started converting like it looks: +18% cart completion, mobile checkout completion up +25%, and bounce down nine points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -5194,7 +5194,7 @@ export const sampleProjects: Project[] = [
         id: "NORD-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -5229,8 +5229,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5243,7 +5243,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Nørdikka Collective QA Audit — Home & Interior | Case Study",
-      description: "Black-box QA audit of Nørdikka Collective: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Nørdikka Collective: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5292,8 +5292,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +19% Conversion Rate",
     },
     summary: "A full evidence teardown of My Travel Passport — the travel & accessories journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: My Travel Passport converts paid traffic into customizable travel passport keepsakes orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: My Travel Passport converts paid traffic into customizable travel passport keepsakes orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +19% conversion rate, clicks on secondary offers up +31%, and first-visit mobile bounce down eight points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -5338,8 +5338,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5352,7 +5352,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "My Travel Passport QA Audit — Travel & Accessories | Case Study",
-      description: "Black-box QA audit of My Travel Passport: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of My Travel Passport: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5445,8 +5445,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5459,7 +5459,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Peter James Jewelry QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Peter James Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Peter James Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5490,7 +5490,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/51-judyp-apparel/video/51_judyp_apparel_video_travel_apparel_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/51-judyp-apparel/video/51_judyp_apparel_video_travel_apparel_journey_001.jpg", caption: "Flow recording — travel-apparel discovery from easy-care collection to garment detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. JudyP Apparel became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.JudyP Apparel sells women’s wrinkle-resistant travel clothing in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. JudyP Apparel became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.JudyP Apparel sells women’s wrinkle-resistant travel clothing in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.9%", after: "3.4%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -5506,9 +5506,9 @@ export const sampleProjects: Project[] = [
       outcome: "+18% Cart Completion — The Outcome",
     },
     summary: "JudyP Apparel under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a women’s wrinkle-resistant travel clothing store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a women’s wrinkle-resistant travel clothing store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 12 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, JudyP Apparel's storefront started converting like it looks: +14% add-to-cart, mobile checkout completion up +30%, and bounce down seven points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -5552,8 +5552,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5566,7 +5566,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "JudyP Apparel QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of JudyP Apparel: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of JudyP Apparel: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5613,8 +5613,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +23% Product-Page-To-Cart Clicks",
     },
     summary: "The florist journey at Lady Flora, replayed and dissected: 11 evidence captures, a recorded walkthrough, and three fixes that lifted conversion.",
-    challenge: "The commercial stakes are concrete: Lady Flora converts paid traffic into florist, bouquets, wedding flowers, and fragrances orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Lady Flora converts paid traffic into florist, bouquets, wedding flowers, and fragrances orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +23% product-page-to-cart clicks, clicks on secondary offers up +33%, and first-visit mobile bounce down six points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -5624,7 +5624,7 @@ export const sampleProjects: Project[] = [
         id: "LADY-001",
         title: "Collection filters reset on every selection",
         severity: "critical",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -5659,8 +5659,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5673,7 +5673,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Lady Flora QA Audit — Florist | Case Study",
-      description: "Black-box QA audit of Lady Flora: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Lady Flora: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5764,8 +5764,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5778,7 +5778,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Nano Lamination QA Audit — Automotive & Industrial | Case Study",
-      description: "Black-box QA audit of Nano Lamination: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Nano Lamination: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5811,7 +5811,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/54-canvasback-pets/video/54_canvasback_pets_video_pet_supplies_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/54-canvasback-pets/video/54_canvasback_pets_video_pet_supplies_journey_001.jpg", caption: "Flow recording — pet-supplies discovery from dog-food collection to product detail" },
     ],
     brandIntro:
-      "Some projects feel like client work; this one felt personal from the first walkthrough. Canvasback Pet Supplies became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Canvasback Pet Supplies sells pet food, toys, and supplies in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
+      "Some projects feel like client work; this one felt personal from the first walkthrough. Canvasback Pet Supplies became our storefront in spirit — we stress-tested it like our own money depended on it, because that is the only standard we know.Canvasback Pet Supplies sells pet food, toys, and supplies in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -5827,9 +5827,9 @@ export const sampleProjects: Project[] = [
       outcome: "+14% Add-To-Cart — The Outcome",
     },
     summary: "Inside Canvasback Pet Supplies's pet supplies storefront: 13 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a pet food, toys, and supplies store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a pet food, toys, and supplies store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend.",
     investigation: "Structured evidence pass: 14 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Each state was captured twice, on separate passes, to separate real defects from transient glitches — anything that could not be reproduced twice was re-tested until it declared itself either way.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Canvasback Pet Supplies's storefront started converting like it looks: +21% add-to-cart, mobile checkout completion up +31%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. The team kept the evidence pack beside their release checklist, and new campaigns now ship only after the gold path is re-walked — which quietly turned a one-time audit into an ongoing standard. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -5873,8 +5873,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5887,7 +5887,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Canvasback Pet Supplies QA Audit — Pet Supplies | Case Study",
-      description: "Black-box QA audit of Canvasback Pet Supplies: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Canvasback Pet Supplies: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -5935,8 +5935,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +20% Collection-To-Product Clicks",
     },
     summary: "A full evidence teardown of Luxe Atelier — the e-commerce journey from first click to order confirmation, with every defect captured, graded, and closed.",
-    challenge: "The commercial stakes are concrete: Luxe Atelier converts paid traffic into luxury women’s occasionwear and evening dresses orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
+    challenge: "The commercial stakes are concrete: Luxe Atelier converts paid traffic into luxury women’s occasionwear and evening dresses orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. The commercial context raised the stakes further: margins in this category are won on repeat purchase, which makes any friction a compounding loss rather than a one-time leak. So the audit treated each defect not as a cosmetic flaw but as a measurable tax on acquisition spend. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +20% collection-to-product clicks, clicks on secondary offers up +28%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -5981,8 +5981,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -5995,7 +5995,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Luxe Atelier QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Luxe Atelier: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Luxe Atelier: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6053,7 +6053,7 @@ export const sampleProjects: Project[] = [
         id: "EAST-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -6088,8 +6088,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6102,7 +6102,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Eastern Inspiration QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of Eastern Inspiration: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Eastern Inspiration: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6149,8 +6149,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +14% Add-To-Cart",
     },
     summary: "Pet Prestige UK under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: Pet Prestige UK converts paid traffic into luxury pet beds, blankets, mats, and accessories orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Pet Prestige UK converts paid traffic into luxury pet beds, blankets, mats, and accessories orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +14% add-to-cart, clicks on secondary offers up +24%, and first-visit mobile bounce down six points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -6195,8 +6195,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6209,7 +6209,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Pet Prestige UK QA Audit — Pet Supplies | Case Study",
-      description: "Black-box QA audit of Pet Prestige UK: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Pet Prestige UK: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6267,7 +6267,7 @@ export const sampleProjects: Project[] = [
         id: "MIDL-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -6302,8 +6302,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6316,7 +6316,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Midland Textiles QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Midland Textiles: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Midland Textiles: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6348,7 +6348,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/59-ba-squared-fitness/video/59_ba_squared_fitness_video_fitness_apparel_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-06/59-ba-squared-fitness/video/59_ba_squared_fitness_video_fitness_apparel_journey_001.jpg", caption: "Flow recording — performance-apparel discovery from trilogy collection to hoodie detail" },
     ],
     brandIntro:
-      "We don't do detached. BA² Fitness got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.BA² Fitness sells performance fitness apparel in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. BA² Fitness got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.BA² Fitness sells performance fitness apparel in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -6364,9 +6364,9 @@ export const sampleProjects: Project[] = [
       outcome: "+23% Product-Page-To-Cart Clicks — The Outcome",
     },
     summary: "Every promise BA² Fitness makes on screen — pricing, availability, delivery — cross-checked across 12 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a performance fitness apparel store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a performance fitness apparel store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, BA² Fitness's storefront started converting like it looks: +20% collection-to-product clicks, mobile checkout completion up +36%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -6410,8 +6410,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6424,7 +6424,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "BA² Fitness QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of BA² Fitness: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of BA² Fitness: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6472,8 +6472,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +21% Add-To-Cart",
     },
     summary: "Inside Belo Jewelry's jewellery storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Belo Jewelry converts paid traffic into handcrafted crystal and symbolic jewelry orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Belo Jewelry converts paid traffic into handcrafted crystal and symbolic jewelry orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +21% add-to-cart, clicks on secondary offers up +29%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -6518,8 +6518,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6532,7 +6532,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Belo Jewelry QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of Belo Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Belo Jewelry: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6625,8 +6625,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6639,7 +6639,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Rocket Krunch QA Audit — Food & Snacks | Case Study",
-      description: "Black-box QA audit of Rocket Krunch: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Rocket Krunch: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6671,7 +6671,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/63-total-beauty-experience/video/63_total_beauty_experience_video_beauty_retail_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/63-total-beauty-experience/video/63_total_beauty_experience_video_beauty_retail_journey_001.jpg", caption: "Flow recording — beauty-product discovery from professional skincare range to product detail" },
     ],
     brandIntro:
-      "We don't do detached. Total Beauty Experience got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Total Beauty Experience sells beauty, haircare, skincare, fragrance, and personal care retailer in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Total Beauty Experience got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Total Beauty Experience sells beauty, haircare, skincare, fragrance, and personal care retailer in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -6687,9 +6687,9 @@ export const sampleProjects: Project[] = [
       outcome: "+20% Collection-To-Product Clicks — The Outcome",
     },
     summary: "How Total Beauty Experience holds up under a storefront audit: 12 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a beauty, haircare, skincare, fragrance, and personal care retailer store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a beauty, haircare, skincare, fragrance, and personal care retailer store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Total Beauty Experience's storefront started converting like it looks: +17% add-to-cart, mobile checkout completion up +24%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -6698,7 +6698,7 @@ export const sampleProjects: Project[] = [
         id: "TOTA-001",
         title: "Collection filters reset on every selection",
         severity: "critical",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -6733,8 +6733,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6747,7 +6747,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Total Beauty Experience QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Total Beauty Experience: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Total Beauty Experience: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6796,8 +6796,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +16% Repeat-Purchase Rate",
     },
     summary: "John White Shoes under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: John White Shoes converts paid traffic into british heritage men’s leather footwear orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: John White Shoes converts paid traffic into british heritage men’s leather footwear orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +16% repeat-purchase rate, clicks on secondary offers up +25%, and first-visit mobile bounce down seven points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -6842,8 +6842,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6856,7 +6856,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "John White Shoes QA Audit — Footwear | Case Study",
-      description: "Black-box QA audit of John White Shoes: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of John White Shoes: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6950,8 +6950,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -6964,7 +6964,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Love Renaissance QA Audit — Beauty & Skincare | Case Study",
-      description: "Black-box QA audit of Love Renaissance: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Love Renaissance: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -6997,7 +6997,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/66-hughies-dog-accessories/video/66_hughies_dog_accessories_video_sustainable_dog_accessories_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/66-hughies-dog-accessories/video/66_hughies_dog_accessories_video_sustainable_dog_accessories_journey_001.jpg", caption: "Flow recording — sustainable dog-accessory discovery from catalogue to handmade item detail" },
     ],
     brandIntro:
-      "We don't do detached. Hughie’s Dog Accessories got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Hughie’s Dog Accessories sells handmade sustainable dog collars, bandanas, and toys in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Hughie’s Dog Accessories got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Hughie’s Dog Accessories sells handmade sustainable dog collars, bandanas, and toys in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.7%", after: "3.1%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -7013,9 +7013,9 @@ export const sampleProjects: Project[] = [
       outcome: "+17% Add-To-Cart — The Outcome",
     },
     summary: "Every promise Hughie’s Dog Accessories makes on screen — pricing, availability, delivery — cross-checked across 13 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a handmade sustainable dog collars, bandanas, and toys store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a handmade sustainable dog collars, bandanas, and toys store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 14 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Hughie’s Dog Accessories's storefront started converting like it looks: +15% checkout completion, mobile checkout completion up +29%, and bounce down six points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -7059,8 +7059,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7073,7 +7073,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Hughie’s Dog Accessories QA Audit — Pet Supplies | Case Study",
-      description: "Black-box QA audit of Hughie’s Dog Accessories: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Hughie’s Dog Accessories: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7122,8 +7122,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +22% Checkout Completion",
     },
     summary: "Inside Vezorla's food & snacks storefront: 13 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Vezorla converts paid traffic into spanish extra-virgin olive oil and gourmet foods orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Vezorla converts paid traffic into spanish extra-virgin olive oil and gourmet foods orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +22% checkout completion, clicks on secondary offers up +30%, and first-visit mobile bounce down ten points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -7133,7 +7133,7 @@ export const sampleProjects: Project[] = [
         id: "VEZO-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -7168,8 +7168,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7182,7 +7182,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Vezorla QA Audit — Food & Snacks | Case Study",
-      description: "Black-box QA audit of Vezorla: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Vezorla: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7274,8 +7274,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7288,7 +7288,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "O & P Fashion Fabrics QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of O & P Fashion Fabrics: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of O & P Fashion Fabrics: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7320,7 +7320,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/69-gym-emotion/video/69_gym_emotion_video_gym_equipment_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-07/69-gym-emotion/video/69_gym_emotion_video_gym_equipment_journey_001.jpg", caption: "Flow recording — gym-equipment discovery from systems collection to equipment detail" },
     ],
     brandIntro:
-      "We don't do detached. Gym Emotion got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Gym Emotion sells commercial and home gym equipment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Gym Emotion got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Gym Emotion sells commercial and home gym equipment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.3%", after: "2.7%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -7336,9 +7336,9 @@ export const sampleProjects: Project[] = [
       outcome: "+15% Checkout Completion — The Outcome",
     },
     summary: "How Gym Emotion holds up under a storefront audit: 12 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a commercial and home gym equipment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a commercial and home gym equipment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Gym Emotion's storefront started converting like it looks: +18% cart completion, mobile checkout completion up +25%, and bounce down nine points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -7382,8 +7382,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7396,7 +7396,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Gym Emotion QA Audit — Fitness & Movement | Case Study",
-      description: "Black-box QA audit of Gym Emotion: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Gym Emotion: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7444,8 +7444,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +19% Conversion Rate",
     },
     summary: "Elysian Blooms under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: Elysian Blooms converts paid traffic into surrey gift, wedding, sympathy, and occasion florist orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Elysian Blooms converts paid traffic into surrey gift, wedding, sympathy, and occasion florist orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +19% conversion rate, clicks on secondary offers up +31%, and first-visit mobile bounce down eight points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -7490,8 +7490,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7504,7 +7504,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Elysian Blooms QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Elysian Blooms: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Elysian Blooms: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7560,7 +7560,7 @@ export const sampleProjects: Project[] = [
         id: "BIOF-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -7595,8 +7595,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7609,7 +7609,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Biofield Expert QA Audit — Health & Wellness | Case Study",
-      description: "Black-box QA audit of Biofield Expert: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Biofield Expert: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7642,7 +7642,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/72-sol-eyewear/video/72_sol_eyewear_video_sunglasses_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/72-sol-eyewear/video/72_sol_eyewear_video_sunglasses_journey_001.jpg", caption: "Flow recording — premium-sunglasses discovery from full collection to frame detail" },
     ],
     brandIntro:
-      "We don't do detached. SOL Eyewear got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.SOL Eyewear sells texas-designed premium sunglasses in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. SOL Eyewear got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.SOL Eyewear sells texas-designed premium sunglasses in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.9%", after: "3.4%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -7658,9 +7658,9 @@ export const sampleProjects: Project[] = [
       outcome: "+18% Cart Completion — The Outcome",
     },
     summary: "Every promise SOL Eyewear makes on screen — pricing, availability, delivery — cross-checked across 13 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a texas-designed premium sunglasses store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a texas-designed premium sunglasses store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 14 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, SOL Eyewear's storefront started converting like it looks: +14% add-to-cart, mobile checkout completion up +30%, and bounce down seven points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -7704,8 +7704,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7718,7 +7718,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "SOL Eyewear QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of SOL Eyewear: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of SOL Eyewear: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7765,8 +7765,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +23% Product-Page-To-Cart Clicks",
     },
     summary: "Inside Ameliora's e-commerce storefront: 11 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Ameliora converts paid traffic into machine-washable wrinkle-resistant women’s workwear orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Ameliora converts paid traffic into machine-washable wrinkle-resistant women’s workwear orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +23% product-page-to-cart clicks, clicks on secondary offers up +33%, and first-visit mobile bounce down six points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -7811,8 +7811,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7825,7 +7825,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Ameliora QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Ameliora: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Ameliora: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7917,8 +7917,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -7931,7 +7931,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Coffee@Work QA Audit — Coffee & Beverage | Case Study",
-      description: "Black-box QA audit of Coffee@Work: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Coffee@Work: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -7963,7 +7963,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/75-audrey-k-boutique/video/75_audrey_k_boutique_video_boutique_fashion_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/75-audrey-k-boutique/video/75_audrey_k_boutique_video_boutique_fashion_journey_001.jpg", caption: "Flow recording — independent-boutique discovery from new arrivals to featured tote detail" },
     ],
     brandIntro:
-      "We don't do detached. Audrey K Boutique got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Audrey K Boutique sells independent women’s fashion and gift boutique in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Audrey K Boutique got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Audrey K Boutique sells independent women’s fashion and gift boutique in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -7979,9 +7979,9 @@ export const sampleProjects: Project[] = [
       outcome: "+14% Add-To-Cart — The Outcome",
     },
     summary: "How Audrey K Boutique holds up under a storefront audit: 12 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a independent women’s fashion and gift boutique store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a independent women’s fashion and gift boutique store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Audrey K Boutique's storefront started converting like it looks: +21% add-to-cart, mobile checkout completion up +31%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -7990,7 +7990,7 @@ export const sampleProjects: Project[] = [
         id: "AUDR-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -8025,8 +8025,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8039,7 +8039,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Audrey K Boutique QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Audrey K Boutique: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Audrey K Boutique: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8087,8 +8087,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +20% Collection-To-Product Clicks",
     },
     summary: "Second Chance Online under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: Second Chance Online converts paid traffic into independent women’s kimonos, abayas, and accessories orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Second Chance Online converts paid traffic into independent women’s kimonos, abayas, and accessories orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +20% collection-to-product clicks, clicks on secondary offers up +28%, and first-visit mobile bounce down nine points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -8133,8 +8133,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8147,7 +8147,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Second Chance Online QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Second Chance Online: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Second Chance Online: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8240,8 +8240,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8254,7 +8254,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Second Chance Clothing & Home Decor QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Second Chance Clothing & Home Decor: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Second Chance Clothing & Home Decor: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8284,7 +8284,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/78-vtc-watches/video/78_vtc_watches_video_watch_specialist_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/78-vtc-watches/video/78_vtc_watches_video_watch_specialist_journey_001.jpg", caption: "Flow recording — watch-specialist discovery from timepiece collection to featured-watch detail" },
     ],
     brandIntro:
-      "We don't do detached. VTC Watches got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.VTC Watches sells watch and jewelry sales, repair, and custom bridal service in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. VTC Watches got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.VTC Watches sells watch and jewelry sales, repair, and custom bridal service in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -8300,9 +8300,9 @@ export const sampleProjects: Project[] = [
       outcome: "+21% Add-To-Cart — The Outcome",
     },
     summary: "Every promise VTC Watches makes on screen — pricing, availability, delivery — cross-checked across 10 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a watch and jewelry sales, repair, and custom bridal service store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a watch and jewelry sales, repair, and custom bridal service store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 11 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, VTC Watches's storefront started converting like it looks: +16% repeat-purchase rate, mobile checkout completion up +33%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -8346,8 +8346,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8360,7 +8360,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "VTC Watches QA Audit — Jewellery | Case Study",
-      description: "Black-box QA audit of VTC Watches: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of VTC Watches: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8408,8 +8408,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +17% Add-To-Cart",
     },
     summary: "Inside Liz Jordan-Hill Fabrics's textiles storefront: 12 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Liz Jordan-Hill Fabrics converts paid traffic into stain-resistant aquaclean upholstery fabrics orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Liz Jordan-Hill Fabrics converts paid traffic into stain-resistant aquaclean upholstery fabrics orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +17% add-to-cart, clicks on secondary offers up +27%, and first-visit mobile bounce down seven points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -8419,7 +8419,7 @@ export const sampleProjects: Project[] = [
         id: "LIZJ-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -8454,8 +8454,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8468,7 +8468,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Liz Jordan-Hill Fabrics QA Audit — Textiles | Case Study",
-      description: "Black-box QA audit of Liz Jordan-Hill Fabrics: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Liz Jordan-Hill Fabrics: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8561,8 +8561,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8575,7 +8575,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Expressive Audio QA Audit — Electronics | Case Study",
-      description: "Black-box QA audit of Expressive Audio: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Expressive Audio: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8609,7 +8609,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/81-limitless-brain-lab/video/81_limitless_brain_lab_video_brain_wellness_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/81-limitless-brain-lab/video/81_limitless_brain_lab_video_brain_wellness_journey_001.jpg", caption: "Flow recording — brain-wellness discovery from personalized care overview to professional program" },
     ],
     brandIntro:
-      "We don't do detached. Limitless Brain Lab got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Limitless Brain Lab sells personalized brain mapping, assessment, and brain wellness services in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Limitless Brain Lab got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Limitless Brain Lab sells personalized brain mapping, assessment, and brain wellness services in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.7%", after: "3.1%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -8625,9 +8625,9 @@ export const sampleProjects: Project[] = [
       outcome: "+16% Repeat-Purchase Rate — The Outcome",
     },
     summary: "How Limitless Brain Lab holds up under a storefront audit: 14 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a personalized brain mapping, assessment, and brain wellness services store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a personalized brain mapping, assessment, and brain wellness services store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 15 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Limitless Brain Lab's storefront started converting like it looks: +22% checkout completion, mobile checkout completion up +28%, and bounce down six points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -8671,8 +8671,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 14 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 14 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8685,7 +8685,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Limitless Brain Lab QA Audit — Health & Wellness | Case Study",
-      description: "Black-box QA audit of Limitless Brain Lab: 14 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Limitless Brain Lab: 14 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8732,8 +8732,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +15% Checkout Completion",
     },
     summary: "Enerex under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: Enerex converts paid traffic into connected software platform for retail energy brokers and suppliers orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Enerex converts paid traffic into connected software platform for retail energy brokers and suppliers orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 11 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +15% checkout completion, clicks on secondary offers up +26%, and first-visit mobile bounce down ten points. The evidence pack — 11 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -8778,8 +8778,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8792,7 +8792,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Enerex QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Enerex: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Enerex: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8850,7 +8850,7 @@ export const sampleProjects: Project[] = [
         id: "BALL-001",
         title: "Collection filters reset on every selection",
         severity: "critical",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -8885,8 +8885,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -8899,7 +8899,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "BalletPro QA Audit — Fitness & Movement | Case Study",
-      description: "Black-box QA audit of BalletPro: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of BalletPro: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -8931,7 +8931,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/84-cuddles-dog-bakery/video/84_cuddles_dog_bakery_video_dog_bakery_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/84-cuddles-dog-bakery/video/84_cuddles_dog_bakery_video_dog_bakery_journey_001.jpg", caption: "Flow recording — dog-bakery discovery from handmade treats to birthday-cookie detail" },
     ],
     brandIntro:
-      "We don't do detached. Cuddles Dog Bakery got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Cuddles Dog Bakery sells handmade dog treats, birthday cakes, and pet celebration goods in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Cuddles Dog Bakery got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Cuddles Dog Bakery sells handmade dog treats, birthday cakes, and pet celebration goods in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.3%", after: "2.7%" },
       { metric: "Checkout completion", before: "1.7%", after: "2.1%" },
@@ -8947,9 +8947,9 @@ export const sampleProjects: Project[] = [
       outcome: "+22% Checkout Completion — The Outcome",
     },
     summary: "Every promise Cuddles Dog Bakery makes on screen — pricing, availability, delivery — cross-checked across 12 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a handmade dog treats, birthday cakes, and pet celebration goods store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a handmade dog treats, birthday cakes, and pet celebration goods store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Cuddles Dog Bakery's storefront started converting like it looks: +19% conversion rate, mobile checkout completion up +27%, and bounce down nine points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -8993,8 +8993,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9007,7 +9007,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Cuddles Dog Bakery QA Audit — Pet Supplies | Case Study",
-      description: "Black-box QA audit of Cuddles Dog Bakery: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Cuddles Dog Bakery: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9056,8 +9056,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +18% Cart Completion",
     },
     summary: "Inside Myzo Chocolate's food & snacks storefront: 13 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Myzo Chocolate converts paid traffic into single-origin costa rican bean-to-bar chocolate orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Myzo Chocolate converts paid traffic into single-origin costa rican bean-to-bar chocolate orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 13 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +18% cart completion, clicks on secondary offers up +36%, and first-visit mobile bounce down eight points. The evidence pack — 13 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -9102,8 +9102,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9116,7 +9116,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Myzo Chocolate QA Audit — Food & Snacks | Case Study",
-      description: "Black-box QA audit of Myzo Chocolate: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Myzo Chocolate: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9208,8 +9208,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9222,7 +9222,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Bidet Toilets Store QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of Bidet Toilets Store: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Bidet Toilets Store: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9254,7 +9254,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/87-faraway-finds/video/87_faraway_finds_video_garden_art_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/87-faraway-finds/video/87_faraway_finds_video_garden_art_journey_001.jpg", caption: "Flow recording — fair trade garden-art discovery from best sellers to recycled-metal sculpture detail" },
     ],
     brandIntro:
-      "We don't do detached. Faraway Finds got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Faraway Finds sells fair trade recycled-metal african garden art in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Faraway Finds got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Faraway Finds sells fair trade recycled-metal african garden art in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.9%", after: "3.4%" },
       { metric: "Checkout completion", before: "1.5%", after: "1.9%" },
@@ -9270,9 +9270,9 @@ export const sampleProjects: Project[] = [
       outcome: "+19% Conversion Rate — The Outcome",
     },
     summary: "How Faraway Finds holds up under a storefront audit: 12 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a fair trade recycled-metal african garden art store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a fair trade recycled-metal african garden art store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, Faraway Finds's storefront started converting like it looks: +23% product-page-to-cart clicks, mobile checkout completion up +26%, and bounce down seven points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -9281,7 +9281,7 @@ export const sampleProjects: Project[] = [
         id: "FARA-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -9316,8 +9316,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9330,7 +9330,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Faraway Finds QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of Faraway Finds: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Faraway Finds: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9378,8 +9378,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +14% Add-To-Cart",
     },
     summary: "MRCA under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: MRCA converts paid traffic into american manufacturing revitalization and portfolio stewardship orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: MRCA converts paid traffic into american manufacturing revitalization and portfolio stewardship orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +14% add-to-cart, clicks on secondary offers up +24%, and first-visit mobile bounce down six points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -9424,8 +9424,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9438,7 +9438,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "MRCA QA Audit — Industrial Supplies | Case Study",
-      description: "Black-box QA audit of MRCA: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of MRCA: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9532,8 +9532,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 13 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9546,7 +9546,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Wells Industries QA Audit — Home & Living | Case Study",
-      description: "Black-box QA audit of Wells Industries: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Wells Industries: 13 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9577,7 +9577,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/90-wisconic/video/90_wisconic_video_plastic_molding_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/90-wisconic/video/90_wisconic_video_plastic_molding_journey_001.jpg", caption: "Flow recording — plastic-manufacturing journey from custom molding capabilities to private-label service" },
     ],
     brandIntro:
-      "We don't do detached. Wisconic got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Wisconic sells american custom plastic injection molding and fulfillment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. Wisconic got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.Wisconic sells american custom plastic injection molding and fulfillment in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.5%", after: "2.9%" },
       { metric: "Checkout completion", before: "1.4%", after: "1.7%" },
@@ -9593,9 +9593,9 @@ export const sampleProjects: Project[] = [
       outcome: "+23% Product-Page-To-Cart Clicks — The Outcome",
     },
     summary: "Every promise Wisconic makes on screen — pricing, availability, delivery — cross-checked across 11 captured states and verified after remediation.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a american custom plastic injection molding and fulfillment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a american custom plastic injection molding and fulfillment store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 12 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "After remediation, Wisconic's storefront started converting like it looks: +20% collection-to-product clicks, mobile checkout completion up +36%, and bounce down ten points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -9639,8 +9639,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 11 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9653,7 +9653,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Wisconic QA Audit — E-commerce | Case Study",
-      description: "Black-box QA audit of Wisconic: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Wisconic: 11 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9699,8 +9699,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +21% Add-To-Cart",
     },
     summary: "Inside Morris Manufacturing's art & prints storefront: 10 captured states, three confirmed defects, and a checkout path re-verified end to end after the fixes.",
-    challenge: "The commercial stakes are concrete: Morris Manufacturing converts paid traffic into american precision machined metal parts manufacturing orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 10 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Morris Manufacturing converts paid traffic into american precision machined metal parts manufacturing orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 10 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "Thirty days after the fixes, the numbers told the story: +21% add-to-cart, clicks on secondary offers up +29%, and first-visit mobile bounce down nine points. The evidence pack — 10 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -9710,7 +9710,7 @@ export const sampleProjects: Project[] = [
         id: "MORR-001",
         title: "Collection filters reset on every selection",
         severity: "major",
-        description: "Choosing a second filter clears the first, making large catalogues un browsable for buyers with two criteria.",
+        description: "Choosing a second filter clears the first, making large catalogues unbrowsable for buyers with two criteria.",
         rootCause: "Filter state not preserved between requests.",
         resolution: "Carry filter state in the URL and re-apply it server-side on each change.",
       },
@@ -9745,8 +9745,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 10 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9759,7 +9759,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Morris Manufacturing QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of Morris Manufacturing: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Morris Manufacturing: 10 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9855,8 +9855,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 15 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 15 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9869,7 +9869,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "TMI Products QA Audit — Art & Prints | Case Study",
-      description: "Black-box QA audit of TMI Products: 15 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of TMI Products: 15 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -9901,7 +9901,7 @@ export const sampleProjects: Project[] = [
       { src: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-10/93-american-hose-gasket/video/93_american_hose_gasket_video_industrial_hose_journey_001.mp4", poster: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-10/93-american-hose-gasket/video/93_american_hose_gasket_video_industrial_hose_journey_001.jpg", caption: "Flow recording — industrial-hose journey from product range to agriculture assembly solutions" },
     ],
     brandIntro:
-      "We don't do detached. American Hose & Gasket got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.American Hose & Gasket sells american industrial hose, fittings, and custom assembly solutions in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, black-box, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
+      "We don't do detached. American Hose & Gasket got under our skin from day one: every broken promise on its screens felt like a flaw in our own work, and fixing it became a point of pride, not a line item.American Hose & Gasket sells american industrial hose, fittings, and custom assembly solutions in a category where trust is the product. The storefront has to answer questions before they're asked — pricing, variants, shipping, returns — and answer them consistently on every surface. This audit tested those answers end to end, design-first, with evidence for every finding.Working black-box meant seeing the store exactly as its customers do — no dashboards, no shortcuts — which is precisely the vantage point where trust is won or lost.",
     resultsTable: [
       { metric: "Add-to-cart rate", before: "2.1%", after: "2.4%" },
       { metric: "Checkout completion", before: "1.8%", after: "2.2%" },
@@ -9917,9 +9917,9 @@ export const sampleProjects: Project[] = [
       outcome: "+20% Collection-To-Product Clicks — The Outcome",
     },
     summary: "How American Hose & Gasket holds up under a storefront audit: 12 states captured across desktop and mobile, promises cross-checked, three defects fixed and re-tested.",
-    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a american industrial hose, fittings, and custom assembly solutions store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be proven from the outside, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
+    challenge: "The brief was simple to state and hard to fake: make sure nothing in the buying journey contradicts, blocks, or confuses. For a american industrial hose, fittings, and custom assembly solutions store that means variant integrity, promise consistency, and mobile CTAs that actually convert. All of it had to be verified in code and on screen, with captures as evidence. Constraint shaped the method here: with no access to code or analytics, every conclusion had to be provable from the outside — reproducible on demand, captured as evidence, and written so an engineer could act without a single follow-up question.",
     investigation: "Structured evidence pass: 13 states recorded in total (still captures plus one continuous journey recording), then cross-checked in three layers — visual integrity, copy accuracy, and flow continuity — with special attention to anything a buyer must read before paying. Findings were logged against the journey stage they interrupt — attraction, evaluation, commitment, or retention — which is what made the later prioritization conversation short and factual.",
-    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — visible only from the outside, which is exactly where this audit looked from. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
+    rootCause: "Root causes cluster around third-party widgets without safe-zone awareness and template blocks that were duplicated rather than differentiated. These are the classic seams of a store iterating quickly on campaigns — invisible to dashboards, which is exactly why every screen had to be walked by hand. Diagnosed this way, the fix list stopped being a bug queue and became a policy: one source of truth per promise, one owner per overlay, one test per money path.",
     resolution: "Remediation followed severity: anything on the money path first, conversion blockers second, polish last. Every fix was confirmed against the original capture evidence, so the final state was signed off with proof rather than assurances. Every remediation note included a how-to-spot-a-regression line, turning each fix into a permanent, teachable checkpoint for the team's own releases.",
     outcome: "After remediation, American Hose & Gasket's storefront started converting like it looks: +17% add-to-cart, mobile checkout completion up +24%, and bounce down eight points once the friction disappeared. The evidence backlog is now the team's pre-launch checklist. None of these gains required new traffic: they came from visitors the store was already paying for, finally reaching the checkout without being asked to guess.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
@@ -9963,8 +9963,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -9977,7 +9977,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "American Hose & Gasket QA Audit — Industrial Supplies | Case Study",
-      description: "Black-box QA audit of American Hose & Gasket: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of American Hose & Gasket: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
@@ -10025,8 +10025,8 @@ export const sampleProjects: Project[] = [
       outcome: "CRO Results: +16% Repeat-Purchase Rate",
     },
     summary: "Rock Angel Creations under the microscope: listing claims vs detail pages, variant integrity, and mobile CTAs — audited, captured, and resolved with proof.",
-    challenge: "The commercial stakes are concrete: Rock Angel Creations converts paid traffic into handcrafted gothic and metal-inspired clothing and accessories orders, and every friction point taxes that conversion. The audit had to verify — without source access — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
-    investigation: "Systematic black-box review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
+    challenge: "The commercial stakes are concrete: Rock Angel Creations converts paid traffic into handcrafted gothic and metal-inspired clothing and accessories orders, and every friction point taxes that conversion. The audit had to verify — with the codebase in view — that product claims agree across listing and detail pages, that the cart journey holds buyer selections, and that mobile carries the full conversion path, because in this category one ambiguous screen sends buyers straight to a competitor tab. There was also a timing dimension: campaigns and seasonal drops change the storefront weekly, so findings had to be written as reusable rules rather than one-off patches. And because paid traffic lands on deep pages — not just the homepage — every entry point, not only the happy path, had to hold up.",
+    investigation: "A screen-by-screen review of 12 captured states plus a full journey recording: homepage, collection listings, product detail, interaction states, mobile home and detail, responsive comparison, and the discovery sequence — each graded for consistency, truncation, overlap, and behavioral correctness. Screenshots were taken in fixed sequences — arrive, scan, interact, hesitate, proceed — so the evidence would show not just what each screen looked like, but what a buyer would have been thinking at that exact moment.",
     rootCause: "Findings trace to the familiar seams of a fast-moving storefront: independent widgets competing for the same viewport, content assembled from multiple sources without a single owner, and mobile layouts compressed from desktop without re-prioritisation. None are exotic — all are testable, and all are fixable with rules rather than rewrites. That distinction matters: rules are cheap to write, cheap to test, and they keep the next campaign from resurrecting the same defects under a new coat of paint.",
     resolution: "Every finding shipped as a reproducible ticket: pre-fix capture, expected behavior, severity, and a re-test path. Fixes followed the buyer's order — money path first, then mobile reachability, then content consistency — and each was verified against fresh captures before sign-off. The re-test pass was run on a clean session every time — fresh browser profile, cleared storage, cold cache — so no fix was ever verified against a state a real first-time buyer could not reach.",
     outcome: "Thirty days after the fixes, the numbers told the story: +16% repeat-purchase rate, clicks on secondary offers up +25%, and first-visit mobile bounce down seven points. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new drop. Just as importantly, the way the numbers moved confirmed the diagnosis: the metrics that recovered were exactly the ones the blocked or contradicted screens were supposed to carry.",
@@ -10071,8 +10071,8 @@ export const sampleProjects: Project[] = [
     ],
     faqs: [
       {
-        question: "How was this audited without code access?",
-        answer: "Structured black-box analysis: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
+        question: "How did the revamp balance design and code?",
+        answer: "Design and code together: 12 captured states plus a full journey recording, cross-checked for consistency, flow continuity, and responsive behavior — every finding re-verifiable from the evidence.",
       },
       {
         question: "What was the riskiest finding?",
@@ -10085,7 +10085,7 @@ export const sampleProjects: Project[] = [
     ],
     seo: {
       title: "Rock Angel Creations QA Audit — Fashion & Apparel | Case Study",
-      description: "Black-box QA audit of Rock Angel Creations: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
+      description: "Inside the revamp of Rock Angel Creations: 12 captured states, 3 confirmed issues fixed, and CRO wins across checkout and mobile.",
     },
     status: "published",
   },
