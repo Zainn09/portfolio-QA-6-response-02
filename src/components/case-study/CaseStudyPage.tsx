@@ -285,6 +285,8 @@ export function CaseStudyPage({ project, related }: Props) {
               <EvidenceVideo key={v.src} src={v.src} poster={v.poster} caption={v.caption} />
             ))}
 
+            {<EvidenceBlock items={numberedChunks[5]} project={project} label={EVIDENCE_LABELS[5]} />}
+
             {project.faqs.length > 0 && (
               <>
                 <Divider />
