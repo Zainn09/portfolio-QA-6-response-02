@@ -15,8 +15,13 @@ export function generateStaticParams() {
   return Array.from({ length: Math.max(0, total - 1) }, (_, i) => ({ page: String(i + 2) }));
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { page } = await params;
+  const n = Number(page);
+  const total = Math.max(1, Math.ceil(allBlogArticles().length / PAGE_SIZE));
+  if (!Number.isInteger(n) || n < 2 || n > total) notFound();
   return {
     title: `Blog — Page ${page} | QA Insights, Guides & Store Case Studies`,
     description: "All Shopify QA articles, continuation pages: conversion teardowns, AOV plays, AI testing workflows and store case stories.",

@@ -20,6 +20,8 @@ export function generateStaticParams() {
   return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug }))];
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const a = resolveArticle(slug);

@@ -4,6 +4,8 @@ import { getAllArticles, stubOf } from "@/data/articles";
 import { categoryFromSlug, categorySlug, CLUSTER_COPY } from "@/components/blog/categories";
 import { IndexCard, Pagination, PAGE_SIZE } from "@/components/blog/BlogIndex";
 
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{ category: string; page: string }>;
 }
