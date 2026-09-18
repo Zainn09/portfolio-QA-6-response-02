@@ -29,6 +29,10 @@ export type Project = {
   thumbnail: string;
   heroImage: string;
   gallery: string[];
+  brandIntro?: string;
+  highlights?: { label: string; text: string }[];
+  findingsTable?: { finding: string; severity: string; impact: string; status: string }[];
+  resultsTable?: { metric: string; before: string; after: string }[];
   summary: string;
   challenge: string;
   investigation: string;

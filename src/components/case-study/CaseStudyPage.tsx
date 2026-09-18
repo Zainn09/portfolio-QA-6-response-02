@@ -104,6 +104,38 @@ export function CaseStudyPage({ project, related }: Props) {
         </div>
       )}
 
+      {/* Brand intro + highlights (flagship audits only) */}
+      {project.brandIntro && (
+        <div className="container" style={{ paddingTop: "2.5rem" }}>
+          <Reveal>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1.25rem" }}>The Brand</p>
+            <p style={{ fontSize: "1.375rem", lineHeight: 1.7, color: "var(--text-primary)", fontWeight: 500, maxWidth: "62rem" }}>
+              {project.brandIntro}
+            </p>
+          </Reveal>
+        </div>
+      )}
+
+      {project.highlights && project.highlights.length > 0 && (
+        <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "1rem" }}>
+          <Reveal>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1.25rem" }}>Highlights</p>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem 2.5rem" }}>
+              {project.highlights.map((h) => (
+                <li key={h.label} style={{ display: "flex", gap: "0.625rem", alignItems: "flex-start" }}>
+                  <span aria-hidden="true" style={{ color: "var(--accent)", lineHeight: 1.6, fontWeight: 700 }}>▸</span>
+                  <span style={{ fontSize: "0.9375rem", lineHeight: 1.65, color: "var(--text-secondary)" }}>
+                    <span style={{ color: "var(--accent)", fontWeight: 700 }}>{h.label}</span>
+                    {" — "}
+                    {h.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      )}
+
       {/* Main content */}
       <div className="container" style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "5rem", alignItems: "start" }} className="case-content-grid">
@@ -173,6 +205,37 @@ export function CaseStudyPage({ project, related }: Props) {
               </>
             )}
 
+            {project.findingsTable && project.findingsTable.length > 0 && (
+              <Reveal>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Key Findings</p>
+                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", minWidth: "560px" }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                        {["Finding", "Severity", "Buyer Impact", "Status"].map((h) => (
+                          <th key={h} style={{ textAlign: "left", padding: "0.875rem 1rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {project.findingsTable.map((row) => (
+                        <tr key={row.finding} style={{ borderBottom: "1px solid var(--border)" }}>
+                          <td style={{ padding: "0.875rem 1rem", color: "var(--text-primary)", fontWeight: 500 }}>{row.finding}</td>
+                          <td style={{ padding: "0.875rem 1rem", whiteSpace: "nowrap" }}>
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: row.severity === "critical" ? "var(--critical)" : row.severity === "major" ? "var(--major)" : "var(--minor)" }}>
+                              {row.severity}
+                            </span>
+                          </td>
+                          <td style={{ padding: "0.875rem 1rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{row.impact}</td>
+                          <td style={{ padding: "0.875rem 1rem", whiteSpace: "nowrap", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--verified)" }}>✓ {row.status}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Reveal>
+            )}
+
             {project.gallery[2] && (
               <EvidenceFigure
                 src={project.gallery[2]}
@@ -200,6 +263,32 @@ export function CaseStudyPage({ project, related }: Props) {
             <Section label="06 — The Outcome" title="What Changed?">
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.outcome}</p>
             </Section>
+
+            {project.resultsTable && project.resultsTable.length > 0 && (
+              <Reveal>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>The Results — 30 Days After Fixes</p>
+                <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem", minWidth: "480px" }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                        {["Metric", "Before the Audit", "After the Fixes"].map((h) => (
+                          <th key={h} style={{ textAlign: "left", padding: "0.875rem 1rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {project.resultsTable.map((row) => (
+                        <tr key={row.metric} style={{ borderBottom: "1px solid var(--border)" }}>
+                          <td style={{ padding: "0.875rem 1rem", color: "var(--text-primary)", fontWeight: 500 }}>{row.metric}</td>
+                          <td style={{ padding: "0.875rem 1rem", color: "var(--text-tertiary)" }}>{row.before}</td>
+                          <td style={{ padding: "0.875rem 1rem", color: "var(--accent)", fontWeight: 700, whiteSpace: "nowrap" }}>▲ {row.after}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Reveal>
+            )}
 
             {project.gallery[4] && (
               <EvidenceFigure
