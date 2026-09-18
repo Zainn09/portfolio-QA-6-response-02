@@ -1118,7 +1118,6 @@ export const sampleProjects: Project[] = [
     technologies: ["Responsive Web App", "Cookie Consent (CAPTAIN)", "Live Chat Widget", "PWA Install Prompt"],
     externalLinks: [
       { label: "Live Website", url: "https://fandiem.com" },
-      { label: "Capture Gallery", url: "https://github.com/Zainn09/portfolio-images/tree/main/QA-PORTFOLIO-ASSETS/Sprint-01/01-fandiem" },
     ],
     faqs: [
       {
@@ -1201,7 +1200,6 @@ export const sampleProjects: Project[] = [
     technologies: ["Responsive Web App", "Product Configurator", "Virtual Assistant Chat", "RFQ Conversion Flow"],
     externalLinks: [
       { label: "Live Website", url: "https://www.kcaps.com" },
-      { label: "Capture Gallery", url: "https://github.com/Zainn09/portfolio-images/tree/main/QA-PORTFOLIO-ASSETS/Sprint-01/03-kcaps" },
     ],
     faqs: [
       {
@@ -1284,7 +1282,6 @@ export const sampleProjects: Project[] = [
     technologies: ["Responsive Web App", "Variant Customization", "Currency Selector", "Wishlist & Chat Widgets"],
     externalLinks: [
       { label: "Live Website", url: "https://hershop.com" },
-      { label: "Capture Gallery", url: "https://github.com/Zainn09/portfolio-images/tree/main/QA-PORTFOLIO-ASSETS/Sprint-01/05-hershop" },
     ],
     faqs: [
       {
