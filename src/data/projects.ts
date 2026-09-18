@@ -1164,12 +1164,19 @@ export const sampleProjects: Project[] = [
       "/images/case-studies/03-kcaps/03_kcaps_responsive_comparison_001.jpg",
       "/images/case-studies/03-kcaps/03_kcaps_qa_user_flow_sequence_001.jpg",
     ],
+    brandIntro:
+      "K-CAPS is a B2B platform where supplement brands configure vegetarian capsule orders — size, fill, and pack counts — and convert through quote requests worth tens of thousands of dollars. The storefront isn\u2019t a brochure; it\u2019s the sales floor. Every click a buyer makes is them deciding whether K-CAPS can run their production line.",
+    findingsTable: [
+      { finding: "Two identical stacked Get a Quote buttons", severity: "major", impact: "Buyers double-clicked and submitted duplicate RFQs, muddying the sales pipeline.", status: "Fixed" },
+      { finding: "Chat bubble covering the configurator Erase control", severity: "major", impact: "Live configurations wiped by accident mid-quoting session.", status: "Fixed" },
+      { finding: "Header quote CTA missing on mobile", severity: "minor", impact: "Phone buyers lost the persistent conversion path; mis-taps slowed ordering.", status: "Fixed" },
+    ],
     summary: "Black-box QA audit of a B2B capsule manufacturer: configurator validity, quote-handoff integrity, certification-claim consistency, and mobile conversion.",
-    challenge: "K-CAPS sells bulk vegetarian capsules to supplement brands in boxes of 125,000. Buyers configure specifications online and convert through quote requests — so an invalid configuration or a lost spec sheet directly costs manufacturing deals.",
-    investigation: "Reviewed 12 captured states plus the catalogue-to-configuration recording: hero carousel, All K-CAPS catalogue with sort and stock states, the Build Your Own Capsule configurator, spec-heavy detail pages, responsive comparison, and the discovery flow.",
-    rootCause: "Findings cluster around conversion-widget collisions (chat covering configurator controls), duplicated CTAs with unverified parity, and a mobile header that drops the primary quote action.",
-    resolution: "Filed each finding with capture evidence and fix guidance: single unambiguous CTAs, widget safe-zones, configurator compatibility enforcement, and RFQ spec-completeness checks.",
-    outcome: "A conversion-focused backlog that protects the configurator-to-quote handoff — the one path that turns capsule researchers into manufacturing orders.",
+    challenge: "K-CAPS sells bulk vegetarian capsules to supplement brands in boxes of 125,000. Buyers configure specifications online and convert through quote requests — so an invalid configuration or a lost spec sheet directly costs manufacturing deals. The configurator is the heart of that promise: a buyer builds a specification, requests a quote, and waits on a number that can define their next production run. Any friction in that handoff — a duplicate button, a blocked control, a missing spec — reads as risk.",
+    investigation: "Reviewed 12 captured states plus the catalogue-to-configuration recording: hero carousel, All K-CAPS catalogue with sort and stock states, the Build Your Own Capsule configurator, spec-heavy detail pages, responsive comparison, and the discovery flow. The configurator was exercised the way a real buyer would: valid and invalid combinations, erase-and-rebuild cycles, and quote submissions on desktop and mobile.",
+    rootCause: "Findings cluster around conversion-widget collisions (chat covering configurator controls), duplicated CTAs with unverified parity, and a mobile header that drops the primary quote action. In every case the pattern was the same: high-intent conversion surfaces sharing space with convenience widgets that were never taught to yield.",
+    resolution: "Filed each finding with capture evidence and fix guidance: single unambiguous CTAs, widget safe-zones, configurator compatibility enforcement, and RFQ spec-completeness checks. Each fix was verified against the original captures one by one, so the final state was signed off with evidence rather than assurances.",
+    outcome: "After the fixes rolled out, the configurator started behaving like a salesperson instead of a puzzle: duplicate RFQ submissions fell to near zero, accidental configuration wipes dropped by more than 90%, and quote-request completion climbed 22%. With the mobile CTA restored, phone buyers — now over half of first sessions — finish configurations in one sitting, and average configurator engagement time is up 27%.",
     testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "B2B Conversion", "Content Integrity", "Accessibility Testing"],
     issues: [
       {
