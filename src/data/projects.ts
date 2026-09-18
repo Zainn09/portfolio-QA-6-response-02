@@ -1281,6 +1281,14 @@ export const sampleProjects: Project[] = [
     platform: "E-commerce",
     featured: true,
     featuredOrder: 3,
+    headings: {
+      challenge: "When a $1,000 Promise Contradicts Itself",
+      investigation: "13 Screens of Bridal Commerce, Captured and Cross-Checked",
+      rootCause: "Why Did It Happen?",
+      issues: "Critical Findings: The $150 vs $500 Shipping Conflict",
+      resolution: "Fixes in Buyer Order",
+      outcome: "+26% Checkout Completion on Made-to-Order Gowns",
+    },
     thumbnail: "/images/case-studies/05-hershop/05_hershop_desktop_home_hero_001.jpg",
     heroImage: "/images/case-studies/05-hershop/05_hershop_desktop_home_hero_001.jpg",
     gallery: [
