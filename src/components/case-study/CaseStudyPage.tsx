@@ -98,7 +98,18 @@ export function CaseStudyPage({ project, related }: Props) {
         </div>
       </header>
 
-      {/* Personal note — deliberately the first thing on the page */}
+      {/* Hero evidence capture (real audits only — samples have no gallery) */}
+      {project.gallery.length > 0 && (
+        <div className="container" style={{ paddingTop: "3rem", paddingBottom: "1rem" }}>
+          <EvidenceFigure
+            src={project.heroImage}
+            alt={`${project.title} — homepage capture from the audit evidence set`}
+            caption="Homepage capture — the audit starting point"
+          />
+        </div>
+      )}
+
+      {/* Personal note — right after the hero capture */}
       {project.brandIntro && (
         <div className="container" style={{ paddingTop: "2.5rem" }}>
           <Reveal>
@@ -112,17 +123,6 @@ export function CaseStudyPage({ project, related }: Props) {
               </p>
             </div>
           </Reveal>
-        </div>
-      )}
-
-      {/* Hero evidence capture (real audits only — samples have no gallery) */}
-      {project.gallery.length > 0 && (
-        <div className="container" style={{ paddingTop: "3rem", paddingBottom: "1rem" }}>
-          <EvidenceFigure
-            src={project.heroImage}
-            alt={`${project.title} — homepage capture from the audit evidence set`}
-            caption="Homepage capture — the audit starting point"
-          />
         </div>
       )}
 
