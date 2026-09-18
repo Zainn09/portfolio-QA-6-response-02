@@ -59,7 +59,7 @@ export type Project = {
 };
 
 export const sampleProjects: Project[] = [
-  // ── Real flagship audits (black-box, evidence-backed) ────────────────────────
+  // ── Real flagship audits (design-led, evidence-backed) ────────────────────────
   {
     id: 55,
     title: "Fandiem",
