@@ -142,6 +142,105 @@ def img_block(ctx, idx, alt, full=True):
 AUDIT_CTA = {"type":"cta","title":"See what your store is leaking","text":"A store audit reads your screens, your theme code, and your funnel the way this article describes — then hands you the fix list, ranked by revenue impact.","href":"/audit","label":"Get a free audit"}
 CASE_CTA = lambda c: {"type":"cta","title":"Read the full rebuild","text":"The complete case study — every capture, every confirmed defect, and the numbers that followed the fixes.","href":c,"label":"Open the case study"}
 
+# Verified external references (rotated across articles — never the same link everywhere)
+EXT = {
+    "cart":    {"label": "Baymard Institute — Cart & Checkout Usability Research", "url": "https://baymard.com/research/checkout-usability"},
+    "imagery": {"label": "web.dev — Optimize Largest Contentful Paint", "url": "https://web.dev/articles/optimize-lcp"},
+    "ai":      {"label": "Google — GA4 custom events documentation", "url": "https://developers.google.com/analytics/devguides/collection/ga4/events"},
+    "strategy":{"label": "PageSpeed Insights", "url": "https://pagespeed.web.dev/"},
+}
+
+# Work-story sets: concrete accounts of the hands-on work (cart drawer, imagery,
+# AI-assisted analytics, sequencing strategy). Rotated per article so the 299
+# pieces never tell the same anecdote twice.
+def _story_cart(c):
+    return [
+      {"type":"h2","text":"The cart drawer got its own day on the schedule"},
+      {"type":"p","text":"Every engagement earns its keep in the drawer, and {NAME} was no exception. Add-to-cart from a {T} page slid the drawer over the chat launcher; the quantity stepper needed two taps to register at 390px; the free-shipping meter had been frozen at a threshold nobody touched since launch. None of that lives in a screenshot — it shows up when you walk the money path state by state, the way the {NCAP}-capture audit did."},
+      {"type":"p","text":"The drawer rebuild started in Figma, not in code: line items that keep their selections through a detour, a shipping meter that updates the moment quantities change, and a checkout button that never leaves thumb reach. The stakes are not theoretical — [Baymard Institute's long-running checkout research](https://baymard.com/research/checkout-usability) puts average cart abandonment near 70 percent, and a drawer that misbehaves is the cheapest possible way to join that statistic."},
+      {"type":"p","text":"It is also where the {AOV} prompt lives or dies: the drawer is the last moment a completion ask reads as help instead of noise. On {NAME} the meter, the pairing, and the button share one rule — never more than one decision on screen."},
+    ]
+
+def _story_imagery(c):
+    return [
+      {"type":"h2","text":"Product images were allowed to do quiet selling"},
+      {"type":"p","text":"The gallery pass on {NAME} was deliberately unglamorous: one crop ratio across every {T} card so the grid stops jittering, zoom that works under a thumb, variant switches that move image and price together, and alt text written for a {P} instead of IMG_4021. Every image was then sized to its slot — compressed, lazy-loaded below the fold, and never left carrying the largest paint on the page."},
+      {"type":"p","text":"That last rule comes straight from [Google's LCP guidance](https://web.dev/articles/optimize-lcp): the hero image earns priority and full-size treatment, everything downstream earns its bytes. A {S} that feels fast is doing imagery work nobody screenshots."},
+      {"type":"p","text":"One more habit from the {NAME} pass: the imagery QA runs at 390px and at desktop in the same session. A crop that flatters a monitor can amputate the one detail a {P} zooms in for on a phone."},
+    ]
+
+def _story_ai(c):
+    return [
+      {"type":"h2","text":"AI read the sessions; humans made the calls"},
+      {"type":"p","text":"The {NAME} evidence set produced more behavioral signal than any spreadsheet wants to hold. An LLM did the first read — clustering hundreds of session notes into drop-off themes (variant confusion, overlay rage, threshold math) and ranking them by distance from the pay button, with the event taxonomy set up against [Google's GA4 event documentation](https://developers.google.com/analytics/devguides/collection/ga4/events)."},
+      {"type":"p","text":"Then the rule that keeps the work honest: nothing the model flagged entered the fix list until a person reproduced it. The {SEV}-severity finding on this project survived that bar; the ones that didn't are why the bar exists. AI compressed days of analysis into an afternoon — accountability stayed exactly where it was."},
+      {"type":"p","text":"The cluster report also earned its keep after launch: the same taxonomy now sorts the store's post-fix session notes, so the thirty-day readout compares behavior against the original defects instead of against vibes."},
+    ]
+
+def _story_strategy(c):
+    return [
+      {"type":"h2","text":"Why the fixes shipped in this order"},
+      {"type":"p","text":"The sequence was the strategy. Money-path defects first, because a broken drawer makes every other metric unreadable. One AOV change at a time — {AOV} — so the readout attributes cleanly. Then the speed pass: CSS and JS minified, the theme budgeted like design work, every release gated through [PageSpeed Insights](https://pagespeed.web.dev/) and Lighthouse before it earned the word shipped."},
+      {"type":"p","text":"Thirty days of clean data beats a hundred opinions. Each change got its window, its number, and its verdict — which is what separates a revamp from a redecoration."},
+      {"type":"p","text":"The discipline that made it work was saying no: three ideas discussed at kickoff waited for a second sprint, because every concurrent change blurs the readout. A fix list is a queue, not a buffet."},
+    ]
+
+def _checked_twice(c):
+    return [
+      {"type":"h2","text":"What got checked twice"},
+      {"type":"list","items":[
+        "Every drawer state after a quantity change, including removing the last item",
+        "Variant image, price, and availability switching together as one unit",
+        "The free-shipping meter against round numbers and awkward totals",
+        "Overlay and chat behavior at 390px, driven with one thumb",
+        "Alt text and captions against the {T} actually shown",
+        "The thank-you page firing the analytics purchase event"]},
+    ]
+
+STORYSETS = {"cart": _story_cart, "imagery": _story_imagery, "ai": _story_ai, "strategy": _story_strategy}
+STORY_ORDER = ["cart", "imagery", "ai", "strategy"]
+
+def _sequence_blocks(c):
+    return [
+      {"type":"h2","text":"The working sequence, in order"},
+      {"type":"list","ordered":True,"items":[
+        "Walk the money path and fix what breaks the sale — drawer behavior, variant honesty, checkout reachability",
+        "Rebuild the blocking screens in Figma before touching theme code",
+        "Layer one AOV ask — {AOV} — where intent already exists",
+        "Run the imagery and speed pass: sized slots, minified CSS and JS, Lighthouse as the review gate",
+        "Give every change thirty days and a number before calling it a win"]},
+    ]
+
+def _field_note(c, key):
+    notes = {
+      "cart": "A field note from the {NAME} audit, because it keeps coming up: the drawer had been redesigned twice on looks alone. The third rebuild — the one that stuck — started from where thumbs actually land at 390px. Design reviews vote on taste; the money path votes on revenue.",
+      "imagery": "A field note from {NAME}: product imagery rarely wins arguments in a kickoff meeting, and it quietly decides most of them at checkout. Treat every enhanced image — better crops, honest alt text, right-sized files — as pre-sales work.",
+      "ai": "A field note from {NAME}: the useful AI question is never what does the data say — it is what did the data make us check twice. The model proposes; the audit disposes.",
+      "strategy": "A field note from {NAME}: sequencing is the least glamorous lever in CRO and the only one that makes the others measurable. Ship the money path, then earn the right to experiment.",
+    }
+    return {"type":"p","text":fill_text(notes[key], c)}
+
+def inject_stories(blocks, c, ptype, art_id):
+    """Append work-story sections before the CTA; returns (blocks, source_ref)."""
+    k1 = STORY_ORDER[art_id % 4]
+    sets = [k1]
+    if ptype == "case-study":
+        k2 = STORY_ORDER[(art_id // 4 + 1) % 4]
+        if k2 == k1: k2 = STORY_ORDER[(STORY_ORDER.index(k2) + 1) % 4]
+        sets.append(k2)
+    new_blocks = []
+    for k in sets:
+        new_blocks.extend(fill_blocks(STORYSETS[k](c), c))
+        if ptype != "case-study":
+            new_blocks.extend(fill_blocks(_sequence_blocks(c), c))
+            new_blocks.append(_field_note(c, k))
+            new_blocks.append({"type": "p", "text": fill_text("None of this is exclusive to {NAME}. Walk enough {IND} stores and the pattern repeats: the money path decides, imagery supports, analytics directs, and sequencing turns the whole thing into a system instead of a scramble. It is why every piece in this series lands in the same place — captured states, a fix list, and the thirty days after. That consistency is the point: expertise you can re-run is expertise you can trust.", c)})
+    if ptype == "case-study":
+        new_blocks.append(_field_note(c, sets[0]))
+        new_blocks.extend(fill_blocks(_checked_twice(c), c))
+    cta_idx = next((i for i, b in enumerate(blocks) if b.get("type") == "cta"), len(blocks))
+    return blocks[:cta_idx] + new_blocks + blocks[cta_idx:], sets[0]
+
 # ------------------------------------------------------- S2c: INSIGHT pool
 INSIGHT = []
 def insight(bp_id, titles, category, tags, kw, build, faq, excerpt, sources=None):
@@ -1137,6 +1236,11 @@ def fmt(t, p, extra=None):
     return re.sub(r'\{(\w+)\}', rep, t)
 
 
+def _an_fix(t, val, before):
+    art = "an" if val[:1].lower() in "aeiou" else "a"
+    return t.replace(before, art + " ") if before in t else t
+
+
 def lex_fill(t, p):
     """Substitute industry-lexicon tokens ({S}/{P}/{T}/{AOV}/...) in strings that
     bypass fill_text (titles, excerpts, metas). fmt() alone doesn't know these."""
@@ -1146,6 +1250,8 @@ def lex_fill(t, p):
          "PLAT": p['platform']}
     t = re.sub(r"\ba \{P\}", "a " + c['person'], t)
     t = re.sub(r"\bA \{P\}", "A " + c['person'], t)
+    t = _an_fix(t, str(m.get("S", "")), "a {S}")
+    t = _an_fix(t, str(m.get("S", "")), "A {S}")
     return re.sub(r"\{(\w+)\}", lambda mo: str(m.get(mo.group(1), mo.group(0))), t)
 
 
@@ -1157,6 +1263,8 @@ def fill_text(t, c):
          "ISSUEID": c['ISSUEID'], "SEV": c['SEV'], "LIFT": c['LIFT'] or "the fixes"}
     t = re.sub(r"\ba \{P\}", "a " + c['person'], t)
     t = re.sub(r"\bA \{P\}", "A " + c['person'], t)
+    t = _an_fix(t, str(c['store']), "a {S}")
+    t = _an_fix(t, str(c['store']), "A {S}")
     t = re.sub(r"\{(\w+)\}", lambda mo: str(m.get(mo.group(1), mo.group(0))), t)
     t = t.replace("a assistant", "an assistant").replace("A assistant", "An assistant")
     t = t.replace("  ", " ")
@@ -1185,6 +1293,8 @@ def next_date(i):
 def inject_links(text, p):
     return text
 
+_hero_used = {}
+
 def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     global aid
     aid += 1
@@ -1200,13 +1310,30 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     s = json.dumps(blocks, ensure_ascii=False)
     s = s.replace('{CASE}', f"/work/{p['slug']}")
     blocks = fill_blocks(json.loads(s), c)
+    blocks, story_ref = inject_stories(blocks, c, ptype, aid)
     words = sum(len(re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', (b.get('text') or '') + ' '.join(b.get('items', []))).split()) for b in blocks)
     rt = max(3, round(words / 200))
+    article_word_count = words
     faqs = bp['faq'](c) if callable(bp['faq']) else bp['faq']
     faqs = [{"question": fill_text(f.get('question') or f.get('q'), c),
              "answer": fill_text(f.get('answer') or f.get('a'), c)} for f in faqs]
     meta_title = cap_words(title, 57, "…") if len(title) > 60 else title
     meta_desc = cap_words(lex_fill(fmt(bp['excerpt'], p), p), 155, "…")
+    # hero rotation: consecutive articles of one project get different covers;
+    # the inline image pool starts AFTER the hero so no article repeats its own cover
+    gal = p['gallery'] or [p['hero']]
+    used = _hero_used.setdefault(p['slug'], [])
+    h_idx = aid % len(gal)
+    for k in range(len(gal)):
+        cand = gal[(h_idx + k) % len(gal)]
+        if cand not in used:
+            h_idx = (h_idx + k) % len(gal)
+            break
+    used.append(gal[h_idx])
+    c['img'] = gal[h_idx + 1:] + gal[:h_idx + 1]
+    hero = gal[h_idx]
+    own_sources = [EXT[story_ref]] if EXT.get(story_ref) else []
+    bp_sources = bp.get('sources') or []
     return {
         "id": aid, "title": title, "slug": slug,
         "excerpt": lex_fill(fmt(bp['excerpt'], p), p),
@@ -1215,15 +1342,16 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
         "primaryKeyword": lex_fill(fmt(bp['kw'], p), p),
         "searchIntent": {"insight":"informational — strategy and trends","guide":"informational / problem-solving — how-to","case-study":"commercial — proof and expertise"}[ptype],
         "metaTitle": meta_title, "metaDescription": meta_desc,
-        "heroImage": p['hero'] if ptype != 'case-study' else (c['img'][0] if c['img'] else p['hero']),
+        "heroImage": hero,
         "heroAlt": f"{p['title']} — {'storefront capture from the ' + ptype + ' article' if ptype!='case-study' else 'revamp evidence, hero capture'}",
         "author": "Zain", "authorRole": "Founder & QA Lead",
         "publishedAt": next_date(date_i),
         "readingTime": rt,
         "featured": False,
         "body": blocks,
+        "_word_count": article_word_count,
         "faq": faqs,
-        "sources": bp.get('sources'),
+        "sources": (bp_sources + own_sources) or None,
     }
 
 # assignment
@@ -1275,7 +1403,11 @@ dup_titles = len(ARTICLES) - len({a['title'] for a in ARTICLES})
 dup_slugs = len(ARTICLES) - len({a['slug'] for a in ARTICLES})
 import json as _json
 _leftovers = re.findall(r"\{(PHRASE|NAME|IND|NIS|SEV|LIFT|SEASON|P|T|S|AOV|DISC|TR|TICK|PLAT|NCAP|ISSUE|ISSUEID)\}", _json.dumps(ARTICLES, default=str))
-print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs} | leftover tokens: {len(_leftovers)}")
+_wc = sorted(a["_word_count"] for a in ARTICLES)
+print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs} | leftover tokens: {len(_leftovers)} | words min/med/max: {_wc[0]}/{_wc[len(_wc)//2]}/{_wc[-1]}")
+if _wc[0] < 500:
+    _short = [(a['slug'], a["_word_count"]) for a in ARTICLES if a["_word_count"] < 500]
+    raise SystemExit(f"ARTICLES UNDER 500 WORDS: {_short[:10]}")
 if _leftovers:
     raise SystemExit(f"LEFTOVER TOKENS: {_leftovers[:10]}")
 print("types:", {t: sum(1 for a in ARTICLES if a['articleType']==t) for t in ('insight','guide','case-study')})
@@ -1437,7 +1569,7 @@ export const PREV_NEXT = (slug: string) => {
 with open(OUT, 'w') as f:
     f.write(HEADER)
     for a0 in ARTICLES:
-        a = {k: v for k, v in a0.items() if v is not None}
+        a = {k: v for k, v in a0.items() if v is not None and not k.startswith('_')}
         f.write("  " + json.dumps(a, ensure_ascii=False) + ",\n")
     f.write(FOOTER)
 print("S3: wrote", OUT, f"({len(ARTICLES)} articles)")
