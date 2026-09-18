@@ -749,19 +749,21 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
           .featured-track {
             position: relative;
             background-color: var(--bg-secondary);
-            border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
             outline: none;
           }
+          /* Pinned below the navbar so the top divider is never hidden behind it */
           .featured-stage {
             position: sticky;
-            top: 0;
-            height: 100vh;
-            height: 100svh;
+            top: var(--nav-height);
+            height: calc(100vh - var(--nav-height));
+            height: calc(100svh - var(--nav-height));
             display: flex;
             align-items: center;
             overflow-y: auto;
             scrollbar-width: thin;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
           }
           /* Fixed visual frame: slides crossfade inside, the box never moves */
           .featured-visual-box {
