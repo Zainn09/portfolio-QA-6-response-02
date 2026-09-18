@@ -367,8 +367,8 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--accent);
-          background-color: var(--text-primary);
+          color: #000;
+          background-color: var(--accent);
           padding: 0.25rem 0.625rem;
           border-radius: var(--radius-sm);
           margin-bottom: 1rem;
@@ -532,8 +532,8 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
           font-size: 0.6875rem;
           font-weight: 700;
           letter-spacing: 0.1em;
-          color: var(--accent);
-          background-color: var(--text-primary);
+          color: #000;
+          background-color: var(--accent);
           padding: 0.125rem 0.4375rem;
           border-radius: 2px;
         }
