@@ -68,8 +68,8 @@ export const sampleProjects: Project[] = [
     platform: "Shopify Plus",
     featured: true,
     featuredOrder: 7,
-    thumbnail: "/images/projects/jewellery-thumbnail.jpg",
-    heroImage: "/images/projects/jewellery-hero.jpg",
+    thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/28-gabrielle-jewelry/images/28_gabrielle_jewelry_desktop_home_hero_001.jpg",
+    heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/28-gabrielle-jewelry/images/28_gabrielle_jewelry_desktop_home_hero_001.jpg",
     gallery: [],
     summary:
       "A premium jewellery brand on Shopify Plus had critical mobile product-discovery breakdowns silently costing them conversions.",
@@ -170,8 +170,8 @@ export const sampleProjects: Project[] = [
     platform: "Shopify",
     featured: true,
     featuredOrder: 8,
-    thumbnail: "/images/projects/furniture-thumbnail.jpg",
-    heroImage: "/images/projects/furniture-hero.jpg",
+    thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/77-second-chance-clothing-home-decor/images/77_second_chance_clothing_home_decor_desktop_home_hero_001.jpg",
+    heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-08/77-second-chance-clothing-home-decor/images/77_second_chance_clothing_home_decor_desktop_home_hero_001.jpg",
     gallery: [],
     summary:
       "A premium furniture brand's checkout flow had an invisible shipping-rate bug that silently blocked international orders.",
@@ -259,8 +259,8 @@ export const sampleProjects: Project[] = [
     platform: "Shopify",
     featured: true,
     featuredOrder: 9,
-    thumbnail: "/images/projects/books-thumbnail.jpg",
-    heroImage: "/images/projects/books-hero.jpg",
+    thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/25-wendy-mccallum-art/images/25_wendy_mccallum_art_desktop_home_hero_001.jpg",
+    heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/25-wendy-mccallum-art/images/25_wendy_mccallum_art_desktop_home_hero_001.jpg",
     gallery: [],
     summary:
       "A speciality bookstore's custom search experience was silently excluding a large portion of its catalogue from results.",
@@ -332,8 +332,8 @@ export const sampleProjects: Project[] = [
     platform: "Shopify Plus",
     featured: true,
     featuredOrder: 10,
-    thumbnail: "/images/projects/supplements-thumbnail.jpg",
-    heroImage: "/images/projects/supplements-hero.jpg",
+    thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/82-enerex/images/82_enerex_desktop_home_hero_001.jpg",
+    heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/82-enerex/images/82_enerex_desktop_home_hero_001.jpg",
     gallery: [],
     summary:
       "A high-volume supplements brand on Shopify Plus had subscription upsell flows silently breaking for new vs returning customers.",
