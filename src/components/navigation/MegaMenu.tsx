@@ -18,7 +18,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { getFeaturedProjects } from "@/data/projects";
-import { staticBlogPosts } from "@/data/blogs";
+import { articleStubs } from "@/data/articles";
 
 interface MegaMenuProps {
   open: string | null;
@@ -126,7 +126,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
   if (!open) return null;
 
   const featured = getFeaturedProjects().slice(0, 3);
-  const latestPosts = [...staticBlogPosts]
+  const latestPosts = [...articleStubs]
     .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
     .slice(0, 3);
 
@@ -312,17 +312,17 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                 >
                   <span className="mega-card-top">
                     <span className="mega-meta">{post.category}</span>
-                    {post.trending && (
+                    {post.articleType === "case-study" && (
                       <span className="mega-flag">
                         <TrendingUp size={11} strokeWidth={2.5} aria-hidden="true" />
-                        Trending
+                        From the field
                       </span>
                     )}
                   </span>
                   <span className="mega-card-title mega-clamp">{post.title}</span>
                   <span className="mega-card-foot">
                     <span className="mega-meta">
-                      {formatDate(post.publishedAt)} · {post.readMinutes} min read
+                      {formatDate(post.publishedAt)} · {post.readingTime} min read
                     </span>
                     <ArrowUpRight size={14} className="mega-arrow" aria-hidden="true" />
                   </span>
