@@ -107,14 +107,14 @@ export function SearchBox({ q, category }: { q?: string; category?: string }) {
   );
 }
 
-export function Pagination({ page, totalPages, category, q }: { page: number; totalPages: number; category?: string; q?: string }) {
+export function Pagination({ page, totalPages, category, q, basePath = "/blogs" }: { page: number; totalPages: number; category?: string; q?: string; basePath?: string }) {
   if (totalPages <= 1) return null;
   const href = (n: number) => {
     const p = new URLSearchParams();
     if (category) p.set("category", category);
     if (q) p.set("q", q);
     const qs = p.toString();
-    return n === 1 ? `/blogs${qs ? `?${qs}` : ""}` : `/blogs/page/${n}${qs ? `?${qs}` : ""}`;
+    return n === 1 ? `${basePath}${qs ? `?${qs}` : ""}` : `${basePath}/page/${n}${qs ? `?${qs}` : ""}`;
   };
   const nums: (number | "…")[] = [];
   for (let n = 1; n <= totalPages; n++) {
