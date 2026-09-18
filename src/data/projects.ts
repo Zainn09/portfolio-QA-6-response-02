@@ -9686,8 +9686,8 @@ export const sampleProjects: Project[] = [
     slug: "enerex-qa-audit",
     industry: "E-commerce",
     platform: "E-commerce",
-    featured: false,
-    featuredOrder: 0,
+    featured: true,
+    featuredOrder: 9,
     thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/82-enerex/images/82_enerex_desktop_home_hero_001.jpg",
     heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-09/82-enerex/images/82_enerex_desktop_home_hero_001.jpg",
     gallery: [
