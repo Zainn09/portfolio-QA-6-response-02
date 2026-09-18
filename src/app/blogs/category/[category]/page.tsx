@@ -17,10 +17,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const name = categoryFromSlug(category);
   if (!name) return {};
+  const deck = CLUSTER_COPY[name]?.deck ?? `All ${name} articles from the QA blog.`;
   return {
     title: `${name} Articles — Shopify QA Insights, Guides & Case Stories`,
-    description: CLUSTER_COPY[name]?.deck ?? `All ${name} articles from the QA blog.`,
+    description: deck,
     alternates: { canonical: `/blogs/category/${category}` },
+    openGraph: {
+      title: `${name} Articles — Shopify QA Insights, Guides & Case Stories`,
+      description: deck,
+      type: "website",
+    },
   };
 }
 
