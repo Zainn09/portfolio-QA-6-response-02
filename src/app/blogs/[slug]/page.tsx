@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTICLE_TYPE_LABEL, type BlogArticle, type ArticleBlock } from "@/data/articles";
+import { legacyArticles } from "@/data/legacy-articles";
 import { staticBlogPosts } from "@/data/blogs";
 import type { ReactNode } from "react";
 
@@ -11,38 +12,12 @@ interface Props {
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-/* ---------- legacy posts surface through the same experience ---------- */
-const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
-  id: 9000 + i,
-  title: p.title,
-  slug: p.slug,
-  excerpt: p.excerpt ?? p.title,
-  articleType: (p.category === "AI × QA" ? "insight" : "guide") as BlogArticle["articleType"],
-  category: p.category.includes("AI") ? "AI Commerce" : p.category.includes("Checkout") ? "CRO" : "UX & Performance",
-  tags: [p.category],
-  projectSlug: "",
-  projectTitle: "",
-  primaryKeyword: p.title,
-  searchIntent: "informational",
-  metaTitle: p.title,
-  metaDescription: p.excerpt ?? p.title,
-  heroImage: "",
-  heroAlt: p.title,
-  author: "Zain",
-  authorRole: "Founder & QA Lead",
-  publishedAt: p.publishedAt,
-  readingTime: p.readMinutes,
-  featured: Boolean(p.trending),
-  body: [{ type: "html", html: p.content }],
-  faq: [],
-}));
-
 function resolveArticle(slug: string): BlogArticle | undefined {
   return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug);
 }
 
 export function generateStaticParams() {
-  return [...articles.map((a) => ({ slug: a.slug })), ...staticBlogPosts.map((p) => ({ slug: p.slug }))];
+  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug }))];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { getAllArticles, getArticlesByCategory, searchArticles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { allBlogArticles, searchAllArticles } from "@/data/legacy-articles";
 import { CategoryChips, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/components/blog/BlogIndex";
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export function generateStaticParams() {
-  const total = Math.ceil(getAllArticles().length / PAGE_SIZE);
+  const total = Math.ceil(allBlogArticles().length / PAGE_SIZE);
   return Array.from({ length: Math.max(0, total - 1) }, (_, i) => ({ page: String(i + 2) }));
 }
 
@@ -31,8 +32,7 @@ export default async function BlogPageN({ params, searchParams }: Props) {
   if (page === 1) redirect("/blogs");
 
   const validCategory = category && ARTICLE_CATEGORIES.includes(category as (typeof ARTICLE_CATEGORIES)[number]) ? category : undefined;
-  let list = getAllArticles();
-  if (q && q.trim()) list = searchArticles(q.trim());
+  let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
   if (validCategory) list = list.filter((a) => a.category === validCategory);
 
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
