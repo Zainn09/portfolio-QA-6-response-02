@@ -156,7 +156,7 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.investigation}</p>
             </Section>
 
-            {<EvidenceBlock items={numberedChunks[0]} project={project} label={EVIDENCE_LABELS[0]} />}
+            {<EvidenceBlock items={numberedChunks[0]} project={project} label={EVIDENCE_LABELS[0]} noteSeed={ 0 } />}
 
             {project.videos?.[0] && (
               <EvidenceVideo
@@ -172,7 +172,7 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.rootCause}</p>
             </Section>
 
-            {<EvidenceBlock items={numberedChunks[1]} project={project} label={EVIDENCE_LABELS[1]} />}
+            {<EvidenceBlock items={numberedChunks[1]} project={project} label={EVIDENCE_LABELS[1]} noteSeed={ 1 } />}
 
             {project.issues.length > 0 && (
               <>
@@ -237,7 +237,7 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {<EvidenceBlock items={numberedChunks[2]} project={project} label={EVIDENCE_LABELS[2]} />}
+            {<EvidenceBlock items={numberedChunks[2]} project={project} label={EVIDENCE_LABELS[2]} noteSeed={ 2 } />}
 
             <Divider />
 
@@ -245,7 +245,7 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.resolution}</p>
             </Section>
 
-            {<EvidenceBlock items={numberedChunks[3]} project={project} label={EVIDENCE_LABELS[3]} />}
+            {<EvidenceBlock items={numberedChunks[3]} project={project} label={EVIDENCE_LABELS[3]} noteSeed={ 3 } />}
 
             <Divider />
 
@@ -279,13 +279,13 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {<EvidenceBlock items={numberedChunks[4]} project={project} label={EVIDENCE_LABELS[4]} />}
+            {<EvidenceBlock items={numberedChunks[4]} project={project} label={EVIDENCE_LABELS[4]} noteSeed={ 4 } />}
 
             {project.videos?.slice(1).map((v) => (
               <EvidenceVideo key={v.src} src={v.src} poster={v.poster} caption={v.caption} />
             ))}
 
-            {<EvidenceBlock items={numberedChunks[5]} project={project} label={EVIDENCE_LABELS[5]} />}
+            {<EvidenceBlock items={numberedChunks[5]} project={project} label={EVIDENCE_LABELS[5]} noteSeed={ 5 } />}
 
             {project.faqs.length > 0 && (
               <>
@@ -464,41 +464,75 @@ function EvidenceItem({ src, alt, caption, framed }: { src: string; alt: string;
   );
 }
 
-function EvidenceBlock({ items, project, label }: { items: { src: string; no: number }[]; project: Project; label: string }) {
+const EVIDENCE_NOTES: Record<string, string[]> = {
+  "Catalogue & discovery": [
+    "Read the way a first-time buyer reads: every listing card compared against its siblings for claim agreement, price formatting, and image consistency.",
+    "The discovery sweep mirrors what every visitor does unconsciously — checking that cards, filters, and entry points tell one coherent story.",
+  ],
+  "Detail & configuration": [
+    "Detail surfaces carry the buying decision, so variant switches, option states, and add-to-cart targets were exercised here and re-exercised from every entry path.",
+    "Configuration states were driven through both valid and invalid paths, watching what survives a step forward and what quietly resets on the way back.",
+  ],
+  "Signature experience": [
+    "The store's differentiator earned its own pass: the showcase flow was walked end to end and graded against the promise the marketing makes.",
+    "This is the screen the brand is judged by — tested from two directions: does it deliver the promise, and does it survive a first visit with no context?",
+  ],
+  "Responsive behavior": [
+    "At 390px the layout is a different product. Widgets, CTAs, and content zones were re-tested for overlap, reachability, and thumb-sized targets.",
+    "Side-by-side breakpoint comparison: whatever desktop forgives, mobile exposes. Every overlap captured here is a real mis-tap on a real phone.",
+  ],
+  "User flow & journey": [
+    "The recorded journey from hero to checkout is the evidence backbone — every state in this audit can be replayed against it, step for step.",
+    "One continuous walkthrough, revisited after each fix to confirm that repairs made in isolation didn't break the flow in sequence.",
+  ],
+  "Extended evidence": [
+    "Supporting captures that close the loop: interaction states, edge viewports, and the in-between screens most audits skip entirely.",
+    "The residual evidence set — every remaining state captured, graded, and filed so nothing downstream ships on assumption.",
+  ],
+};
+
+function EvidenceBlock({ items, project, label, noteSeed }: { items: { src: string; no: number }[]; project: Project; label: string; noteSeed: number }) {
   if (items.length === 0) return null;
-  const blocks: React.ReactNode[] = [];
+  const notes = EVIDENCE_NOTES[label] ?? ["Capture reviewed, graded, and filed as part of the audit evidence set."];
+  const groups: { src: string; no: number }[][] = [];
   let i = 0;
   while (i < items.length) {
-    const alt = (no: number) => `${project.title} — ${label.toLowerCase()} capture ${no}`;
-    const cap = (no: number) => `Evidence ${String(no).padStart(2, "0")} — ${label}`;
-    if (PORTRAIT_EVIDENCE.has(evidenceFile(items[i].src))) {
-      const run: { src: string; no: number }[] = [];
-      while (i < items.length && PORTRAIT_EVIDENCE.has(evidenceFile(items[i].src))) run.push(items[i++]);
-      if (run.length === 1) {
-        blocks.push(
-          <Reveal key={run[0].src}>
-            <div style={{ margin: "0 0 3rem", maxWidth: "440px", marginLeft: "auto", marginRight: "auto" }}>
-              <EvidenceItem src={run[0].src} alt={alt(run[0].no)} caption={cap(run[0].no)} />
-            </div>
-          </Reveal>
-        );
-      } else {
-        blocks.push(
-          <Reveal key={run[0].src}>
-            <div style={{ margin: "0 0 3rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", alignItems: "start" }}>
-              {run.map(({ src, no }) => (
-                <EvidenceItem key={src} src={src} alt={alt(no)} caption={cap(no)} framed />
-              ))}
-            </div>
-          </Reveal>
-        );
-      }
-    } else {
-      const it = items[i++];
-      blocks.push(<EvidenceFigure key={it.src} src={it.src} alt={`${project.title} — ${label.toLowerCase()} capture`} caption={cap(it.no)} />);
+    const run: { src: string; no: number }[] = [];
+    const isPortrait = (it: { src: string }) => PORTRAIT_EVIDENCE.has(evidenceFile(it.src));
+    run.push(items[i++]);
+    if (isPortrait(run[0])) {
+      while (i < items.length && isPortrait(items[i]) && run.length < 2) run.push(items[i++]);
     }
+    groups.push(run);
   }
-  return <>{blocks}</>;
+  return (
+    <>
+      {groups.map((g, gi) => (
+        <Reveal key={g[0].src}>
+          <div
+            style={
+              g.length > 1
+                ? { margin: "0 0 1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", alignItems: "start" }
+                : { margin: "0 0 1.25rem" }
+            }
+          >
+            {g.map(({ src, no }) => (
+              <EvidenceItem
+                key={src}
+                src={src}
+                alt={`${project.title} — ${label.toLowerCase()} capture ${no}`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${label}`}
+                framed={g.length > 1}
+              />
+            ))}
+          </div>
+          <p style={{ margin: "0 0 3rem", maxWidth: "62rem", color: "var(--text-tertiary)", fontSize: "0.9375rem", lineHeight: 1.75, borderLeft: "2px solid var(--accent)", paddingLeft: "1rem" }}>
+            {notes[(noteSeed + gi) % notes.length]}
+          </p>
+        </Reveal>
+      ))}
+    </>
+  );
 }
 
 function EvidenceFigure({ src, alt, caption }: { src: string; alt: string; caption: string }) {
