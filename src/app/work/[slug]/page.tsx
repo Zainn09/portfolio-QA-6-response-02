@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProjectBySlug, getAllProjects } from "@/data/projects";
 import { CaseStudyPage } from "@/components/case-study/CaseStudyPage";
+import { getArticlesByProject, getRelatedArticles, stubOf } from "@/data/articles";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,5 +42,9 @@ export default async function CaseStudyRoute({ params }: Props) {
     .filter((p) => p.slug !== slug && (p.industry === project!.industry || p.platform === project!.platform))
     .slice(0, 3);
 
-  return <CaseStudyPage project={project!} related={related} />;
+  const own = getArticlesByProject(slug);
+  const anchor = own.find((a) => a.articleType === "case-study") ?? own[0];
+  const relatedArticles = anchor ? getRelatedArticles(anchor, 4) : own.slice(0, 4).map((a) => stubOf(a));
+
+  return <CaseStudyPage project={project!} related={related} relatedArticles={relatedArticles} />;
 }
