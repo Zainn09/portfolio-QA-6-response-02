@@ -9,6 +9,7 @@ import { AuditCTA } from "@/components/audit/AuditCTA";
 import { ContactSection } from "@/components/contact/ContactSection";
 import { getFeaturedProjects } from "@/data/projects";
 import { Toaster } from "react-hot-toast";
+import { ScrollToTopOnLoad } from "@/components/scroll/ScrollToTopOnLoad";
 
 export const metadata: Metadata = {
   title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
@@ -24,6 +25,7 @@ export default function HomePage() {
 
   return (
     <>
+      <ScrollToTopOnLoad />
       <Toaster
         position="bottom-right"
         toastOptions={{
