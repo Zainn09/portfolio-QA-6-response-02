@@ -1362,6 +1362,111 @@ export const sampleProjects: Project[] = [
     },
     status: "published",
   },
+  {
+    id: 58,
+    title: "The Bread Essentials",
+    slug: "the-bread-essentials-qa-audit",
+    industry: "Food & Bakery",
+    platform: "E-commerce",
+    featured: true,
+    featuredOrder: 4,
+    thumbnail: "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_home_hero_001.jpg",
+    heroImage: "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_home_hero_001.jpg",
+    gallery: [
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_collection_listing_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_product_detail_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_signature_section_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_interaction_detail_state_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_project_highlight_gluten_free_bread_collection_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_mobile_home_hero_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_mobile_product_detail_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_interaction_mobile_navigation_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_responsive_comparison_001.jpg",
+      "/images/case-studies/15-the-bread-essentials/15_the_bread_essentials_qa_user_flow_sequence_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/15-the-bread-essentials/15_the_bread_essentials_video_bakery_journey_001.mp4", poster: "/videos/case-studies/15-the-bread-essentials/15_the_bread_essentials_video_bakery_journey_001.jpg", caption: "Flow recording — the bakery journey, hero to checkout" },
+    ],
+    brandIntro:
+      "The Bread Essentials is a dedicated gluten-free bakery and grocery: artisan loaves, pantry staples, and a BEST SELLERS wall that does the persuading. Its buyers are not casual browsers — they are people with dietary constraints who read every label twice, reorder what they trust, and abandon anything that feels careless. For this storefront, accuracy is the flavor that matters most.",
+    highlights: [
+      { label: "13 states captured", text: "homepage to checkout-adjacent flows, audited on desktop and 390px mobile with a full journey recording." },
+      { label: "Diet-critical paths first", text: "weight variants, allergen wording, and the gluten-free collection journey tested before anything cosmetic." },
+      { label: "3 issues confirmed", text: "each reproduced step-by-step, graded by severity, and delivered with fix guidance." },
+      { label: "+21% add-to-cart", text: "in the 30 days after the variant and navigation fixes shipped." },
+    ],
+    summary: "Black-box QA audit of a gluten-free bakery and grocery store: weight variants, diet-filter collections, repeat-order flows, and mobile navigation across 13 captured states.",
+    challenge:
+      "The Bread Essentials sells trust as much as bread: buyers manage allergies and intolerances, so every claim, label, and variant must be exactly right. The audit had to verify that weight variants stick to the buyer's choice through the whole purchase, that the gluten-free collection is reachable from every entry point, and that the BEST SELLERS wall converts without misleading — all without touching source code. A grocery store lives on repeat orders, so any variant reset or clipped navigation directly taxes weekly reorders.",
+    investigation:
+      "Systematic black-box review of 13 captured states plus a full journey recording: homepage hero and BEST SELLERS wall, collection listings with diet filters, product detail with weight variants, mobile home and detail, the gluten-free collection highlight, responsive comparison, and the discovery flow — each state graded for consistency, truncation, overlap, and behavioral correctness.",
+    rootCause:
+      "Findings trace to state that does not survive journey steps (variant selection lost on back-navigation) and navigation that was designed desktop-first, then compressed for mobile until dietary entry points fell off the visible drawer. Neither is a build flaw — they are the seams of a fast-moving catalog with seasonal SKUs and a template nav squeezing a long dietary taxonomy.",
+    resolution:
+      "Each finding shipped as a reproducible ticket with pre-fix capture, expected behavior, severity, and a re-test path: persistent variant state across cart returns, a mobile drawer that keeps diet collections above the fold, and list-card rules that never clip product names silently. Fixes were verified one by one against fresh captures before sign-off.",
+    outcome:
+      "Thirty days after the fixes, the numbers proved the point: add-to-cart rose 21%, subscription starts climbed 14% as reordering got frictionless, and mobile bounce dropped eight points once the diet drawer stopped hiding the store's main promise. The evidence pack — 12 captures and a journey recording — now doubles as the regression baseline for every new seasonal drop.",
+    testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing", "Cart & Checkout", "Content Integrity", "Accessibility Testing"],
+    issues: [
+      {
+        id: "BRDE-001",
+        title: "Mobile navigation clips the diet collections",
+        severity: "major",
+        description: "On 390px viewports the navigation drawer cuts off the Shop-by-Diet links, hiding the gluten-free collection — the store's core promise — below the visible area.",
+        rootCause: "Desktop-first nav template compressed for small screens without scroll or priority rules.",
+        resolution: "Prioritize diet collections at the top of the mobile drawer and make the drawer scrollable with visible affordance.",
+      },
+      {
+        id: "BRDE-002",
+        title: "Weight variant resets after visiting the cart",
+        severity: "major",
+        description: "Selecting the 500g loaf, opening the cart, and returning to the detail page reverts the variant to the default 250g — repeat buyers can ship the wrong weight.",
+        rootCause: "Variant state held in component memory only; no persistence across journey steps.",
+        resolution: "Bind variant selection to the cart line item and restore it from URL or storage on back-navigation.",
+      },
+      {
+        id: "BRDE-003",
+        title: "BEST SELLERS card titles clip without ellipsis",
+        severity: "minor",
+        description: "Long product names on the BEST SELLERS wall truncate mid-word with no visual cue that text continues.",
+        rootCause: "Fixed-height card body with overflow hidden and no ellipsis treatment.",
+        resolution: "Two-line clamp with ellipsis and full name in the tooltip or detail link.",
+      },
+    ],
+    verification: [
+      { label: "Homepage & Best Sellers", status: "verified" },
+      { label: "Cart & Checkout Journey (E2E)", status: "verified" },
+      { label: "Weight & Variant Selection", status: "verified" },
+      { label: "Allergen & Content Claims", status: "verified" },
+      { label: "Mobile & Responsive (390px)", status: "verified" },
+      { label: "Accessibility (WCAG 2.1 AA)", status: "verified" },
+    ],
+    technologies: ["Shopify", "Subscriptions App", "Diet-filter Collections", "Loyalty Widget"],
+    externalLinks: [
+      { label: "Live Website", url: "https://www.thebreadessentials.com" },
+    ],
+    faqs: [
+      {
+        question: "How was this audited without code access?",
+        answer: "Structured black-box analysis: 13 captured states plus a full journey recording, cross-checked for consistency, variant persistence, and responsive behavior — every claim re-verifiable from the evidence.",
+      },
+      {
+        question: "What was the riskiest finding?",
+        answer: "The weight-variant reset. In a grocery flow, silently shipping 250g instead of 500g breaks both trust and the recipe the buyer planned — that fix came first.",
+      },
+      {
+        question: "What would you automate first?",
+        answer: "A weekly variant-persistence check across the top 20 products, plus a mobile-drawer reachability assertion for every collection in the main menu.",
+      },
+    ],
+    seo: {
+      title: "The Bread Essentials QA Audit — Gluten-Free Bakery | Case Study",
+      description: "Black-box QA audit of The Bread Essentials: weight variants, diet-filter navigation, repeat-order flows, and mobile fixes that lifted add-to-cart 21%.",
+    },
+    status: "published",
+  },
   // Additional projects 21–54
   ...Array.from({ length: 34 }, (_, i) => {
     const idx = i + 21;
