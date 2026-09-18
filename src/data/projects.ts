@@ -1063,9 +1063,19 @@ export const sampleProjects: Project[] = [
     gallery: [
       "/images/case-studies/01-fandiem/01_fandiem_desktop_collection_listing_001.jpg",
       "/images/case-studies/01-fandiem/01_fandiem_desktop_product_detail_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_desktop_signature_section_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_interaction_detail_state_001.jpg",
       "/images/case-studies/01-fandiem/01_fandiem_project_highlight_donation_journey_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_mobile_home_hero_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_mobile_product_detail_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/01-fandiem/01_fandiem_interaction_mobile_header_001.jpg",
       "/images/case-studies/01-fandiem/01_fandiem_responsive_comparison_001.jpg",
       "/images/case-studies/01-fandiem/01_fandiem_qa_user_flow_sequence_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/01-fandiem/01_fandiem_video_product_journey_001.mp4", poster: "/videos/case-studies/01-fandiem/01_fandiem_video_product_journey_001.jpg", caption: "Flow recording — the full donation-to-entry journey" },
     ],
     brandIntro:
       "Fandiem turns once-in-a-lifetime prize draws — supercars, cash, and artist experiences — into recurring donations for verified charities. Fans enter in minutes, causes get funded, and every draw is public. On a platform where the product is trust, the storefront has to convert excitement into entries without leaving a single moment of doubt.",
