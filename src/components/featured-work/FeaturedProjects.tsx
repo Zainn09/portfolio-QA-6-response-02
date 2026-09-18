@@ -370,45 +370,23 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                         data-active={isActive}
                         className="featured-visual-slide"
                       >
-                        {/* Stylized store interface */}
+                        {/* Real store capture from the audit */}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={p.heroImage}
+                          alt={`${p.title} — store capture from the QA audit`}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+                        />
                         <div
+                          aria-hidden="true"
                           style={{
-                            padding: "1rem",
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "0.5rem",
-                            opacity: 0.7,
+                            position: "absolute",
+                            inset: 0,
+                            background: "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 30%)",
                           }}
-                        >
-                          <div
-                            style={{
-                              height: "28px",
-                              backgroundColor: "var(--bg-surface-2)",
-                              borderRadius: "3px",
-                              display: "flex",
-                              alignItems: "center",
-                              paddingLeft: "0.75rem",
-                              gap: "0.5rem",
-                            }}
-                          >
-                            <div style={{ width: "40px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                            <div style={{ flex: 1 }} />
-                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                            <div style={{ width: "24px", height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-                          </div>
-
-                          <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                            <div style={{ backgroundColor: "var(--bg-surface-2)", borderRadius: "3px" }} />
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", padding: "0.5rem" }}>
-                              <div style={{ height: "8px", backgroundColor: "var(--border-strong)", borderRadius: "2px", width: "80%" }} />
-                              <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "60%" }} />
-                              <div style={{ height: "8px", backgroundColor: "var(--border)", borderRadius: "2px", width: "70%" }} />
-                              <div style={{ marginTop: "auto", height: "28px", backgroundColor: "var(--accent)", borderRadius: "3px", opacity: 0.5 }} />
-                            </div>
-                          </div>
-                        </div>
+                        />
 
                         {/* Issue markers — mount on activation so they pop in */}
                         {isActive &&
