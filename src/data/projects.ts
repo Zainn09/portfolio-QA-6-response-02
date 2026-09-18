@@ -4088,8 +4088,8 @@ export const sampleProjects: Project[] = [
     slug: "black-arrow-gallery-qa-audit",
     industry: "Jewellery",
     platform: "E-commerce",
-    featured: false,
-    featuredOrder: 0,
+    featured: true,
+    featuredOrder: 8,
     thumbnail: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/29-black-arrow-gallery/images/29_black_arrow_gallery_project_wear_real_stories_collection_source_001.jpg",
     heroImage: "https://raw.githubusercontent.com/Zainn09/portfolio-images/main/QA-PORTFOLIO-ASSETS/Sprint-03/29-black-arrow-gallery/images/29_black_arrow_gallery_project_wear_real_stories_collection_source_001.jpg",
     gallery: [
