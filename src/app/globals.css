@@ -786,3 +786,19 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 @media print {
   * { color: #000 !important; background: #fff !important; }
 }
+
+/* ── Blog article system ─────────────────────────────────────── */
+.article-card:hover { border-color: var(--accent) !important; }
+.article-toc { display: none; }
+@media (min-width: 1024px) {
+  .article-toc { display: flex; }
+}
+.legacy-post-content { font-size: 1.0625rem; line-height: 1.85; color: var(--text-secondary); }
+.legacy-post-content h2 { font-size: 1.5rem; font-weight: 700; margin: 3rem 0 1rem; color: var(--text-primary); letter-spacing: -0.02em; }
+.legacy-post-content h3 { font-size: 1.125rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text-primary); }
+.legacy-post-content ul, .legacy-post-content ol { margin: 0 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.legacy-post-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+.legacy-post-content a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.blog-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+@media (min-width: 640px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
