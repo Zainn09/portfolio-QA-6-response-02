@@ -209,7 +209,7 @@ export default async function ArticlePage({ params }: Props) {
   const related = getRelatedArticles(a, 4);
   const { prev, next } = PREV_NEXT(a.slug);
   const toc = a.body.map((b, i) => ({ text: b.type === "h2" && "text" in b ? b.text : "", i })).filter((x) => x.text);
-  const isGuide = a.articleType === "guide";
+  const showToc = toc.length >= 4;
   const ts = TYPE_STYLE[a.articleType] ?? TYPE_STYLE.insight;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -222,6 +222,15 @@ export default async function ArticlePage({ params }: Props) {
     publisher: { "@type": "Organization", name: "QA Specialist" },
     mainEntityOfPage: `${SITE}/blogs/${a.slug}`,
   };
+  const faqLd = a.faq.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: a.faq.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  } : null;
   const crumbs = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -236,6 +245,7 @@ export default async function ArticlePage({ params }: Props) {
     <article style={{ paddingTop: "2.5rem" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
 
       {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="container" style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "2rem" }}>
@@ -278,8 +288,8 @@ export default async function ArticlePage({ params }: Props) {
       )}
 
       {/* Body — guides get a sticky TOC rail on desktop */}
-      <div className="container" style={{ display: "grid", gridTemplateColumns: isGuide && toc.length > 2 ? "240px minmax(0, 1fr)" : "1fr", gap: "3rem", alignItems: "start", maxWidth: isGuide ? "100%" : "56rem" }}>
-        {isGuide && toc.length > 2 && (
+      <div className="container" style={{ display: "grid", gridTemplateColumns: showToc ? "240px minmax(0, 1fr)" : "1fr", gap: "3rem", alignItems: "start", maxWidth: showToc ? "100%" : "56rem" }}>
+        {showToc && (
           <nav aria-label="On this page" className="article-toc" style={{ position: "sticky", top: "calc(var(--nav-height) + 2rem)", flexDirection: "column", gap: "0.75rem" }}>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>On this page</p>
             {toc.map((t) => (
