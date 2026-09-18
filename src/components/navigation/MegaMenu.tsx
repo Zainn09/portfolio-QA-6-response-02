@@ -422,7 +422,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         .mega-steps {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 0.5rem 1.5rem;
+          gap: 0.875rem 2.25rem;
           align-content: center;
         }
         .mega-card,
@@ -444,8 +444,8 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         }
         .mega-step {
           flex-direction: row;
-          align-items: flex-start;
-          gap: 0.75rem;
+          align-items: center;
+          gap: 1rem;
           padding: 0.625rem 0.875rem;
         }
         .mega-step-icon {
@@ -499,7 +499,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         .mega-step-body {
           display: flex;
           flex-direction: column;
-          gap: 0.125rem;
+          gap: 0.25rem;
           min-width: 0;
         }
         .mega-card-top {
