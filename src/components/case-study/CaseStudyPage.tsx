@@ -412,39 +412,48 @@ const EVIDENCE_LABELS = [
 ];
 
 function distributeEvidence(items: string[], buckets: number): string[][] {
-  // Group captures into atomic units first: consecutive tall (portrait) mobile
-  // captures pair up, everything else stands alone — so a pair never splits.
+  // Tall (portrait) mobile captures are paired GLOBALLY first, so a mobile
+  // screenshot never renders alone: pairs are atomic units that always land
+  // in the same bucket, side by side in a 2-column grid.
   const isPortrait = (x: string) => PORTRAIT_EVIDENCE.has(evidenceFile(x));
-  const units: string[][] = [];
+  const pairs: string[][] = [];
+  const singles: string[] = [];
   let i = 0;
   while (i < items.length) {
-    const unit = [items[i++]];
-    if (isPortrait(unit[0]) && i < items.length && isPortrait(items[i])) unit.push(items[i++]);
-    units.push(unit);
+    if (isPortrait(items[i])) {
+      const pair = [items[i++]];
+      if (i < items.length && isPortrait(items[i])) pair.push(items[i++]);
+      pairs.push(pair);
+    } else {
+      singles.push(items[i++]);
+    }
   }
-  // Fill buckets with whole units, keeping sizes balanced.
+  // A globally odd portrait count leaves one centered single — intentional.
+  const oddPortrait = pairs.length > 0 && pairs[pairs.length - 1].length === 1 ? pairs.pop()! : null;
+  // Interleave pairs and singles so grids and full-width shots alternate.
+  const seq: string[][] = [];
+  let pi = 0;
+  let si = 0;
+  while (pi < pairs.length || si < singles.length) {
+    if (pi < pairs.length) seq.push(pairs[pi++]);
+    if (si < singles.length) seq.push([singles[si++]]);
+  }
+  // Chunk whole units into balanced buckets — a pair can never split.
   const target = Math.ceil(items.length / buckets);
   const bucketUnits: string[][][] = Array.from({ length: buckets }, () => []);
   const counts = new Array(buckets).fill(0);
   let bi = 0;
-  for (const unit of units) {
+  for (const unit of seq) {
     while (bi < buckets - 1 && counts[bi] > 0 && counts[bi] + unit.length > target) bi++;
     bucketUnits[bi].push(unit);
     counts[bi] += unit.length;
   }
-  // If a bucket ends with a lone portrait and the next starts with one, join
-  // them into a side-by-side pair — no mobile screenshot scrolls alone.
-  for (let b = 0; b < buckets - 1; b++) {
-    const bu = bucketUnits[b];
-    const nxt = bucketUnits[b + 1];
-    if (bu.length && nxt.length) {
-      const last = bu[bu.length - 1];
-      const first = nxt[0];
-      if (last.length === 1 && first.length === 1 && isPortrait(last[0]) && isPortrait(first[0])) {
-        last.push(first[0]);
-        nxt.shift();
-      }
-    }
+  if (oddPortrait) {
+    let mb = 0;
+    counts.forEach((c, idx) => {
+      if (c < counts[mb]) mb = idx;
+    });
+    bucketUnits[mb].push([oddPortrait[0]]);
   }
   return bucketUnits.map((bu) => bu.flat());
 }
