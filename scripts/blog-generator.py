@@ -240,10 +240,10 @@ def _readout(c, p):
     ]
 
 def _next_sprint(c, ptype):
-    lead = "If this were {NAME}'s next sprint" if ptype != "case-study" else "The next sprint on {NAME}"
+    lead = "The next sprint on {NAME}"
     return [
       {"type":"h2","text":"What the next sprint would tackle"},
-      {"type":"p","text": fill_text(lead + " has a shortlist, not a wishlist: a personalization rule for returning {P} visitors, a bundle configurator for {T} pairs, and a second speed pass on collection imagery. Each candidate has to pass the same gate the first fixes did — a traced defect, a drop-off, or a hesitation visible in the captures.", c)},
+      {"type":"p","text": fill_text(lead + " has a shortlist, not a wishlist: a personalization rule for returning {P}, a bundle configurator for {T} pairs, and a second speed pass on collection imagery. Each candidate has to pass the same gate the first fixes did — a traced defect, a drop-off, or a hesitation visible in the captures.", c)},
       {"type":"p","text": fill_text("Nothing goes in because it is fashionable. The revamp earned its numbers by refusing concurrent changes; the next sprint keeps that contract. One bet at a time, thirty days each, and the discipline to call a miss a miss.", c)},
     ]
 
@@ -1347,8 +1347,9 @@ def fmt(t, p, extra=None):
 
 
 def _an_fix(t, val, before):
-    art = "an" if val[:1].lower() in "aeiou" else "a"
-    return t.replace(before, art + " ") if before in t else t
+    orig = before.split()[0]  # keeps original casing ("A" vs "a")
+    art = ("An" if orig[0].isupper() else "an") if val[:1].lower() in "aeiou" else orig
+    return t.replace(before, art + " {S}") if before in t else t
 
 
 def lex_fill(t, p):
