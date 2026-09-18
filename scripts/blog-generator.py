@@ -1083,26 +1083,33 @@ used_slugs = set()
 def title_for(bp, p, pool_name):
     L = lex(p['industry'])
     for t in bp['titles']:
-        cand = fmt(t, p, {"SEASON": L['season']})
+        cand = lex_fill(fmt(t, p, {"SEASON": L['season']}), p)
         key = (bp['id'], ind_key(p['industry']))
         if cand not in used_titles and key not in used_bp_ind:
             used_titles.add(cand); used_bp_ind.add(key)
             return cand
     # fallback: project-name disambiguation
     for t in bp['titles']:
-        cand = fmt(t, p, {"SEASON": L['season']})
+        cand = lex_fill(fmt(t, p, {"SEASON": L['season']}), p)
         if cand not in used_titles:
             used_titles.add(cand)
             return cand
     # last resort: natural suffixes tying the piece to this specific project
-    base = fmt(bp['titles'][0], p, {"SEASON": L['season']})
+    base = lex_fill(fmt(bp['titles'][0], p, {"SEASON": L['season']}), p)
     for suffix in (f" — Lessons From {p['title']}", f": The {p['title']} Notes",
                    f" — A {p['title']} Postscript"):
-        cand = (base + suffix)[:95]
+        cand = cap_words(base + suffix, 95)
         if cand not in used_titles:
             used_titles.add(cand)
             return cand
     raise RuntimeError("out of titles")
+
+def cap_words(s, n, ell=""):
+    """Trim to n chars without cutting a word in half."""
+    if len(s) <= n:
+        return s
+    cut = s[:n - len(ell)].rsplit(" ", 1)[0].rstrip(",;:—- ")
+    return cut + ell
 
 def slugify(t):
     s = re.sub(r'[^a-z0-9]+', '-', t.lower()).strip('-')
@@ -1128,6 +1135,18 @@ def fmt(t, p, extra=None):
         k = mo.group(1)
         return str(m[k]) if k in m else mo.group(0)
     return re.sub(r'\{(\w+)\}', rep, t)
+
+
+def lex_fill(t, p):
+    """Substitute industry-lexicon tokens ({S}/{P}/{T}/{AOV}/...) in strings that
+    bypass fill_text (titles, excerpts, metas). fmt() alone doesn't know these."""
+    c = lex(p['industry'])
+    m = {"P": c['people'], "T": c['things'], "S": c['store'], "AOV": c['aov'],
+         "SEASON": c['season'], "DISC": c['discovery'], "TR": c['trust'], "TICK": c['ticket'],
+         "PLAT": p['platform']}
+    t = re.sub(r"\ba \{P\}", "a " + c['person'], t)
+    t = re.sub(r"\bA \{P\}", "A " + c['person'], t)
+    return re.sub(r"\{(\w+)\}", lambda mo: str(m.get(mo.group(1), mo.group(0))), t)
 
 
 def fill_text(t, c):
@@ -1186,14 +1205,14 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     faqs = bp['faq'](c) if callable(bp['faq']) else bp['faq']
     faqs = [{"question": fill_text(f.get('question') or f.get('q'), c),
              "answer": fill_text(f.get('answer') or f.get('a'), c)} for f in faqs]
-    meta_title = (title[:57] + "…") if len(title) > 60 else title
-    meta_desc = fmt(bp['excerpt'], p)[:155]
+    meta_title = cap_words(title, 57, "…") if len(title) > 60 else title
+    meta_desc = cap_words(lex_fill(fmt(bp['excerpt'], p), p), 155, "…")
     return {
         "id": aid, "title": title, "slug": slug,
-        "excerpt": fmt(bp['excerpt'], p),
+        "excerpt": lex_fill(fmt(bp['excerpt'], p), p),
         "articleType": ptype, "category": cat, "tags": bp['tags'],
         "projectSlug": p['slug'], "projectTitle": p['title'],
-        "primaryKeyword": fmt(bp['kw'], p),
+        "primaryKeyword": lex_fill(fmt(bp['kw'], p), p),
         "searchIntent": {"insight":"informational — strategy and trends","guide":"informational / problem-solving — how-to","case-study":"commercial — proof and expertise"}[ptype],
         "metaTitle": meta_title, "metaDescription": meta_desc,
         "heroImage": p['hero'] if ptype != 'case-study' else (c['img'][0] if c['img'] else p['hero']),
@@ -1254,7 +1273,11 @@ for a in insight_flagships: a['featured'] = True
 
 dup_titles = len(ARTICLES) - len({a['title'] for a in ARTICLES})
 dup_slugs = len(ARTICLES) - len({a['slug'] for a in ARTICLES})
-print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs}")
+import json as _json
+_leftovers = re.findall(r"\{(PHRASE|NAME|IND|NIS|SEV|LIFT|SEASON|P|T|S|AOV|DISC|TR|TICK|PLAT|NCAP|ISSUE|ISSUEID)\}", _json.dumps(ARTICLES, default=str))
+print(f"S4 production: {len(ARTICLES)} articles | dup titles: {dup_titles} | dup slugs: {dup_slugs} | leftover tokens: {len(_leftovers)}")
+if _leftovers:
+    raise SystemExit(f"LEFTOVER TOKENS: {_leftovers[:10]}")
 print("types:", {t: sum(1 for a in ARTICLES if a['articleType']==t) for t in ('insight','guide','case-study')})
 print("categories:", {c: sum(1 for a in ARTICLES if a['category']==c) for c in (C_SHOPIFY,C_CRO,C_AOV,C_AI,C_GROWTH,C_UX)})
 print("date range:", min(a['publishedAt'] for a in ARTICLES)[:10], "→", max(a['publishedAt'] for a in ARTICLES)[:10])
