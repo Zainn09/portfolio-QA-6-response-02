@@ -35,6 +35,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 export function CaseStudyPage({ project, related }: Props) {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  let evidenceNo = 0;
+  const numberedChunks = distributeEvidence(project.gallery, EVIDENCE_LABELS.length).map((chunk) =>
+    chunk.map((src) => ({ src, no: ++evidenceNo }))
+  );
 
   return (
     <div style={{ paddingTop: "var(--nav-height)" }}>
@@ -151,11 +155,20 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.investigation}</p>
             </Section>
 
-            {project.gallery[0] && (
+            {numberedChunks[0].map(({ src, no }) => (
               <EvidenceFigure
-                src={project.gallery[0]}
-                alt={`${project.title} — catalogue and discovery capture`}
-                caption="Evidence 01 — Catalogue & discovery"
+                key={src}
+                src={src}
+                alt={`${project.title} — ${EVIDENCE_LABELS[0].toLowerCase()} capture`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[0]}`}
+              />
+            ))}
+
+            {project.videos?.[0] && (
+              <EvidenceVideo
+                src={project.videos[0].src}
+                poster={project.videos[0].poster}
+                caption={project.videos[0].caption}
               />
             )}
 
@@ -165,13 +178,14 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.rootCause}</p>
             </Section>
 
-            {project.gallery[1] && (
+            {numberedChunks[1].map(({ src, no }) => (
               <EvidenceFigure
-                src={project.gallery[1]}
-                alt={`${project.title} — detail and configuration capture`}
-                caption="Evidence 02 — Detail & configuration"
+                key={src}
+                src={src}
+                alt={`${project.title} — ${EVIDENCE_LABELS[1].toLowerCase()} capture`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[1]}`}
               />
-            )}
+            ))}
 
             {project.issues.length > 0 && (
               <>
@@ -236,13 +250,14 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {project.gallery[2] && (
+            {numberedChunks[2].map(({ src, no }) => (
               <EvidenceFigure
-                src={project.gallery[2]}
-                alt={`${project.title} — signature experience capture`}
-                caption="Evidence 03 — Signature experience"
+                key={src}
+                src={src}
+                alt={`${project.title} — ${EVIDENCE_LABELS[2].toLowerCase()} capture`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[2]}`}
               />
-            )}
+            ))}
 
             <Divider />
 
@@ -250,13 +265,14 @@ export function CaseStudyPage({ project, related }: Props) {
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.resolution}</p>
             </Section>
 
-            {project.gallery[3] && (
+            {numberedChunks[3].map(({ src, no }) => (
               <EvidenceFigure
-                src={project.gallery[3]}
-                alt={`${project.title} — responsive behavior capture`}
-                caption="Evidence 04 — Responsive behavior"
+                key={src}
+                src={src}
+                alt={`${project.title} — ${EVIDENCE_LABELS[3].toLowerCase()} capture`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[3]}`}
               />
-            )}
+            ))}
 
             <Divider />
 
@@ -290,13 +306,18 @@ export function CaseStudyPage({ project, related }: Props) {
               </Reveal>
             )}
 
-            {project.gallery[4] && (
+            {numberedChunks[4].map(({ src, no }) => (
               <EvidenceFigure
-                src={project.gallery[4]}
-                alt={`${project.title} — user flow capture`}
-                caption="Evidence 05 — User flow"
+                key={src}
+                src={src}
+                alt={`${project.title} — ${EVIDENCE_LABELS[4].toLowerCase()} capture`}
+                caption={`Evidence ${String(no).padStart(2, "0")} — ${EVIDENCE_LABELS[4]}`}
               />
-            )}
+            ))}
+
+            {project.videos?.slice(1).map((v) => (
+              <EvidenceVideo key={v.src} src={v.src} poster={v.poster} caption={v.caption} />
+            ))}
 
             {project.faqs.length > 0 && (
               <>
@@ -410,6 +431,46 @@ export function CaseStudyPage({ project, related }: Props) {
         )}
       </div>
     </div>
+  );
+}
+
+const EVIDENCE_LABELS = [
+  "Catalogue & discovery",
+  "Detail & configuration",
+  "Signature experience",
+  "Responsive behavior",
+  "User flow & journey",
+  "Extended evidence",
+];
+
+function distributeEvidence(items: string[], buckets: number): string[][] {
+  const out: string[][] = Array.from({ length: buckets }, () => []);
+  const base = Math.floor(items.length / buckets);
+  let rem = items.length % buckets;
+  let idx = 0;
+  for (let b = 0; b < buckets; b++) {
+    const take = base + (rem-- > 0 ? 1 : 0);
+    for (let k = 0; k < take; k++) out[b].push(items[idx++]);
+  }
+  return out;
+}
+
+function EvidenceVideo({ src, poster, caption }: { src: string; poster?: string; caption: string }) {
+  return (
+    <Reveal>
+      <figure style={{ margin: "0 0 3rem" }}>
+        <video
+          controls
+          preload="metadata"
+          poster={poster}
+          src={src}
+          style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }}
+        />
+        <figcaption style={{ marginTop: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>
+          {caption}
+        </figcaption>
+      </figure>
+    </Reveal>
   );
 }
 
