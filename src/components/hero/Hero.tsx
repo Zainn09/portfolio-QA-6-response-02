@@ -96,7 +96,7 @@ export function Hero() {
                 maxWidth: "500px",
               }}
             >
-              50+ stores tested. 20 Shopify Plus projects. Hundreds of issues discovered, diagnosed, and resolved.
+              100+ stores tested. 20 Shopify Plus projects. Hundreds of issues discovered, diagnosed, and resolved.
             </p>
 
             <p
@@ -229,7 +229,7 @@ export function Hero() {
               }}
             >
               {[
-                { num: "50+", label: "Stores Tested" },
+                { num: "100+", label: "Stores Tested" },
                 { num: "20", label: "Shopify Plus Projects" },
                 { num: "12+", label: "Industries" },
               ].map((stat) => (

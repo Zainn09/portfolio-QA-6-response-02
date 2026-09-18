@@ -65,7 +65,7 @@ const PROCESS_STEPS = [
 ];
 
 const ABOUT_STATS = [
-  { value: "50+", label: "Stores Tested" },
+  { value: "100+", label: "Stores Tested" },
   { value: "20", label: "Shopify Plus Projects" },
   { value: "12+", label: "Industries Covered" },
   { value: "100%", label: "Verified Resolutions" },

@@ -139,7 +139,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     publishedAt: "2026-07-28T09:00:00Z",
     readMinutes: 10,
     content: `
-<p>Checkout bugs are uniquely cruel: the customer did everything right, and the store still said no. Over 50+ audits, I've distilled checkout testing into a 25-point checklist. Here it is — the same list I run on every store, from startup to Shopify Plus.</p>
+<p>Checkout bugs are uniquely cruel: the customer did everything right, and the store still said no. Over 100+ audits, I've distilled checkout testing into a 25-point checklist. Here it is — the same list I run on every store, from startup to Shopify Plus.</p>
 <h2>Cart to checkout handoff (1–5)</h2>
 <ul>
 <li>Cart contents survive the transition to checkout exactly — quantities, variants, properties.</li>

@@ -789,7 +789,7 @@ export const sampleProjects: Project[] = [
     status: "published",
   },
 
-  // ── Additional Archive Projects (11–50+) ──────────────────────────────────
+  // ── Additional Archive Projects (11–100+) ──────────────────────────────────
   {
     id: 11,
     title: "Luxe Linens",

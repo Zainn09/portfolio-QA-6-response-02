@@ -10,14 +10,14 @@ export const metadata: Metadata = {
     template: "%s | QA Specialist",
   },
   description:
-    "Premium Quality Assurance for Shopify and Shopify Plus stores. 50+ stores tested. Functional, responsive, checkout, and accessibility QA.",
+    "Premium Quality Assurance for Shopify and Shopify Plus stores. 100+ stores tested. Functional, responsive, checkout, and accessibility QA.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   openGraph: {
     type: "website",
     siteName: "QA Specialist Portfolio",
     title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
     description:
-      "I find what your store gets wrong before your customers do. 50+ stores tested. 20 Shopify Plus projects.",
+      "I find what your store gets wrong before your customers do. 100+ stores tested. 20 Shopify Plus projects.",
   },
   twitter: {
     card: "summary_large_image",

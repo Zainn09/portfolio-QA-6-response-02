@@ -140,7 +140,7 @@ export function WorkArchive({ projects, industries, platforms }: WorkArchiveProp
         <div className="container">
           <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>All Work</p>
           <h1 style={{ maxWidth: "700px", marginBottom: "1.25rem" }}>
-            50+ Stores.{" "}
+            100+ Stores.{" "}
             <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
               One Obsession: Finding What Breaks.
             </span>

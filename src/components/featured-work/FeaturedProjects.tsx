@@ -201,7 +201,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  View All 50+ Projects →
+                  View All 100+ Projects →
                 </Link>
               </div>
             </Reveal>

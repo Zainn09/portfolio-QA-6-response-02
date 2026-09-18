@@ -5,7 +5,7 @@ import { AboutStats } from "@/components/about/AboutStats";
 export const metadata: Metadata = {
   title: "About — QA Specialist | Shopify & Shopify Plus",
   description:
-    "About the QA specialist behind 50+ Shopify store audits. Specialising in functional, responsive, checkout, and accessibility testing.",
+    "About the QA specialist behind 100+ Shopify store audits. Specialising in functional, responsive, checkout, and accessibility testing.",
   alternates: { canonical: "/about" },
 };
 
