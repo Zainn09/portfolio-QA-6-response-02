@@ -10089,46 +10089,6 @@ export const sampleProjects: Project[] = [
     },
     status: "published",
   },
-  // Additional projects 21–54
-  ...Array.from({ length: 34 }, (_, i) => {
-    const idx = i + 21;
-    const industries = ["Jewellery", "Furniture", "Books", "Supplements", "Home & Lifestyle", "Fashion", "Beauty", "Food & Beverage", "Electronics", "Health & Wellness", "Luxury", "Consumer Products"];
-    const platforms = ["Shopify", "Shopify Plus"];
-    const industry = industries[i % industries.length];
-    const platform = platforms[i % 2];
-    return {
-      id: idx,
-      title: `Project ${idx} — ${industry}`,
-      slug: `project-${idx}-${industry.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      industry,
-      platform,
-      featured: false,
-      featuredOrder: 0,
-      thumbnail: "/images/projects/default-thumbnail.jpg",
-      heroImage: "/images/projects/default-hero.jpg",
-      gallery: [] as string[],
-      summary: `QA audit performed on a ${industry.toLowerCase()} store on ${platform}. Issues discovered, diagnosed, and resolved.`,
-      challenge: "The store had functional and UX issues impacting conversion and customer experience.",
-      investigation: "Systematic testing across all key user journeys.",
-      rootCause: "Configuration and implementation issues accumulated over time.",
-      resolution: "Issues documented, prioritised, and resolved with the development team.",
-      outcome: "Store verified across all primary user journeys.",
-      testingScope: ["Functional Testing", "UI/UX Testing", "Responsive Testing"],
-      issues: [] as Issue[],
-      verification: [
-        { label: "Functional", status: "verified" as const },
-        { label: "Responsive", status: "verified" as const },
-      ],
-      technologies: [platform, "Custom Theme"],
-      externalLinks: [] as { label: string; url: string }[],
-      faqs: [] as FAQ[],
-      seo: {
-        title: `${industry} Store QA Audit — ${platform} | Case Study`,
-        description: `QA audit of a ${industry.toLowerCase()} ${platform} store.`,
-      },
-      status: "published" as const,
-    };
-  }),
 ];
 
 export const getFeaturedProjects = () =>
