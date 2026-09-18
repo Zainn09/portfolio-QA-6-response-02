@@ -1533,7 +1533,7 @@ export const sampleProjects: Project[] = [
       { src: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.mp4", poster: "/videos/case-studies/17-london-flower-academy/17_london_flower_academy_video_workshop_journey_001.jpg", caption: "Flow recording — the workshop journey, hero to enquiry" },
     ],
     brandIntro:
-      "London Flower Academy turns a love of flowers into a craft — professional floral design workshops where a single booking is the start of a career change. The website is the academy's front door: class listings, workshop detail pages, and an enquiry flow that has to feel as considered as the arrangements on the hero banner. When the enquiry flow leaks, the academy doesn't just lose a booking; it loses a student's momentum at the exact moment they decided to invest in themselves.",
+      "London Flower Academy turns a love of flowers into a craft — professional floral design workshops where a single booking is the start of a career change. The website is the academy's front door: class listings, workshop detail pages, and an enquiry flow that has to feel as considered as the arrangements on the hero banner. When the enquiry flow leaks, the academy doesn't just lose a booking; it loses a student's momentum at the exact moment they decided to invest in themselves.The team already cared about craft; the audit's job was to make sure the storefront showed it in the places buyers actually look — prices, promises, buttons, and the small print underneath them.",
     resultsTable: [
       { metric: "Enquiry completion rate", before: "2.6%", after: "3.3%" },
       { metric: "Class-page drop-off", before: "48%", after: "31%" },
