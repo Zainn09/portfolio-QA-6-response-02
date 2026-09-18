@@ -1,30 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { articles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { categorySlug } from "@/components/blog/categories";
 import { allBlogArticles, searchAllArticles } from "@/data/legacy-articles";
 import { CategoryChips, FeaturedCard, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/components/blog/BlogIndex";
 
 interface Props {
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
 }
+
+const SORTS = ["newest", "oldest", "az"] as const;
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { category, q } = await searchParams;
   const suffix = q ? ` — “${q}”` : category ? ` — ${category}` : "";
+  // Filtered views canonicalize to their crawlable equivalents (cluster hubs / clean index)
+  const canonical = category
+    ? `/blogs/category/${categorySlug(category)}`
+    : "/blogs";
   return {
     title: `Blog — QA Insights, Guides & Store Case Studies${suffix}`,
     description:
       "Practical Shopify QA: conversion-rate teardowns, AOV and merchandising fixes, AI-assisted testing workflows, and case stories from 93 real storefronts.",
-    alternates: { canonical: `/blogs${category || q ? `?${new URLSearchParams({ ...(category && { category }), ...(q && { q }) })}` : ""}` },
+    alternates: { canonical },
+    openGraph: {
+      title: `Blog — QA Insights, Guides & Store Case Studies${suffix}`,
+      description: "Conversion teardowns, AOV plays, AI testing workflows and store case stories from 93 real Shopify audits.",
+      type: "website",
+    },
   };
 }
 
 export default async function BlogsPage({ searchParams }: Props) {
-  const { category, q } = await searchParams;
+  const { category, q, sort } = await searchParams;
   const validCategory = category && ARTICLE_CATEGORIES.includes(category as (typeof ARTICLE_CATEGORIES)[number]) ? category : undefined;
+  const sortKey = SORTS.includes((sort ?? "") as (typeof SORTS)[number]) ? (sort as (typeof SORTS)[number]) : "newest";
 
   let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
   if (validCategory) list = list.filter((a) => a.category === validCategory);
+  if (sortKey === "oldest") list = [...list].reverse();
+  if (sortKey === "az") list = [...list].sort((x, y) => x.title.localeCompare(y.title));
 
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const pageItems = list.slice(0, PAGE_SIZE);
@@ -65,7 +80,24 @@ export default async function BlogsPage({ searchParams }: Props) {
         <h2 style={{ fontSize: "1.375rem", fontWeight: 800, letterSpacing: "-0.02em", margin: 0 }}>
           {filtered ? `${list.length} result${list.length === 1 ? "" : "s"}` : "Latest articles"}
         </h2>
-        {validCategory && <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>Topic: {validCategory}</p>}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+          {validCategory && <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>Topic: {validCategory}</p>}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Sort</span>
+            {SORTS.map((sk) => {
+              const sp = new URLSearchParams();
+              if (validCategory) sp.set("category", validCategory);
+              if (q) sp.set("q", q);
+              if (sk !== "newest") sp.set("sort", sk);
+              const qs = sp.toString();
+              return (
+                <Link key={sk} href={`/blogs${qs ? `?${qs}` : ""}`} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: sortKey === sk ? 700 : 400, color: sortKey === sk ? "var(--accent)" : "var(--text-tertiary)", borderBottom: sortKey === sk ? "1px solid var(--accent)" : "none", paddingBottom: "1px" }}>
+                  {sk === "az" ? "A–Z" : sk === "newest" ? "Newest" : "Oldest"}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Grid */}
@@ -82,7 +114,7 @@ export default async function BlogsPage({ searchParams }: Props) {
         </div>
       )}
 
-      <Pagination page={1} totalPages={totalPages} category={validCategory} q={q} />
+      <Pagination page={1} totalPages={totalPages} category={validCategory} q={q} sort={sortKey} />
     </div>
   );
 }

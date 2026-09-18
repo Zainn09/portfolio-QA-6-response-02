@@ -7,7 +7,7 @@ import { CategoryChips, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/co
 
 interface Props {
   params: Promise<{ page: string }>;
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
 }
 
 export function generateStaticParams() {
@@ -26,14 +26,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPageN({ params, searchParams }: Props) {
   const { page: pageParam } = await params;
-  const { category, q } = await searchParams;
+  const { category, q, sort } = await searchParams;
   const page = Number(pageParam);
   if (!Number.isInteger(page) || page < 1) notFound();
   if (page === 1) redirect("/blogs");
 
   const validCategory = category && ARTICLE_CATEGORIES.includes(category as (typeof ARTICLE_CATEGORIES)[number]) ? category : undefined;
+  const sortKey = ["newest", "oldest", "az"].includes(sort ?? "") ? sort! : "newest";
   let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
   if (validCategory) list = list.filter((a) => a.category === validCategory);
+  if (sortKey === "oldest") list = [...list].reverse();
+  if (sortKey === "az") list = [...list].sort((x, y) => x.title.localeCompare(y.title));
 
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   if (page > totalPages) notFound();
@@ -62,7 +65,7 @@ export default async function BlogPageN({ params, searchParams }: Props) {
         {pageItems.map((a) => <IndexCard key={a.slug} a={stubOf(a)} />)}
       </div>
 
-      <Pagination page={page} totalPages={totalPages} category={validCategory} q={q} />
+      <Pagination page={page} totalPages={totalPages} category={validCategory} q={q} sort={sortKey} />
     </div>
   );
 }

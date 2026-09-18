@@ -107,12 +107,13 @@ export function SearchBox({ q, category }: { q?: string; category?: string }) {
   );
 }
 
-export function Pagination({ page, totalPages, category, q, basePath = "/blogs" }: { page: number; totalPages: number; category?: string; q?: string; basePath?: string }) {
+export function Pagination({ page, totalPages, category, q, sort, basePath = "/blogs" }: { page: number; totalPages: number; category?: string; q?: string; sort?: string; basePath?: string }) {
   if (totalPages <= 1) return null;
   const href = (n: number) => {
     const p = new URLSearchParams();
     if (category) p.set("category", category);
     if (q) p.set("q", q);
+    if (sort && sort !== "newest") p.set("sort", sort);
     const qs = p.toString();
     return n === 1 ? `${basePath}${qs ? `?${qs}` : ""}` : `${basePath}/page/${n}${qs ? `?${qs}` : ""}`;
   };
