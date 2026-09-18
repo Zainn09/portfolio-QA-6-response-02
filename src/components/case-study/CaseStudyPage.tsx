@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/data/projects";
 
@@ -93,6 +94,28 @@ export function CaseStudyPage({ project, related }: Props) {
         </div>
       </header>
 
+      {/* Hero evidence capture (real audits only — samples have no gallery) */}
+      {project.gallery.length > 0 && (
+        <div className="container" style={{ paddingTop: "3rem" }}>
+          <Reveal>
+            <figure style={{ margin: 0 }}>
+              <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden", borderRadius: "var(--radius-md)", border: "1px solid var(--border)", backgroundColor: "var(--bg-surface)" }}>
+                <Image
+                  src={project.heroImage}
+                  alt={`${project.title} — homepage capture from the audit evidence set`}
+                  fill
+                  style={{ objectFit: "cover", objectPosition: "top" }}
+                  sizes="(max-width: 900px) 100vw, 1100px"
+                />
+              </div>
+              <figcaption style={{ marginTop: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", textAlign: "center" }}>
+                Homepage capture — annotated evidence gallery below
+              </figcaption>
+            </figure>
+          </Reveal>
+        </div>
+      )}
+
       {/* Main content */}
       <div className="container" style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "5rem", alignItems: "start" }} className="case-content-grid">
@@ -157,6 +180,32 @@ export function CaseStudyPage({ project, related }: Props) {
             <Section label="06 — The Outcome" title="What Changed?">
               <p style={{ color: "var(--text-secondary)", lineHeight: 1.8 }}>{project.outcome}</p>
             </Section>
+
+            {project.gallery.length > 0 && (
+              <>
+                <Divider />
+                <Section label="Evidence Captures" title="What Does the Evidence Show?">
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+                    {project.gallery.map((src, i) => (
+                      <figure key={src} style={{ margin: 0, border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", overflow: "hidden", backgroundColor: "var(--bg-surface)" }}>
+                        <div style={{ position: "relative", height: "220px" }}>
+                          <Image
+                            src={src}
+                            alt={`${project.title} evidence capture ${i + 1}`}
+                            fill
+                            style={{ objectFit: "cover", objectPosition: "top" }}
+                            sizes="(max-width: 900px) 100vw, 50vw"
+                          />
+                        </div>
+                        <figcaption style={{ padding: "0.625rem 0.875rem", fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                          Capture {String(i + 1).padStart(2, "0")}
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </Section>
+              </>
+            )}
 
             {project.faqs.length > 0 && (
               <>
@@ -228,6 +277,19 @@ export function CaseStudyPage({ project, related }: Props) {
                     <span key={t} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.25rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)", backgroundColor: "var(--bg-surface-2)" }}>
                       {t}
                     </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {project.externalLinks.length > 0 && (
+              <div style={{ padding: "1.5rem", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>Links</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+                  {project.externalLinks.map((l) => (
+                    <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.875rem", color: "var(--text-primary)", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.375rem" }}>
+                      {l.label} <span aria-hidden="true">↗</span>
+                    </a>
                   ))}
                 </div>
               </div>
