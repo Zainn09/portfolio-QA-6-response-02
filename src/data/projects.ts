@@ -1269,9 +1269,19 @@ export const sampleProjects: Project[] = [
     gallery: [
       "/images/case-studies/05-hershop/05_hershop_desktop_collection_listing_001.jpg",
       "/images/case-studies/05-hershop/05_hershop_desktop_product_detail_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_desktop_signature_section_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_interaction_detail_state_001.jpg",
       "/images/case-studies/05-hershop/05_hershop_project_highlight_bridal_editorial_merchandising_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_mobile_home_hero_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_mobile_product_detail_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/05-hershop/05_hershop_interaction_mobile_navigation_001.jpg",
       "/images/case-studies/05-hershop/05_hershop_responsive_comparison_001.jpg",
       "/images/case-studies/05-hershop/05_hershop_qa_user_flow_sequence_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/05-hershop/05_hershop_video_product_journey_001.mp4", poster: "/videos/case-studies/05-hershop/05_hershop_video_product_journey_001.jpg", caption: "Flow recording — campaign page to custom gown" },
     ],
     brandIntro:
       "HER SHOP is a bridal and occasionwear boutique where a single order crosses $1,000 — and where trust is earned in a handful of screens. Custom gowns, custom colors, free-text measurements, and date-bound deliveries mean buyers read everything and abandon at the first hint of confusion. Here, design clarity is a revenue line, not a nicety.",
