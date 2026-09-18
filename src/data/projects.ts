@@ -1171,9 +1171,18 @@ export const sampleProjects: Project[] = [
     gallery: [
       "/images/case-studies/03-kcaps/03_kcaps_desktop_collection_listing_001.jpg",
       "/images/case-studies/03-kcaps/03_kcaps_desktop_product_detail_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_desktop_secondary_experience_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_interaction_capsule_options_001.jpg",
       "/images/case-studies/03-kcaps/03_kcaps_project_highlight_capsule_configurator_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_mobile_home_hero_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_mobile_product_detail_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_mobile_project_specific_section_001.jpg",
+      "/images/case-studies/03-kcaps/03_kcaps_interaction_mobile_navigation_001.jpg",
       "/images/case-studies/03-kcaps/03_kcaps_responsive_comparison_001.jpg",
       "/images/case-studies/03-kcaps/03_kcaps_qa_user_flow_sequence_001.jpg",
+    ],
+    videos: [
+      { src: "/videos/case-studies/03-kcaps/03_kcaps_video_product_journey_001.mp4", poster: "/videos/case-studies/03-kcaps/03_kcaps_video_product_journey_001.jpg", caption: "Flow recording — catalogue to configurator to quote" },
     ],
     brandIntro:
       "K-CAPS is a B2B platform where supplement brands configure vegetarian capsule orders — size, fill, and pack counts — and convert through quote requests worth tens of thousands of dollars. The storefront isn\u2019t a brochure; it\u2019s the sales floor. Every click a buyer makes is them deciding whether K-CAPS can run their production line.",
