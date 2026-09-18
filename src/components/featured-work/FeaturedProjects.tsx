@@ -217,6 +217,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                   display: "flex",
                   gap: "0.5rem",
                   overflowX: "auto",
+                  paddingTop: "0.375rem",
                   paddingBottom: "0.5rem",
                   marginBottom: "1rem",
                 }}
