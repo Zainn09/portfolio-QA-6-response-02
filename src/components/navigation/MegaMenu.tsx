@@ -214,12 +214,12 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                     href="/#expertise"
                     onClick={onNavigate}
                     className="mega-row mega-rise"
-                    style={{ animationDelay: `${i * 60}ms` }}
+                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.875rem", animationDelay: `${i * 60}ms` }}
                   >
-                    <span className="mega-row-icon" aria-hidden="true">
+                    <span className="mega-row-icon" aria-hidden="true" style={{ width: "32px", height: "32px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", border: "1px solid var(--accent)", color: "var(--text-primary)" }}>
                       <Icon size={16} strokeWidth={2} />
                     </span>
-                    <span className="mega-row-body">
+                    <span className="mega-row-body" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", minWidth: 0, flex: 1 }}>
                       <span className="mega-row-head">
                         <span className="mega-card-title">{row.label}</span>
                         <ArrowUpRight size={13} className="mega-arrow" aria-hidden="true" />
@@ -278,12 +278,12 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                     href="/#process"
                     onClick={onNavigate}
                     className="mega-step mega-rise"
-                    style={{ animationDelay: `${i * 45}ms` }}
+                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "1rem", padding: "0.625rem 0.875rem", animationDelay: `${i * 45}ms` }}
                   >
-                    <span className="mega-step-icon" aria-hidden="true">
+                    <span className="mega-step-icon" aria-hidden="true" style={{ width: "28px", height: "28px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", border: "1px solid var(--accent)", color: "var(--text-primary)" }}>
                       <Icon size={14} strokeWidth={2} />
                     </span>
-                    <span className="mega-step-body">
+                    <span className="mega-step-body" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", minWidth: 0, flex: 1 }}>
                       <span className="mega-step-head">
                         <span className="mega-num">{step.num}</span>
                         <span className="mega-card-title">{step.label}</span>
