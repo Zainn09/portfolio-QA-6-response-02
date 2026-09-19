@@ -436,14 +436,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <Link href={`/work/${project.slug}`} className="project-card-link" style={{ animationDelay: `${Math.min(index, 11) * 45}ms` }}>
-      {/* Visual placeholder */}
-      <div style={{ height: "160px", backgroundColor: "var(--bg-surface-2)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ width: "80%", display: "flex", flexDirection: "column", gap: "0.5rem", opacity: 0.5 }}>
-          <div style={{ height: "6px", backgroundColor: "var(--border-strong)", borderRadius: "2px", width: "40%" }} />
-          <div style={{ height: "10px", backgroundColor: "var(--border-strong)", borderRadius: "2px" }} />
-          <div style={{ height: "10px", backgroundColor: "var(--border)", borderRadius: "2px", width: "80%" }} />
-          <div style={{ height: "20px", backgroundColor: "var(--accent)", borderRadius: "2px", width: "40%", marginTop: "0.25rem", opacity: 0.4 }} />
-        </div>
+      {/* Storefront cover — uniform 4:3 across every card for a symmetric grid */}
+      <div style={{ position: "relative", overflow: "hidden", backgroundColor: "var(--bg-surface-2)" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.thumbnail}
+          alt={`${project.title} — storefront capture`}
+          loading="lazy"
+          decoding="async"
+          style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", objectPosition: "top", display: "block" }}
+        />
         <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem", backgroundColor: "var(--bg-primary)", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
           {project.industry}
         </div>
