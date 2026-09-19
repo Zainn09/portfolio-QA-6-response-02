@@ -310,6 +310,8 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                   className="mega-card mega-rise"
                   style={{ animationDelay: `${i * 60}ms` }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={post.heroImage} alt="" loading="lazy" decoding="async" style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", objectPosition: "top", display: "block", borderRadius: "8px", border: "1px solid var(--border)", marginBottom: "0.75rem" }} />
                   <span className="mega-card-top">
                     <span className="mega-meta">{post.category}</span>
                     {post.articleType === "case-study" && (

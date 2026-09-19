@@ -802,3 +802,9 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 .blog-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 @media (min-width: 640px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.toc-link { display: block; font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary); text-decoration: none; border-left: 2px solid var(--border); padding-left: 0.75rem; transition: color 150ms ease, border-color 150ms ease, transform 150ms ease; }
+.toc-link:hover { color: var(--accent); border-left-color: var(--accent); transform: translateX(4px); }
+.toc-link[data-active="true"] { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+.pn-card { transition: border-color 180ms ease, background-color 180ms ease; }
+.pn-card:hover { background-color: var(--accent-muted) !important; }

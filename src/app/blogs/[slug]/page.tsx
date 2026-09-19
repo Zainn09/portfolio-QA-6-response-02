@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTICLE_TYPE_LABEL, type BlogArticle, type ArticleBlock } from "@/data/articles";
 import { legacyArticles } from "@/data/legacy-articles";
+import { Toc } from "@/components/blog/Toc";
 import { staticBlogPosts } from "@/data/blogs";
 import type { ReactNode } from "react";
 
@@ -306,9 +307,7 @@ export default async function ArticlePage({ params }: Props) {
         {showToc && (
           <nav aria-label="On this page" className="article-toc" style={{ position: "sticky", top: "calc(var(--nav-height) + 2rem)", flexDirection: "column", gap: "0.75rem" }}>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>On this page</p>
-            {toc.map((t) => (
-              <a key={t.i} href={`#s-${t.i}`} style={{ fontSize: "0.8125rem", lineHeight: 1.5, color: "var(--text-secondary)", textDecoration: "none", borderLeft: "2px solid var(--border)", paddingLeft: "0.75rem" }}>{t.text}</a>
-            ))}
+            <Toc items={toc.map((t) => ({ id: `s-${t.i}`, text: t.text }))} />
           </nav>
         )}
         <div style={{ minWidth: 0 }}>
@@ -367,15 +366,31 @@ export default async function ArticlePage({ params }: Props) {
       {/* Prev / next */}
       <nav aria-label="More articles" className="container" style={{ marginTop: "3rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
         {prev ? (
-          <Link href={`/blogs/${prev.slug}`} style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-md)", padding: "1.25rem", backgroundColor: "var(--bg-surface)" }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Newer</span>
-            <span style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginTop: "0.5rem" }}>{prev.title}</span>
+          <Link href={`/blogs/${prev.slug}`} className="pn-card" style={{ display: "flex", gap: "1rem", alignItems: "center", border: "1px solid var(--accent)", borderRadius: "var(--radius-md)", padding: "1.125rem", backgroundColor: "var(--bg-surface)" }}>
+            {prev.heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={prev.heroImage} alt="" loading="lazy" decoding="async" style={{ width: "76px", height: "76px", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: "top", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", flexShrink: 0 }} />
+            ) : (
+              <span aria-hidden="true" style={{ width: "76px", height: "76px", aspectRatio: "1 / 1", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", color: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>QA</span>
+            )}
+            <span style={{ minWidth: 0 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700 }}>← Newer</span>
+              <span className="pn-title" style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginTop: "0.375rem", lineHeight: 1.4 }}>{prev.title}</span>
+            </span>
           </Link>
         ) : <span />}
         {next && (
-          <Link href={`/blogs/${next.slug}`} style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-md)", padding: "1.25rem", backgroundColor: "var(--bg-surface)", textAlign: "right" }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Older →</span>
-            <span style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginTop: "0.5rem" }}>{next.title}</span>
+          <Link href={`/blogs/${next.slug}`} className="pn-card" style={{ display: "flex", flexDirection: "row-reverse", gap: "1rem", alignItems: "center", textAlign: "right", border: "1px solid var(--accent)", borderRadius: "var(--radius-md)", padding: "1.125rem", backgroundColor: "var(--bg-surface)" }}>
+            {next.heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={next.heroImage} alt="" loading="lazy" decoding="async" style={{ width: "76px", height: "76px", aspectRatio: "1 / 1", objectFit: "cover", objectPosition: "top", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", flexShrink: 0 }} />
+            ) : (
+              <span aria-hidden="true" style={{ width: "76px", height: "76px", aspectRatio: "1 / 1", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", color: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 }}>QA</span>
+            )}
+            <span style={{ minWidth: 0 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700 }}>Older →</span>
+              <span className="pn-title" style={{ display: "block", fontSize: "0.9375rem", fontWeight: 600, color: "var(--text-primary)", marginTop: "0.375rem", lineHeight: 1.4 }}>{next.title}</span>
+            </span>
           </Link>
         )}
       </nav>

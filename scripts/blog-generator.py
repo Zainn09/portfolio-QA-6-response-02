@@ -314,6 +314,34 @@ def _mobile_alt(u, p):
         label = m.group(1).replace("_", " ").strip()
     return f"{p['title']} — mobile view, {label}"
 
+GENERAL_FAQS = [
+ {"q": "How long does a captured-states audit take?", "a": "A focused money-path audit runs in days, not weeks: {NCAP} captured states on {NAME} covered every page type at desktop and 390px. The pacing follows the fix list you want to stand behind, not the calendar."},
+ {"q": "What exactly counts as a defect?", "a": "Anything that breaks, confuses, or slows a buying decision — verified by reproduction, not opinion. Severity follows revenue impact: the money path outranks the homepage every time."},
+ {"q": "Do you work directly with our developers?", "a": "Yes. The fix list is written for implementation — reproduction steps, screenshots, and the reason each defect costs money — so a theme developer can pick it up as-is."},
+ {"q": "How do you measure whether a fix worked?", "a": "One change at a time, thirty days, events defined before launch. The readout compares behavior against the original captured states instead of against a feeling."},
+ {"q": "Is this a redesign or a QA audit?", "a": "Both, in sequence: the audit finds what is broken, the Figma redesign fixes it, and the build ships minified and speed-budgeted. Evidence proposes; design composes."},
+ {"q": "What platforms do you test?", "a": "Shopify and Shopify Plus storefronts primarily — themes, apps, and checkout — with the same captured-states method applied anywhere the money path runs."},
+ {"q": "Can the audit focus only on mobile?", "a": "It should not have to choose. Most revenue leaks show at 390px first, but desktop checkout breaks in its own ways — both widths ship in the same evidence set."},
+ {"q": "What if the audit finds nothing major?", "a": "Then you have bought certainty: a documented money path, a speed baseline, and a fix list that says ship with confidence. Silence in the evidence is still information."},
+ {"q": "Do the fixes require more apps or paid tools?", "a": "Rarely. Most wins come from theme code, merchandising logic, and removing friction — not from adding another monthly subscription."},
+ {"q": "How is this different from running Lighthouse?", "a": "Lighthouse grades performance in a lab. A captured-states audit walks the buying decision itself — variants, drawer, checkout — where lab tools never go."},
+]
+
+def extend_faqs(faqs, c, aid):
+    """Top every article up to 5-8 FAQs with process questions, rotated and deduped."""
+    out = list(faqs)
+    target = 5 + (aid % 4)
+    asked = {(f.get("question") or "").lower() for f in out}
+    k = 0
+    while len(out) < target and k < len(GENERAL_FAQS):
+        f = GENERAL_FAQS[(aid + k) % len(GENERAL_FAQS)]
+        q = fill_text(f["q"], c)
+        if q.lower() not in asked:
+            out.append({"question": q, "answer": fill_text(f["a"], c)})
+            asked.add(q.lower())
+        k += 1
+    return out
+
 FAIL_PATTERNS = [
     "Variant logic that drifts out of sync with {T} — the image updates, the price does not, and the {P} notices before the dashboard does",
     "Overlays stacked on the money path: chat, promo, install asks — each defensible alone, unjustifiable together",
@@ -1555,6 +1583,7 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
     faqs = bp['faq'](c) if callable(bp['faq']) else bp['faq']
     faqs = [{"question": fill_text(f.get('question') or f.get('q'), c),
              "answer": fill_text(f.get('answer') or f.get('a'), c)} for f in faqs]
+    faqs = extend_faqs(faqs, c, aid)
     meta_title = cap_words(title, 57, "…") if len(title) > 60 else title
     meta_desc = cap_words(lex_fill(fmt(bp['excerpt'], p), p), 155, "…")
     bp_sources = bp.get('sources') or []
@@ -1636,6 +1665,9 @@ if _wc[0] < 1150:
 _noimg = [a['slug'] for a in ARTICLES if not any(b.get("type") in ("image", "imagePair") for b in a['body'])]
 if _noimg:
     raise SystemExit(f"ARTICLES WITHOUT INLINE IMAGERY: {_noimg[:10]}")
+_flens = [len(a['faq']) for a in ARTICLES]
+if min(_flens) < 5 or max(_flens) > 8:
+    raise SystemExit(f"FAQ COUNT OUT OF 5-8 RANGE: min {min(_flens)} max {max(_flens)}")
 _mobile_heroes = [a['slug'] for a in ARTICLES if _is_mobile(a['heroImage'])]
 if _mobile_heroes:
     raise SystemExit(f"MOBILE HEROES: {_mobile_heroes[:10]}")
