@@ -216,16 +216,18 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                     className="mega-row mega-rise"
                     style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.875rem", animationDelay: `${i * 60}ms` }}
                   >
-                    <span className="mega-row-icon" aria-hidden="true" style={{ width: "32px", height: "32px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", border: "1px solid var(--accent)", color: "var(--text-primary)" }}>
+                    <span className="mega-row-icon" aria-hidden="true" style={{ width: "32px", height: "32px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", border: "1px solid var(--accent)", color: "var(--text-primary)", alignSelf: "flex-start", marginTop: "0.125rem" }}>
                       <Icon size={16} strokeWidth={2} />
                     </span>
-                    <span className="mega-row-body" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", minWidth: 0, flex: 1 }}>
+                    <span className="mega-row-body" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", minWidth: 0, flex: "0 1 auto" }}>
                       <span className="mega-row-head">
                         <span className="mega-card-title">{row.label}</span>
-                        <ArrowUpRight size={13} className="mega-arrow" aria-hidden="true" />
                       </span>
                       <span className="mega-desc-sm">{row.desc}</span>
                       <span className="mega-meta">{row.samples}</span>
+                    </span>
+                    <span aria-hidden="true" className="mega-arrow" style={{ alignSelf: "center", marginLeft: "0.25rem", flexShrink: 0, position: "static", opacity: 1, transform: "none" }}>
+                      <ArrowUpRight size={13} strokeWidth={2} />
                     </span>
                   </Link>
                 );
