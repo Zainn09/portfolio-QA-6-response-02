@@ -162,7 +162,7 @@ export default function AdminLoginPage() {
           </button>
 
           <p style={{ fontSize: "0.75rem", color: "var(--text-tertiary)", textAlign: "center" }}>
-            Default: admin@qaspecialist.com / admin123
+            Default: admin@specialist.com / admin123
             <br />
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem" }}>
               Seed via POST /api/admin/seed
