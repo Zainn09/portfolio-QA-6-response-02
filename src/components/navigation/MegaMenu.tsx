@@ -180,7 +180,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                         </span>
                       )}
                     </span>
-                    <span className="mega-card-title">{p.title}</span>
+                    <span className="mega-card-title" style={{ marginBottom: "0.625rem" }}>{p.title}</span>
                     <span className="mega-meta">
                       {p.industry} · {p.platform}
                     </span>
@@ -446,12 +446,14 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
           transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
         }
         .mega-row {
-          flex-direction: row;
-          align-items: flex-start;
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center;
           gap: 0.875rem;
         }
         .mega-step {
-          flex-direction: row;
+          display: flex !important;
+          flex-direction: row !important;
           align-items: center;
           gap: 1rem;
           padding: 0.625rem 0.875rem;
@@ -501,7 +503,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         .mega-row-head {
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-start;
           gap: 0.5rem;
         }
         .mega-step-body {
@@ -524,7 +526,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
         }
         .mega-clamp {
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
