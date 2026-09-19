@@ -4,7 +4,9 @@
 
 :root {
   /* Light mode — Editorial Laboratory */
+  color-scheme: light;
   --bg-primary: #F5F3ED;
+  --bg-primary-raw: 245, 243, 237;
   --bg-secondary: #ECEAE3;
   --bg-surface: #FFFFFF;
   --bg-surface-2: #F0EEE8;
@@ -50,7 +52,9 @@
 
 [data-theme="dark"] {
   /* Dark mode — QA Command Center */
+  color-scheme: dark;
   --bg-primary: #0B0D0C;
+  --bg-primary-raw: 11, 13, 12;
   --bg-secondary: #0F1210;
   --bg-surface: #121614;
   --bg-surface-2: #181C1A;
@@ -112,15 +116,15 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 5.5rem); }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+h1 { font-size: clamp(2rem, 4.6vw, 3.5rem); }
+h2 { font-size: clamp(1.625rem, 3.2vw, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 2.4vw, 1.625rem); }
+h4 { font-size: clamp(1.0625rem, 1.8vw, 1.25rem); }
 
 p {
   color: var(--text-secondary);
   line-height: 1.75;
-  font-size: clamp(0.9375rem, 1vw + 0.5rem, 1.125rem);
+  font-size: clamp(0.9375rem, 0.6vw + 0.625rem, 1rem);
 }
 
 a {
@@ -156,8 +160,8 @@ a {
 }
 
 .section {
-  padding-top: clamp(5rem, 10vw, 9rem);
-  padding-bottom: clamp(5rem, 10vw, 9rem);
+  padding-top: clamp(3rem, 6vw, 4.5rem);
+  padding-bottom: clamp(3rem, 6vw, 4.5rem);
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────────── */
@@ -621,8 +625,8 @@ a {
     --container-pad: 1.25rem;
   }
 
-  h1 { font-size: clamp(2rem, 8vw, 3rem); }
-  h2 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+  h1 { font-size: clamp(1.75rem, 7.5vw, 2.5rem); }
+  h2 { font-size: clamp(1.5rem, 5.5vw, 2rem); }
 }
 
 /* ─── Responsive Grid Overrides ──────────────────────────────────────────── */
@@ -654,8 +658,153 @@ a {
   }
 }
 
+/* Two-column form rows stack on narrow phones (!important beats inline styles) */
+@media (max-width: 560px) {
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Bug accordion panels: drop the desktop indent so text never squeezes */
+  .bug-desc {
+    padding-left: 1.25rem !important;
+  }
+}
+
+/* ─── Innovation smoothness ──────────────────────────────────────────────── */
+
+/* Anchored sections clear the fixed navbar when scrolled to */
+section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 12px);
+}
+
+/* Hide scrollbars on horizontal chip rails while keeping scrollability */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Showreel fallback scanline drift */
+@keyframes showreel-scan {
+  0% { top: 0%; opacity: 0; }
+  8% { opacity: 0.8; }
+  92% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+.showreel-scanline {
+  animation: showreel-scan 4.5s ease-in-out infinite;
+}
+
+/* Dropdown / popover entrance */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-pop-in {
+  animation: pop-in 0.22s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Slow ambient float for decorative glows */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+.animate-drift {
+  animation: drift 9s ease-in-out infinite;
+}
+
+/* Silky image zoom on card hover */
+.zoom-on-hover img {
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.zoom-on-hover:hover img {
+  transform: scale(1.04);
+}
+
+/* ─── Theme toggle + buttery theme switching ─────────────────────────────── */
+
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 200ms ease, color 200ms ease, background-color 200ms ease, transform 200ms ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+.theme-toggle:active {
+  transform: translateY(0) scale(0.96);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-toggle-icons {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+.theme-icon {
+  position: absolute;
+  inset: 0;
+  transition: opacity 350ms ease, transform 450ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* Light mode: show moon (click to go dark) */
+.theme-icon-sun { opacity: 0; transform: rotate(-120deg) scale(0.4); }
+.theme-icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+/* Dark mode: show sun (click to go light) */
+[data-theme="dark"] .theme-icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+[data-theme="dark"] .theme-icon-moon { opacity: 0; transform: rotate(120deg) scale(0.4); }
+
+/* Silky theme switching: ease color-only properties on structural elements.
+   Transform/opacity animations are untouched, and elements with their own
+   transitions (inline styles, .btn, .card, .form-*) keep them via specificity. */
+body, section, header, footer, nav, aside, article,
+div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 220ms;
+  transition-timing-function: ease;
+}
+
 /* ─── Print ──────────────────────────────────────────────────────────────── */
 
 @media print {
   * { color: #000 !important; background: #fff !important; }
 }
+
+/* ── Blog article system ─────────────────────────────────────── */
+.article-card:hover { border-color: var(--accent) !important; }
+.article-toc { display: none; }
+@media (min-width: 1024px) {
+  .article-toc { display: flex; }
+}
+.legacy-post-content { font-size: 1.0625rem; line-height: 1.85; color: var(--text-secondary); }
+.legacy-post-content h2 { font-size: 1.5rem; font-weight: 700; margin: 3rem 0 1rem; color: var(--text-primary); letter-spacing: -0.02em; }
+.legacy-post-content h3 { font-size: 1.125rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text-primary); }
+.legacy-post-content ul, .legacy-post-content ol { margin: 0 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.legacy-post-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+.legacy-post-content a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.blog-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+@media (min-width: 640px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.toc-link { display: block; font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary); text-decoration: none; border-left: 2px solid var(--border); padding-left: 0.75rem; transition: color 150ms ease, border-color 150ms ease, transform 150ms ease; }
+.toc-link:hover { color: var(--accent); border-left-color: var(--accent); transform: translateX(4px); }
+.toc-link[data-active="true"] { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+.pn-card { transition: border-color 180ms ease, background-color 180ms ease; }
+.pn-card:hover { background-color: var(--accent-muted) !important; }

@@ -32,12 +32,12 @@ export function Hero() {
         }}
       />
 
-      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "4rem" }}>
+      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "3rem", paddingBottom: "3rem" }}>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "5rem",
+            gap: "3.5rem",
             alignItems: "center",
           }}
           className="hero-grid"
@@ -50,7 +50,7 @@ export function Hero() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "0.75rem",
-                marginBottom: "1.75rem",
+                marginBottom: "1.25rem",
                 animation: "fade-up 0.6s ease forwards",
               }}
             >
@@ -68,7 +68,7 @@ export function Hero() {
 
             <h1
               style={{
-                marginBottom: "1.5rem",
+                marginBottom: "1.25rem",
                 animation: "fade-up 0.6s 0.1s ease both",
                 color: "var(--text-primary)",
               }}
@@ -96,14 +96,14 @@ export function Hero() {
                 maxWidth: "500px",
               }}
             >
-              50+ stores tested. 20 Shopify Plus projects. Hundreds of issues discovered, diagnosed, and resolved.
+              100+ stores tested. 20 Shopify Plus projects. Hundreds of issues discovered, diagnosed, and resolved.
             </p>
 
             <p
               style={{
                 fontSize: "0.9375rem",
                 color: "var(--text-tertiary)",
-                marginBottom: "2.5rem",
+                marginBottom: "2rem",
                 animation: "fade-up 0.6s 0.25s ease both",
                 fontFamily: "var(--font-mono)",
                 letterSpacing: "0.02em",
@@ -174,6 +174,46 @@ export function Hero() {
               >
                 Explore My Work
               </Link>
+
+              <a
+                href="#showreel"
+                aria-label="Watch a 60-second store audit video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.625rem",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  padding: "0.875rem 0.25rem",
+                  transition: "color var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-secondary)";
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "50%",
+                    border: "1px solid var(--border-strong)",
+                    backgroundColor: "var(--bg-surface)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.6875rem",
+                    paddingLeft: "2px",
+                  }}
+                >
+                  ▶
+                </span>
+                Watch a 60-sec audit
+              </a>
             </div>
 
             {/* Small stats row */}
@@ -181,15 +221,15 @@ export function Hero() {
               style={{
                 display: "flex",
                 gap: "2rem",
-                marginTop: "3rem",
-                paddingTop: "2rem",
+                marginTop: "2.25rem",
+                paddingTop: "1.5rem",
                 borderTop: "1px solid var(--border)",
                 flexWrap: "wrap",
                 animation: "fade-up 0.6s 0.4s ease both",
               }}
             >
               {[
-                { num: "50+", label: "Stores Tested" },
+                { num: "100+", label: "Stores Tested" },
                 { num: "20", label: "Shopify Plus Projects" },
                 { num: "12+", label: "Industries" },
               ].map((stat) => (
@@ -237,7 +277,7 @@ export function Hero() {
         @media (max-width: 900px) {
           .hero-grid {
             grid-template-columns: 1fr !important;
-            gap: 3rem !important;
+            gap: 2.5rem !important;
           }
           .hero-animation {
             order: -1;

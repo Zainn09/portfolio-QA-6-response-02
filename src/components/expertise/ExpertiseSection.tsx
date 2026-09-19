@@ -1,6 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useReducedMotion } from "framer-motion";
+import { Reveal } from "@/components/motion/Reveal";
+
+const CYCLE_MS = 5000;
 
 const EXPERTISE_CATEGORIES = [
   {
@@ -56,26 +60,45 @@ const EXPERTISE_CATEGORIES = [
 export function ExpertiseSection() {
   const [activeCategory, setActiveCategory] = useState("storefront");
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [paused, setPaused] = useState(false);
+  const [cycleKey, setCycleKey] = useState(0);
+  const reduceMotion = useReducedMotion();
 
-  const category = EXPERTISE_CATEGORIES.find((c) => c.id === activeCategory);
+  // Auto-cycle Storefront → Commerce → Experience → Technical every 5s.
+  // Pauses on hover/focus, restarts on manual selection, off for reduced motion.
+  useEffect(() => {
+    if (paused || reduceMotion) return;
+    const t = setTimeout(() => {
+      const i = EXPERTISE_CATEGORIES.findIndex((c) => c.id === activeCategory);
+      const next = EXPERTISE_CATEGORIES[(i + 1) % EXPERTISE_CATEGORIES.length];
+      setActiveCategory(next.id);
+    }, CYCLE_MS);
+    return () => clearTimeout(t);
+  }, [activeCategory, cycleKey, paused, reduceMotion]);
+
+  const selectCategory = (id: string) => {
+    setActiveCategory(id);
+    setCycleKey((k) => k + 1);
+  };
 
   return (
     <section
       id="expertise"
       aria-label="QA Expertise"
       style={{
-        paddingTop: "clamp(5rem, 10vw, 9rem)",
-        paddingBottom: "clamp(5rem, 10vw, 9rem)",
+        paddingTop: "clamp(3rem, 6vw, 4.5rem)",
+        paddingBottom: "clamp(3rem, 6vw, 4.5rem)",
       }}
     >
       <div className="container">
         {/* Header */}
-        <div style={{ marginBottom: "3.5rem", maxWidth: "640px" }}>
+        <Reveal>
+        <div style={{ marginBottom: "2.5rem", maxWidth: "640px" }}>
           <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
             Expertise
           </p>
           <h2 style={{ marginBottom: "1rem" }}>
-            I Don't Test Pages.{" "}
+            I Don&apos;t Test Pages.{" "}
             <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
               I Test Experiences.
             </span>
@@ -85,111 +108,201 @@ export function ExpertiseSection() {
             page load to the final order confirmation.
           </p>
         </div>
+        </Reveal>
 
-        {/* Category tabs */}
-        <div
-          role="tablist"
-          aria-label="Expertise categories"
-          style={{
-            display: "flex",
-            gap: "0.25rem",
-            marginBottom: "2rem",
-            borderBottom: "1px solid var(--border)",
-            overflowX: "auto",
-            paddingBottom: "0",
-          }}
-        >
-          {EXPERTISE_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              role="tab"
-              aria-selected={activeCategory === cat.id}
-              aria-controls={`panel-${cat.id}`}
-              id={`tab-${cat.id}`}
-              onClick={() => setActiveCategory(cat.id)}
-              style={{
-                padding: "0.75rem 1.25rem",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.6875rem",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: activeCategory === cat.id ? "var(--text-primary)" : "var(--text-tertiary)",
-                borderBottom: activeCategory === cat.id ? "2px solid var(--accent)" : "2px solid transparent",
-                fontWeight: activeCategory === cat.id ? 700 : 400,
-                transition: "all var(--transition-fast)",
-                whiteSpace: "nowrap",
-                marginBottom: "-1px",
-              }}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Items grid */}
-        <div
-          role="tabpanel"
-          id={`panel-${activeCategory}`}
-          aria-labelledby={`tab-${activeCategory}`}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "0.75rem",
-          }}
-        >
-          {category?.items.map((item) => (
-            <div
-              key={item.name}
-              onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem(null)}
-              style={{
-                padding: "1.25rem",
-                border: "1px solid",
-                borderColor: hoveredItem === item.name ? "var(--accent)" : "var(--border)",
-                borderRadius: "var(--radius-sm)",
-                backgroundColor: hoveredItem === item.name ? "var(--accent-muted)" : "var(--bg-surface)",
-                cursor: "default",
-                transition: "all var(--transition-fast)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginBottom: "0.5rem" }}>
-                <div
-                  style={{
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "50%",
-                    backgroundColor: hoveredItem === item.name ? "var(--accent)" : "var(--text-tertiary)",
-                    transition: "background-color var(--transition-fast)",
-                    flexShrink: 0,
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {item.name}
-                </span>
-              </div>
-              <p
+        {/* Category tabs + single-line progress (fill rides ON the tab border) */}
+        <div style={{ position: "relative", marginBottom: "1.5rem" }}>
+          <div
+            role="tablist"
+            aria-label="Expertise categories"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocus={() => setPaused(true)}
+            onBlur={() => setPaused(false)}
+            style={{
+              display: "flex",
+              gap: "0.25rem",
+              borderBottom: "1px solid var(--border)",
+              overflowX: "auto",
+              paddingBottom: "0",
+            }}
+          >
+            {EXPERTISE_CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                role="tab"
+                aria-selected={activeCategory === cat.id}
+                aria-controls={`panel-${cat.id}`}
+                id={`tab-${cat.id}`}
+                onClick={() => selectCategory(cat.id)}
                 style={{
-                  fontSize: "0.875rem",
-                  color: "var(--text-secondary)",
-                  lineHeight: 1.6,
-                  paddingLeft: "0.875rem",
+                  padding: "0.75rem 1.25rem",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6875rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: activeCategory === cat.id ? "var(--text-primary)" : "var(--text-tertiary)",
+                  borderBottom: activeCategory === cat.id ? "2px solid var(--accent)" : "2px solid transparent",
+                  fontWeight: activeCategory === cat.id ? 700 : 400,
+                  transition: "all var(--transition-fast)",
+                  whiteSpace: "nowrap",
+                  marginBottom: "-1px",
                 }}
               >
-                {item.desc}
-              </p>
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Auto-cycle progress — one line, no gap, no second track */}
+          {!reduceMotion && (
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                bottom: "-1px",
+                height: "2px",
+                overflow: "hidden",
+                pointerEvents: "none",
+              }}
+            >
+              <div
+                key={`${activeCategory}-${cycleKey}`}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  transformOrigin: "left",
+                  backgroundColor: "var(--accent)",
+                  animation: "expertise-cycle 5s linear forwards",
+                  animationPlayState: paused ? "paused" : "running",
+                }}
+              />
             </div>
-          ))}
+          )}
+        </div>
+
+        {/* Panels — all stacked, active crossfades in with a card cascade */}
+        <div className="expertise-stack">
+          {EXPERTISE_CATEGORIES.map((cat) => {
+            const isActive = cat.id === activeCategory;
+            return (
+              <div
+                key={cat.id}
+                role="tabpanel"
+                id={`panel-${cat.id}`}
+                aria-labelledby={`tab-${cat.id}`}
+                aria-hidden={!isActive}
+                data-active={isActive}
+                className="expertise-panel"
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                    gap: "0.75rem",
+                  }}
+                >
+                  {cat.items.map((item, i) => {
+                    const isHovered = hoveredItem === item.name;
+                    return (
+                      <div
+                        key={item.name}
+                        onMouseEnter={() => setHoveredItem(item.name)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                        className="expertise-card"
+                        style={{
+                          padding: "1.25rem",
+                          border: "1px solid",
+                          borderColor: isHovered ? "var(--accent)" : "var(--border)",
+                          borderRadius: "var(--radius-sm)",
+                          backgroundColor: isHovered ? "var(--accent-muted)" : "var(--bg-surface)",
+                          cursor: "default",
+                          opacity: isActive ? 1 : 0,
+                          transform: isActive ? "none" : "translateY(14px)",
+                          filter: isActive ? "none" : "blur(3px)",
+                          transition:
+                            `border-color 150ms ease, background-color 150ms ease, ` +
+                            `opacity 500ms ease ${i * 45}ms, ` +
+                            `transform 500ms cubic-bezier(0.22, 0.61, 0.36, 1) ${i * 45}ms, ` +
+                            `filter 500ms ease ${i * 45}ms`,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginBottom: "0.5rem" }}>
+                          <div
+                            style={{
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              backgroundColor: isHovered ? "var(--accent)" : "var(--text-tertiary)",
+                              transition: "background-color var(--transition-fast)",
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: "0.9375rem",
+                              fontWeight: 600,
+                              color: "var(--text-primary)",
+                            }}
+                          >
+                            {item.name}
+                          </span>
+                        </div>
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            color: "var(--text-secondary)",
+                            lineHeight: 1.6,
+                            paddingLeft: "0.875rem",
+                          }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
+
+      <style jsx>{`
+        .expertise-stack {
+          display: grid;
+        }
+        .expertise-panel {
+          grid-area: 1 / 1;
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 400ms ease, visibility 0s linear 400ms;
+        }
+        .expertise-panel[data-active="true"] {
+          visibility: visible;
+          opacity: 1;
+          transition: opacity 400ms ease, visibility 0s;
+        }
+        @keyframes expertise-cycle {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .expertise-panel,
+          .expertise-card {
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

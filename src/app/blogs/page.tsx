@@ -1,111 +1,122 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { db } from "@/db";
-import { blogPosts } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { articles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { categorySlug } from "@/components/blog/categories";
+import { allBlogArticles, searchAllArticles } from "@/data/legacy-articles";
+import { CategoryChips, FeaturedCard, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/components/blog/BlogIndex";
 
-export const metadata: Metadata = {
-  title: "QA Blog — Shopify Testing Insights",
-  description:
-    "Insights, guides, and perspectives on Quality Assurance for Shopify and Shopify Plus stores.",
-  alternates: { canonical: "/blogs" },
-};
+interface Props {
+  searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
+}
 
-export const dynamic = "force-dynamic";
+const SORTS = ["newest", "oldest", "az"] as const;
 
-export default async function BlogsPage() {
-  let posts: typeof blogPosts.$inferSelect[] = [];
-  try {
-    posts = await db
-      .select()
-      .from(blogPosts)
-      .where(eq(blogPosts.status, "published"))
-      .orderBy(desc(blogPosts.publishedAt));
-  } catch {
-    posts = [];
-  }
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { category, q } = await searchParams;
+  const suffix = q ? ` — “${q}”` : category ? ` — ${category}` : "";
+  // Filtered views canonicalize to their crawlable equivalents (cluster hubs / clean index)
+  const canonical = category
+    ? `/blogs/category/${categorySlug(category)}`
+    : "/blogs";
+  return {
+    title: `Blog — QA Insights, Guides & Store Case Studies${suffix}`,
+    description:
+      "Practical Shopify QA: conversion-rate teardowns, AOV and merchandising fixes, AI-assisted testing workflows, and case stories from 93 real storefronts.",
+    alternates: { canonical },
+    openGraph: {
+      title: `Blog — QA Insights, Guides & Store Case Studies${suffix}`,
+      description: "Conversion teardowns, AOV plays, AI testing workflows and store case stories from 93 real Shopify audits.",
+      type: "website",
+    },
+  };
+}
+
+export default async function BlogsPage({ searchParams }: Props) {
+  const { category, q, sort } = await searchParams;
+  const validCategory = category && ARTICLE_CATEGORIES.includes(category as (typeof ARTICLE_CATEGORIES)[number]) ? category : undefined;
+  const sortKey = SORTS.includes((sort ?? "") as (typeof SORTS)[number]) ? (sort as (typeof SORTS)[number]) : "newest";
+
+  const featured = articles.find((a) => a.featured);
+  let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
+  if (featured && !q?.trim()) list = list.filter((a) => a.slug !== featured.slug);
+  if (validCategory) list = list.filter((a) => a.category === validCategory);
+  if (sortKey === "oldest") list = [...list].reverse();
+  if (sortKey === "az") list = [...list].sort((x, y) => x.title.localeCompare(y.title));
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const pageItems = list.slice(0, PAGE_SIZE);
+  const filtered = Boolean((q && q.trim()) || validCategory);
+  const totalCount = (q && q.trim() ? list.length : list.length + (featured && !validCategory ? 1 : 0));
 
   return (
-    <div style={{ paddingTop: "var(--nav-height)" }}>
-      <style>{`
-        .blog-card-link {
-          display: block;
-          border: 1px solid var(--border);
-          border-radius: var(--radius-md);
-          background-color: var(--bg-surface);
-          overflow: hidden;
-          text-decoration: none;
-          transition: all var(--transition-base);
-        }
-        .blog-card-link:hover {
-          border-color: var(--border-strong);
-          transform: translateY(-3px);
-          box-shadow: var(--shadow-md);
-        }
-      `}</style>
+    <div className="container" style={{ paddingTop: "calc(var(--nav-height) + 3rem)", paddingBottom: "5rem" }}>
+      {/* Masthead */}
+      <header style={{ marginBottom: "2.5rem" }}>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, marginBottom: "0.75rem" }}>
+          {totalCount} articles · {ARTICLE_CATEGORIES.length} topics · updated weekly
+        </p>
+        <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.25rem)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.1, color: "var(--text-primary)", margin: "0 0 1rem", maxWidth: "52rem" }}>
+          The field notes of a store QA specialist
+        </h1>
+        <p style={{ fontSize: "1.125rem", lineHeight: 1.7, color: "var(--text-secondary)", margin: "0 0 1.75rem", maxWidth: "44rem" }}>
+          Conversion teardowns, average-order-value plays, AI-assisted testing workflows and UX fixes — each one drawn from a real Shopify audit with screenshots, defect counts and post-fix numbers.
+        </p>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1.5rem" }}>
+          <SearchBox q={q} category={validCategory} />
+          <Link href="/work" style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--text-tertiary)" }}>
+            Prefer full case studies? Browse /work →
+          </Link>
+        </div>
+        <CategoryChips active={validCategory} q={q} />
+      </header>
 
-      {/* Header */}
-      <div style={{ paddingTop: "5rem", paddingBottom: "4rem", borderBottom: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)" }}>
-        <div className="container">
-          <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>Blog</p>
-          <h1 style={{ maxWidth: "640px", marginBottom: "1rem" }}>
-            QA Insights for{" "}
-            <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>Shopify Stores.</span>
-          </h1>
-          <p style={{ color: "var(--text-secondary)", maxWidth: "500px" }}>
-            Perspectives on e-commerce quality assurance, testing strategies, common failure patterns,
-            and how to build a more reliable Shopify store.
-          </p>
+      {/* Featured spotlight — only on the unfiltered first page */}
+      {!filtered && featured && (
+        <section aria-label="Featured article" style={{ marginBottom: "3rem" }}>
+          <FeaturedCard a={stubOf(featured)} />
+        </section>
+      )}
+
+      {/* Result line */}
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "1.375rem", fontWeight: 800, letterSpacing: "-0.02em", margin: 0 }}>
+          {filtered ? `${list.length} result${list.length === 1 ? "" : "s"}` : "Latest articles"}
+        </h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+          {validCategory && <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>Topic: {validCategory}</p>}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Sort</span>
+            {SORTS.map((sk) => {
+              const sp = new URLSearchParams();
+              if (validCategory) sp.set("category", validCategory);
+              if (q) sp.set("q", q);
+              if (sk !== "newest") sp.set("sort", sk);
+              const qs = sp.toString();
+              return (
+                <Link key={sk} href={`/blogs${qs ? `?${qs}` : ""}`} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: sortKey === sk ? 700 : 400, color: sortKey === sk ? "var(--accent)" : "var(--text-tertiary)", borderBottom: sortKey === sk ? "1px solid var(--accent)" : "none", paddingBottom: "1px" }}>
+                  {sk === "az" ? "A–Z" : sk === "newest" ? "Newest" : "Oldest"}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Posts */}
-      <div className="container" style={{ paddingTop: "4rem", paddingBottom: "6rem" }}>
-        {posts.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "6rem 2rem", border: "1px dashed var(--border-strong)", borderRadius: "var(--radius-md)" }}>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.6875rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.75rem" }}>No Posts Yet</p>
-            <h2 style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>Nothing published yet.</h2>
-            <p style={{ color: "var(--text-secondary)" }}>Check back soon for QA insights and Shopify testing guides.</p>
-          </div>
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.5rem" }}>
-            {posts.map((post) => (
-              <Link key={post.id} href={`/blogs/${post.slug}`} className="blog-card-link">
-                {/* Featured image placeholder */}
-                <div style={{ height: "180px", backgroundColor: "var(--bg-surface-2)", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid var(--border)", position: "relative" }}>
-                  {post.featuredImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={post.featuredImage} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" width={640} height={180} />
-                  ) : (
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>QA Insights</span>
-                  )}
-                  {post.category && (
-                    <div style={{ position: "absolute", top: "0.75rem", left: "0.75rem", backgroundColor: "var(--bg-primary)", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                      {post.category}
-                    </div>
-                  )}
-                </div>
-                <div style={{ padding: "1.5rem" }}>
-                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.625rem" }}>
-                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "Draft"}
-                  </p>
-                  <h2 style={{ fontSize: "1.0625rem", fontWeight: 700, letterSpacing: "-0.02em", color: "var(--text-primary)", marginBottom: "0.625rem", lineHeight: 1.35 }}>
-                    {post.title}
-                  </h2>
-                  {post.excerpt && (
-                    <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.65, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", marginBottom: "1rem" }}>
-                      {post.excerpt}
-                    </p>
-                  )}
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-                    Read article →
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Grid */}
+      {pageItems.length === 0 ? (
+        <div style={{ border: "1px dashed var(--border)", borderRadius: "var(--radius-lg)", padding: "3rem 2rem", textAlign: "center" }}>
+          <p style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--text-primary)", margin: "0 0 0.5rem" }}>No articles match that search.</p>
+          <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0 }}>
+            Try a broader term, or <Link href="/blogs" style={{ color: "var(--accent)", fontWeight: 600 }}>reset the filters</Link>.
+          </p>
+        </div>
+      ) : (
+        <div className="blog-grid">
+          {pageItems.map((a) => <IndexCard key={a.slug} a={stubOf(a)} />)}
+        </div>
+      )}
+
+      <Pagination page={1} totalPages={totalPages} category={validCategory} q={q} sort={sortKey} />
     </div>
   );
 }
