@@ -2,13 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { HeroVideo } from "./HeroVideo";
+import { InspectionAnimation } from "./InspectionAnimation";
 
 export function Hero() {
   return (
     <section
       aria-label="Hero"
-      className="hero-section"
       style={{
         minHeight: "100svh",
         display: "flex",
@@ -176,6 +175,45 @@ export function Hero() {
                 Explore My Work
               </Link>
 
+              <a
+                href="#showreel"
+                aria-label="Watch a 60-second store audit video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.625rem",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  padding: "0.875rem 0.25rem",
+                  transition: "color var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-primary)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.color = "var(--text-secondary)";
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "50%",
+                    border: "1px solid var(--border-strong)",
+                    backgroundColor: "var(--bg-surface)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.6875rem",
+                    paddingLeft: "2px",
+                  }}
+                >
+                  ▶
+                </span>
+                Watch a 60-sec audit
+              </a>
             </div>
 
             {/* Small stats row */}
@@ -223,15 +261,14 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right: the audit video — the hero visual */}
+          {/* Right: Inspection Animation */}
           <div
             style={{
               animation: "fade-in 0.8s 0.3s ease both",
-              minWidth: 0,
             }}
             className="hero-animation"
           >
-            <HeroVideo />
+            <InspectionAnimation />
           </div>
         </div>
       </div>
@@ -248,14 +285,6 @@ export function Hero() {
           }
           .hero-animation {
             order: 1;
-          }
-        }
-        @media (max-width: 900px) {
-          /* The hero is taller than one screen once the video sits under the
-             copy — let it grow instead of locking to 100svh and clipping. */
-          .hero-section {
-            min-height: 0 !important;
-            align-items: flex-start !important;
           }
         }
         @media (max-width: 600px) {

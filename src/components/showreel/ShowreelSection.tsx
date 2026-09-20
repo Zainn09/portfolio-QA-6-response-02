@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 
 const VIDEO_MP4 = "/videos/above-the-fold.mp4";
+const VIDEO_WEBM = "/videos/above-the-fold.webm";
 const POSTER = "/images/showreel-poster.jpg";
 
 /**
@@ -302,6 +303,7 @@ export function ShowreelSection() {
                     }}
                   >
                     <source src={VIDEO_MP4} type="video/mp4" onError={() => setFailed(true)} />
+                    <source src={VIDEO_WEBM} type="video/webm" onError={() => setFailed(true)} />
                   </video>
                 ) : (
                   <>
