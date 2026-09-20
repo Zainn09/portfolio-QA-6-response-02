@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import { Hero } from "@/components/hero/Hero";
 import { ShowreelSection } from "@/components/showreel/ShowreelSection";
 import { FeaturedProjects } from "@/components/featured-work/FeaturedProjects";
@@ -14,7 +15,7 @@ import { ScrollToTopOnLoad } from "@/components/scroll/ScrollToTopOnLoad";
 export const metadata: Metadata = {
   title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
   description:
-    "Premium Quality Assurance for Shopify and Shopify Plus stores. I find what your store gets wrong before your customers do. 100+ stores tested.",
+    "Premium Quality Assurance for Shopify and Shopify Plus stores. Ich find what your store gets wrong before your customers do. 100+ stores tested.",
   alternates: {
     canonical: "/",
   },
