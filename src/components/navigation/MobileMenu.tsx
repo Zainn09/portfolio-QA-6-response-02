@@ -32,6 +32,8 @@ export function MobileMenu({ open, links, onClose }: MobileMenuProps) {
         position: "fixed",
         inset: 0,
         zIndex: 99,
+        overflowY: "auto",
+        overscrollBehavior: "contain",
         backgroundColor: "var(--bg-primary)",
         display: "flex",
         flexDirection: "column",

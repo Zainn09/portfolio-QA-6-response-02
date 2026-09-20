@@ -132,7 +132,7 @@ export function CaseStudyPage({ project, related, relatedArticles }: Props) {
         <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "1rem" }}>
           <Reveal>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1.25rem" }}>Highlights</p>
-            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem 2.5rem" }}>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "1rem 2.5rem" }}>
               {project.highlights.map((h) => (
                 <li key={h.label} style={{ display: "flex", gap: "0.625rem", alignItems: "flex-start" }}>
                   <span aria-hidden="true" style={{ color: "var(--accent)", lineHeight: 1.6, fontWeight: 700 }}>▸</span>
@@ -390,7 +390,7 @@ export function CaseStudyPage({ project, related, relatedArticles }: Props) {
         {relatedArticles.length > 0 && (
           <div style={{ marginTop: "6rem", paddingTop: "4rem", borderTop: "1px solid var(--border)" }}>
             <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>Related Reading</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1rem" }}>
               {relatedArticles.map((a) => (
                 <Link key={a.slug} href={`/blogs/${a.slug}`} className="cs-related-link">
                   <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid var(--border)", padding: "0.2rem 0.5rem", borderRadius: "2px", color: "var(--text-tertiary)", display: "inline-block", marginBottom: "0.75rem" }}>{a.category}</span>
@@ -407,7 +407,7 @@ export function CaseStudyPage({ project, related, relatedArticles }: Props) {
         {related.length > 0 && (
           <div style={{ marginTop: "6rem", paddingTop: "4rem", borderTop: "1px solid var(--border)" }}>
             <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>Related Projects</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1rem" }}>
               {related.map((p) => (
                 <Link key={p.id} href={`/work/${p.slug}`} className="cs-related-link">
                   <div style={{ display: "flex", gap: "0.375rem", marginBottom: "0.75rem" }}>
@@ -571,7 +571,7 @@ function EvidenceBlock({ items, project, label, noteSeed }: { items: { src: stri
           <div
             style={
               g.length > 1
-                ? { margin: "0 0 1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.25rem", alignItems: "start" }
+                ? { margin: "0 0 1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: "1.25rem", alignItems: "start" }
                 : { margin: "0 0 1.25rem" }
             }
           >

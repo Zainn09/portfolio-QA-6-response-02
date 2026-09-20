@@ -20,6 +20,14 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (desktop.matches) setMenuOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
   const openTimer = useRef<number | null>(null);
@@ -157,7 +165,7 @@ export function Navbar() {
               gap: "2rem",
               listStyle: "none",
             }}
-            className="hidden md:flex"
+            className="hidden lg:flex"
           >
             {navLinks.map((link) => {
               const isOpen = openMenu === link.menu;
@@ -209,7 +217,7 @@ export function Navbar() {
             <ThemeToggle />
             <Link
               href="/audit"
-              className="btn-audit hidden md:inline-flex"
+              className="btn-audit hidden lg:inline-flex"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.6875rem",
@@ -242,7 +250,7 @@ export function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
-              className="md:hidden"
+              className="lg:hidden"
               style={{
                 background: "none",
                 border: "1px solid var(--border-strong)",
