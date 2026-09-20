@@ -113,6 +113,8 @@ export function InspectionAnimation() {
           <div
             style={{
               flex: 1,
+              minWidth: 0,
+              overflow: "hidden",
               height: "22px",
               backgroundColor: "var(--bg-secondary)",
               borderRadius: "4px",
@@ -125,6 +127,9 @@ export function InspectionAnimation() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.625rem",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
                 color: "var(--text-tertiary)",
                 letterSpacing: "0.04em",
               }}

@@ -101,7 +101,7 @@ export function AdminDashboard() {
 
       <div className="container" style={{ paddingTop: "2.5rem", paddingBottom: "5rem" }}>
         {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
           {[
             { label: "Total Posts", value: posts.length },
             { label: "Published", value: posts.filter(p => p.status === "published").length },
