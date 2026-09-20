@@ -157,15 +157,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
         tabIndex={0}
         onKeyDown={onKeyDown}
         className="featured-track"
-        /* Passed as a custom property, not an inline `height`: inline styles
-           beat stylesheet `!important`, so a literal height here would survive
-           the mobile override and leave ~9 screens of empty scroll. As a
-           variable, the CSS below decides whether to use it. */
-        style={
-          {
-            "--track-height": `${projects.length * VH_PER_PROJECT}vh`,
-          } as React.CSSProperties
-        }
+        style={{ height: `${projects.length * VH_PER_PROJECT}vh` }}
       >
         <div className="featured-stage">
           <div className="container" style={{ width: "100%" }}>
@@ -734,7 +726,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
         <style jsx>{`
           .featured-track {
             position: relative;
-            height: var(--track-height);
             background-color: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
             outline: none;

@@ -202,9 +202,14 @@ export function ProcessSection() {
           }}
           className="process-grid"
         >
-          {/* Sticky scroll tracker — stickiness in CSS so the mobile
-              `position: static` override actually wins. */}
-          <div className="process-rail">
+          {/* Sticky scroll tracker */}
+          <div
+            style={{
+              position: "sticky",
+              top: "calc(var(--nav-height) + 1.5rem)",
+            }}
+            className="process-rail"
+          >
             <div
               style={{
                 border: "1px solid var(--border)",
@@ -306,7 +311,10 @@ export function ProcessSection() {
                 className="process-nav no-scrollbar"
                 style={{
                   display: "flex",
+                  flexDirection: "column",
                   gap: "0.25rem",
+                  maxHeight: "40vh",
+                  overflowY: "auto",
                 }}
               >
                 {PROCESS_STEPS.map((step, i) => {
@@ -514,15 +522,6 @@ export function ProcessSection() {
         .journey-num-tick {
           display: inline-block;
           animation: journey-num-tick 380ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-        }
-        .process-rail {
-          position: sticky;
-          top: calc(var(--nav-height) + 1.5rem);
-        }
-        .process-nav {
-          flex-direction: column;
-          max-height: 40vh;
-          overflow-y: auto;
         }
         @media (max-width: 900px) {
           .process-grid {

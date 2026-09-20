@@ -20,33 +20,19 @@ interface RevealProps {
  */
 export function Reveal({ children, delay = 0, y = 28, className, style, id }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  // Must start false to match the server render — reading matchMedia during
-  // render causes a hydration mismatch, which can leave nodes stranded
-  // mid-transition (content stuck invisible or offset).
-  const [visible, setVisible] = useState(false);
+  // Reduced-motion users see content immediately — decided at render, not in an effect.
+  const [visible, setVisible] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (visible) return;
     const el = ref.current;
     if (!el) return;
-
-    // Reveal immediately (on the next frame, so the transition still plays and
-    // we never setState synchronously during the effect) when motion is
-    // reduced, when IntersectionObserver is unavailable, or when the element is
-    // already on screen at mount — otherwise content above the fold, or
-    // restored on a refresh partway down the page, would sit at opacity 0
-    // waiting for a scroll that already happened.
-    const prefersReduced =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const rect = el.getBoundingClientRect();
-    const alreadyOnScreen = rect.top < window.innerHeight && rect.bottom > 0;
-
-    if (prefersReduced || typeof IntersectionObserver === "undefined" || alreadyOnScreen) {
-      const raf = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(raf);
-    }
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

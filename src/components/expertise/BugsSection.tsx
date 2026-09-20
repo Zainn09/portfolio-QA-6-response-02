@@ -89,8 +89,10 @@ export function BugsSection() {
         >
           {/* Left — sticky intro */}
           <div
-            /* Stickiness lives in CSS (desktop-only) — as an inline style it
-               would beat the mobile `position: static` override. */
+            style={{
+              position: "sticky",
+              top: "calc(var(--nav-height) + 2rem)",
+            }}
             className="bugs-intro"
           >
             <Reveal>
@@ -362,10 +364,6 @@ export function BugsSection() {
       </div>
 
       <style jsx>{`
-        .bugs-intro {
-          position: sticky;
-          top: calc(var(--nav-height) + 2rem);
-        }
         @media (max-width: 900px) {
           .bugs-grid {
             grid-template-columns: 1fr !important;
