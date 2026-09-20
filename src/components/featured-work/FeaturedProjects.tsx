@@ -484,7 +484,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                     style={{
                       flex: 1,
                       padding: "0.75rem",
-                      border: "1px solid var(--border-strong)",
+                      border: "1px solid var(--accent)",
                       borderRadius: "var(--radius-sm)",
                       backgroundColor: "transparent",
                       color: "var(--text-secondary)",
