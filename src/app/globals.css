@@ -818,6 +818,7 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
   transition-timing-function: ease;
 }
 
+
 /* ─── Print ──────────────────────────────────────────────────────────────── */
 
 @media print {

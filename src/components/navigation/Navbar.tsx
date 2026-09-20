@@ -99,7 +99,10 @@ export function Navbar() {
             : "transparent",
           backdropFilter: solid ? "blur(12px)" : "none",
           borderBottom: solid ? "1px solid var(--border)" : "1px solid transparent",
-          transition: "all var(--transition-base)",
+          // Explicit list, not `all`: animating `all` also animates height and
+          // backdrop-filter on every scroll tick, which reads as jank/distortion.
+          transition:
+            "height var(--transition-base), background-color var(--transition-base), border-color var(--transition-base)",
         }}
       >
         <div
