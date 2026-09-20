@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import { Hero } from "@/components/hero/Hero";
-import { ShowreelSection } from "@/components/showreel/ShowreelSection";
 import { FeaturedProjects } from "@/components/featured-work/FeaturedProjects";
 import { ExpertiseSection } from "@/components/expertise/ExpertiseSection";
 import { BugsSection } from "@/components/expertise/BugsSection";
@@ -40,7 +39,6 @@ export default function HomePage() {
         }}
       />
       <Hero />
-      <ShowreelSection />
       <FeaturedProjects projects={featuredProjects} />
       <BugsSection />
       <ExpertiseSection />
