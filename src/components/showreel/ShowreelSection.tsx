@@ -35,7 +35,7 @@ export function ShowreelSection() {
     const v = videoRef.current;
     if (!v || failed) return;
     if (v.paused) {
-      v.play().catch(() => {});
+      v.play().catch(() => { });
     } else {
       v.pause();
     }
@@ -93,7 +93,7 @@ export function ShowreelSection() {
               Watch It Break
             </p>
             <h2 style={{ marginBottom: "1rem" }}>
-              A Real Audit,{" "}
+              A Real Audit by me,{" "}
               <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
                 in 60 Seconds.
               </span>
