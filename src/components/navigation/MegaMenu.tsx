@@ -136,7 +136,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
       aria-label={`${open} submenu`}
       onMouseEnter={onEnterPanel}
       onMouseLeave={onLeavePanel}
-      className="mega-panel hidden lg:block"
+      className="mega-panel hidden md:block"
     >
       <div className="mega-accent-bar" aria-hidden="true" />
       <div className="container mega-inner">
