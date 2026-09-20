@@ -830,6 +830,24 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 @media (min-width: 1024px) {
   .article-toc { display: flex; }
 }
+
+/* The TOC rail is display:none below 1024px, but the body grid still
+   reserves a fixed 240px first column — the article text would be
+   squeezed into that track on phones. Collapse it to one column. */
+@media (max-width: 1023px) {
+  .article-body-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+}
+
+/* Prev/next cards: two side-by-side cards leave no room for the
+   title next to the 76px thumbnail — stack them on phones. */
+@media (max-width: 640px) {
+  .pn-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
 .legacy-post-content { font-size: 1.0625rem; line-height: 1.85; color: var(--text-secondary); }
 .legacy-post-content h2 { font-size: 1.5rem; font-weight: 700; margin: 3rem 0 1rem; color: var(--text-primary); letter-spacing: -0.02em; }
 .legacy-post-content h3 { font-size: 1.125rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text-primary); }

@@ -134,7 +134,7 @@ function Blocks({ body }: { body: ArticleBlock[] }) {
             );
           case "imagePair":
             return (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "0.75rem", margin: "2.25rem 0" }}>
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(200px, 100%), 1fr))", gap: "0.75rem", margin: "2.25rem 0" }}>
                 {b.items.map((it, j) => (
                   <figure key={j} style={{ margin: 0 }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -303,7 +303,7 @@ export default async function ArticlePage({ params }: Props) {
       )}
 
       {/* Body — guides get a sticky TOC rail on desktop */}
-      <div className="container" style={{ display: "grid", gridTemplateColumns: showToc ? "240px minmax(0, 1fr)" : "1fr", gap: "3rem", alignItems: "start", maxWidth: showToc ? "100%" : "56rem" }}>
+      <div className="container article-body-grid" style={{ display: "grid", gridTemplateColumns: showToc ? "240px minmax(0, 1fr)" : "1fr", gap: "3rem", alignItems: "start", maxWidth: showToc ? "100%" : "56rem" }}>
         {showToc && (
           <nav aria-label="On this page" className="article-toc" style={{ position: "sticky", top: "calc(var(--nav-height) + 2rem)", flexDirection: "column", gap: "0.75rem" }}>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: 0 }}>On this page</p>
@@ -364,7 +364,7 @@ export default async function ArticlePage({ params }: Props) {
       </section>
 
       {/* Prev / next */}
-      <nav aria-label="More articles" className="container" style={{ marginTop: "3rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <nav aria-label="More articles" className="container pn-grid" style={{ marginTop: "3rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
         {prev ? (
           <Link href={`/blogs/${prev.slug}`} className="pn-card" style={{ display: "flex", gap: "1rem", alignItems: "center", border: "1px solid var(--accent)", borderRadius: "var(--radius-md)", padding: "1.125rem", backgroundColor: "var(--bg-surface)" }}>
             {prev.heroImage ? (
