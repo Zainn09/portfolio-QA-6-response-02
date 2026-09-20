@@ -394,7 +394,7 @@ export function WorkArchive({ projects, industries, platforms }: WorkArchiveProp
         {filtered.length === 0 ? (
           <EmptyState onReset={() => { setSearch(""); setActivePlatform("all"); setActiveIndustry("all"); }} />
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))", gap: "1.5rem" }}>
             {filtered.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} />
             ))}

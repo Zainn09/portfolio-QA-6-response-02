@@ -42,8 +42,8 @@ export function Hero() {
           }}
           className="hero-grid"
         >
-          {/* Left: Copy */}
-          <div style={{ maxWidth: "600px" }}>
+          {/* Left: Copy — stays first in the DOM and first visually on mobile */}
+          <div className="hero-copy" style={{ maxWidth: "600px", minWidth: 0 }}>
             <div
               className="eyebrow"
               style={{
@@ -279,8 +279,19 @@ export function Hero() {
             grid-template-columns: 1fr !important;
             gap: 2.5rem !important;
           }
+          /* Text content comes first above the fold on mobile */
+          .hero-copy {
+            order: 0;
+          }
           .hero-animation {
-            order: -1;
+            order: 1;
+          }
+        }
+        @media (max-width: 600px) {
+          .hero-animation {
+            /* Keep the visual from forcing horizontal scroll on small phones */
+            max-width: 100%;
+            overflow: hidden;
           }
         }
       `}</style>

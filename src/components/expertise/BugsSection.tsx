@@ -81,7 +81,7 @@ export function BugsSection() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(280px, 5fr) 7fr",
+            gridTemplateColumns: "minmax(min(280px, 100%), 5fr) 7fr",
             gap: "clamp(2rem, 4vw, 3.5rem)",
             alignItems: "start",
           }}

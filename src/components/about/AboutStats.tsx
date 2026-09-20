@@ -130,7 +130,7 @@ export function AboutStats() {
       <p className="eyebrow" style={{ marginBottom: "1.5rem" }}>By the Numbers</p>
       <div
         ref={ref}
-        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}
+        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(180px, 100%), 1fr))", gap: "1.5rem" }}
       >
         {STATS.map((stat, i) => (
           <StatCard key={stat.label} {...stat} start={start} index={i} />

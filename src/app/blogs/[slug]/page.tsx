@@ -159,7 +159,7 @@ function Blocks({ body }: { body: ArticleBlock[] }) {
             );
           case "metrics":
             return (
-              <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", margin: "2.25rem 0" }}>
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))", gap: "1rem", margin: "2.25rem 0" }}>
                 {b.items.map((it, j) => (
                   <div key={j} style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-md)", padding: "1.25rem", backgroundColor: "var(--bg-surface)", textAlign: "center" }}>
                     <p style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--accent)", letterSpacing: "-0.02em", margin: 0 }}>{it.value}</p>
@@ -358,7 +358,7 @@ export default async function ArticlePage({ params }: Props) {
           <h2 style={{ fontSize: "1.625rem", fontWeight: 800, letterSpacing: "-0.02em", margin: 0 }}>Related Articles</h2>
           <Link href="/blogs" style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)" }}>Browse all →</Link>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))", gap: "1.25rem" }}>
           {related.map((r) => <ArticleCard key={r.slug} stub={r} />)}
         </div>
       </section>
