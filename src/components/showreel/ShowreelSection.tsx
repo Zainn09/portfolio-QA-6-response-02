@@ -93,7 +93,7 @@ export function ShowreelSection() {
               Watch It Break
             </p>
             <h2 style={{ marginBottom: "1rem" }}>
-              A Real Audit by me,{" "}
+              A Real Audit,{" "}
               <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
                 in 60 Seconds.
               </span>
