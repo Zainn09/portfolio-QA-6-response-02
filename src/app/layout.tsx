@@ -44,6 +44,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4078729434854717"
+          crossOrigin="anonymous"
+        />
         {/* Brand fonts load progressively: exact type when online,
             graceful system-font fallback when offline. */}
         <meta name="theme-color" content="#F5F3ED" />

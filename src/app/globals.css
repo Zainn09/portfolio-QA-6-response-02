@@ -95,7 +95,8 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Fallback for browsers without clip */
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -106,7 +107,7 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   transition: background-color var(--transition-base), color var(--transition-base);
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   overflow-wrap: break-word;
 }
