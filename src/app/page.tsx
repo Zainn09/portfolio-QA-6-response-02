@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next"
 import { Hero } from "@/components/hero/Hero";
 import { ShowreelSection } from "@/components/showreel/ShowreelSection";
 import { FeaturedProjects } from "@/components/featured-work/FeaturedProjects";

@@ -81,7 +81,7 @@ export function ShowreelSection() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(280px, 380px) 1fr",
+            gridTemplateColumns: "minmax(min(280px, 100%), 380px) 1fr",
             gap: "clamp(2rem, 4vw, 3rem)",
             alignItems: "center",
           }}

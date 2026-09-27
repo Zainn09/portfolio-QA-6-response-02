@@ -114,17 +114,47 @@ export function ProcessSection() {
     };
   }, []);
 
-  // Keep the active nav pill in view inside the sticky rail
+  // Keep the active nav pill in view inside the rail.
+  // NOTE: scrollIntoView() scrolls every scrollable ancestor — including the
+  // window — which hijacked the page while the user was scrolling on mobile.
+  // We scroll the rail element itself instead, so the page is never touched.
   useEffect(() => {
     const rail = navRef.current;
     if (!rail) return;
     const active = rail.querySelector<HTMLElement>(`[data-step="${activeStep}"]`);
-    active?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (!active) return;
+
+    const isHorizontal = rail.scrollWidth > rail.clientWidth;
+    if (isHorizontal) {
+      const target =
+        active.offsetLeft - rail.clientWidth / 2 + active.offsetWidth / 2;
+      const max = rail.scrollWidth - rail.clientWidth;
+      rail.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: "smooth" });
+    } else if (rail.scrollHeight > rail.clientHeight) {
+      const target =
+        active.offsetTop - rail.clientHeight / 2 + active.offsetHeight / 2;
+      const max = rail.scrollHeight - rail.clientHeight;
+      rail.scrollTo({ top: Math.max(0, Math.min(target, max)), behavior: "smooth" });
+    }
   }, [activeStep]);
 
   const scrollToStep = (i: number) => {
     setActiveStep(i);
-    stepRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const el = stepRefs.current[i];
+    if (!el) return;
+    // Manual window scroll (not scrollIntoView) so nested scroll containers
+    // are left alone and the fixed navbar offset is respected.
+    const navOffset =
+      parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue("--nav-height"),
+        10
+      ) || 68;
+    const rect = el.getBoundingClientRect();
+    const isMobile = window.innerWidth <= 900;
+    const top = isMobile
+      ? window.scrollY + rect.top - navOffset - 16
+      : window.scrollY + rect.top - (window.innerHeight - rect.height) / 2;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   };
 
   const progress = ((activeStep + 1) / PROCESS_STEPS.length) * 100;
@@ -497,9 +527,12 @@ export function ProcessSection() {
           .process-grid {
             grid-template-columns: 1fr !important;
             gap: 2rem !important;
+            min-width: 0;
           }
           .process-rail {
             position: static !important;
+            min-width: 0;
+            max-width: 100%;
           }
           .process-nav {
             flex-direction: row !important;
@@ -507,10 +540,21 @@ export function ProcessSection() {
             overflow-x: auto !important;
             overflow-y: hidden !important;
             padding-bottom: 0.25rem;
+            /* Horizontal-only gesture handling: vertical swipes stay with the
+               page, so scrolling past this section no longer stalls. */
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            overscroll-behavior-y: auto;
+            scrollbar-width: none;
+          }
+          .process-nav::-webkit-scrollbar {
+            display: none;
           }
           .process-nav button {
             width: auto !important;
             flex-shrink: 0;
+            white-space: nowrap;
           }
         }
       `}</style>

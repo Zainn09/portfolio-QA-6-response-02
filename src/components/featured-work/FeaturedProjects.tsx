@@ -144,6 +144,27 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     }
   };
 
+  // Touch swipe on the capture frame: swipe left → next store, swipe right → previous.
+  // Vertical pans are left to the browser so the page still scrolls naturally.
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStart.current =
+      e.touches.length === 1
+        ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        : null;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start || e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    // Require a deliberate horizontal swipe: 48px+ travel, clearly horizontal
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0) next();
+    else prev();
+  };
+
   const displayProgress = isMobile
     ? (activeIndex + 1) / projects.length
     : progress;
@@ -334,7 +355,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                           animation: "pulse-dot 2s ease-in-out infinite",
                         }}
                       />
-                      {isMobile ? "Tap a store" : "Scroll to explore ↓"}
+                      {isMobile ? "Swipe the capture" : "Scroll to explore ↓"}
                     </span>
                   </div>
                   {/* Progress bar */}
@@ -360,7 +381,12 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                 </div>
 
                 {/* Fixed visual frame — slides crossfade INSIDE, box never moves */}
-                <div className="featured-visual-box">
+                <div
+                  className="featured-visual-box"
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
+                  style={{ touchAction: "pan-y" }}
+                >
                   {projects.map((p, i) => {
                     const isActive = i === activeIndex;
                     return (
@@ -484,7 +510,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                     style={{
                       flex: 1,
                       padding: "0.75rem",
-                      border: "1px solid var(--border-strong)",
+                      border: "1px solid var(--accent)",
                       borderRadius: "var(--radius-sm)",
                       backgroundColor: "transparent",
                       color: "var(--text-secondary)",

@@ -97,6 +97,7 @@ html {
   text-size-adjust: 100%;
   overflow-x: hidden; /* Fallback for browsers without clip */
   overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
@@ -107,6 +108,13 @@ body {
   min-height: 100vh;
   transition: background-color var(--transition-base), color var(--transition-base);
   overflow-x: clip;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* Media and embeds can never be wider than their container */
+img, svg, video, canvas, iframe, table {
+  max-width: 100%;
 }
 
 /* ─── Typography ─────────────────────────────────────────────────────────── */
@@ -649,9 +657,31 @@ a {
     gap: 2rem !important;
   }
 
-  .hero-animation {
-    order: -1;
+  /* Above-the-fold on mobile: headline/copy/CTAs first, visual after */
+  .hero-copy {
+    order: 0;
   }
+
+  .hero-animation {
+    order: 1;
+  }
+}
+
+/* Grid/flex children must be allowed to shrink below their content width,
+   otherwise long strings and wide cards push the page sideways on phones. */
+.hero-grid > *,
+.process-grid > *,
+.bugs-grid > *,
+.showreel-grid > *,
+.featured-grid > *,
+.about-grid > *,
+.contact-grid > *,
+.audit-grid > *,
+.case-content-grid > *,
+.case-hero-grid > *,
+.blog-content-grid > *,
+.editor-grid > * {
+  min-width: 0;
 }
 
 @media (max-width: 640px) {
@@ -686,6 +716,12 @@ section[id] {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Horizontal chip/tab rails: keep vertical swipes with the page so they never
+   trap the scroll on touch devices, and keep their overflow off the body. */
+.no-scrollbar {
+  overscroll-behavior-x: contain;
 }
 
 /* Showreel fallback scanline drift */
@@ -794,6 +830,24 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 .article-toc { display: none; }
 @media (min-width: 1024px) {
   .article-toc { display: flex; }
+}
+
+/* The TOC rail is display:none below 1024px, but the body grid still
+   reserves a fixed 240px first column — the article text would be
+   squeezed into that track on phones. Collapse it to one column. */
+@media (max-width: 1023px) {
+  .article-body-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+}
+
+/* Prev/next cards: two side-by-side cards leave no room for the
+   title next to the 76px thumbnail — stack them on phones. */
+@media (max-width: 640px) {
+  .pn-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 .legacy-post-content { font-size: 1.0625rem; line-height: 1.85; color: var(--text-secondary); }
 .legacy-post-content h2 { font-size: 1.5rem; font-weight: 700; margin: 3rem 0 1rem; color: var(--text-primary); letter-spacing: -0.02em; }
