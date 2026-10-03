@@ -4,6 +4,8 @@ import { articles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
 import { categorySlug } from "@/components/blog/categories";
 import { allBlogArticles, searchAllArticles } from "@/data/legacy-articles";
 import { CategoryChips, FeaturedCard, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/components/blog/BlogIndex";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { SITE_URL, absoluteUrl } from "@/lib/site";
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
@@ -48,8 +50,42 @@ export default async function BlogsPage({ searchParams }: Props) {
   const filtered = Boolean((q && q.trim()) || validCategory);
   const totalCount = (q && q.trim() ? list.length : list.length + (featured && !validCategory ? 1 : 0));
 
+  // Blog hub + topic-cluster markup. Only on the canonical, unfiltered view —
+  // filtered/sorted/search variants already canonicalise to /blogs.
+  const isCanonicalView = !q?.trim() && !validCategory;
+  const blogLd = isCanonicalView
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        name: "QA Specialist — Shopify QA Blog",
+        url: absoluteUrl("/blogs"),
+        description:
+          "Conversion teardowns, average-order-value plays, AI-assisted testing workflows and Shopify case stories from 93 audited storefronts.",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        inLanguage: "en",
+        blogPost: list.slice(0, PAGE_SIZE).map((a) => ({
+          "@type": "BlogPosting",
+          headline: a.title,
+          url: absoluteUrl(`/blogs/${a.slug}`),
+          datePublished: a.publishedAt,
+          author: { "@id": `${SITE_URL}/#person` },
+        })),
+      }
+    : null;
+
+  const breadcrumbsLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: absoluteUrl("/blogs") },
+    ],
+  };
+
   return (
     <div className="container" style={{ paddingTop: "calc(var(--nav-height) + 3rem)", paddingBottom: "5rem" }}>
+      <JsonLd data={[breadcrumbsLd, ...(blogLd ? [blogLd] : [])]} />
       {/* Masthead */}
       <header style={{ marginBottom: "2.5rem" }}>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, marginBottom: "0.75rem" }}>
