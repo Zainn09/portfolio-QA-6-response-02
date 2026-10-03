@@ -14,9 +14,16 @@ import { ScrollToTopOnLoad } from "@/components/scroll/ScrollToTopOnLoad";
 export const metadata: Metadata = {
   title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
   description:
-    "Premium Quality Assurance for Shopify and Shopify Plus stores. Ich finde what your store gets wrong before your customers do. 100+ stores tested.",
+    "Premium QA for Shopify and Shopify Plus stores. I find what your store gets wrong before your customers do — 100+ stores tested, 20 Shopify Plus projects.",
   alternates: {
     canonical: "/",
+  },
+  openGraph: {
+    title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
+    description:
+      "Premium QA for Shopify and Shopify Plus stores. 100+ stores tested, 20 Shopify Plus projects.",
+    url: "/",
+    type: "website",
   },
 };
 
