@@ -109,3 +109,46 @@ share structure and styling but not wording — each has its own hero, problem
 framing, coverage, process emphasis, deliverables, benefits, FAQs and CTA copy.
 
 Blocks: `prose` · `cards` · `steps` · `checklist` · `table` · `callout` · `faq` · `links`
+
+## Final verification (shipped state)
+
+Checked against the live build with all 10 pages served:
+
+| Requirement | Result |
+| --- | --- |
+| Unique title per page | 10/10 · all 50–57 characters |
+| Unique meta description | 10/10 · all 131–155 characters |
+| Exactly one H1 per page | 10/10 |
+| Self-referencing canonical | 10/10 |
+| Open Graph (title, description, url, image) | 10/10 |
+| Twitter card + image | 10/10 |
+| Indexable, no `noindex` | 10/10 |
+| Breadcrumbs + `BreadcrumbList` | 10/10 |
+| `Service` schema | 10/10 · JSON parses, name matches the page |
+| `FAQPage` schema | 10/10 · 75 FAQs total, **zero** duplicated across pages |
+| Heading hierarchy | no skipped levels on any page |
+| Internal links resolve | 18 targets checked, 0 non-200 |
+| Linked from homepage (nav + footer) | 10/10 |
+| Content length | 1,606–2,072 words |
+| Content uniqueness | max 5-gram overlap **10.2%**, mean 7.2% |
+| New images added | 0 |
+| New dependencies added | 0 |
+| JS per page | 564 KB (was 5,655 KB before the fix in milestone 4) |
+
+### Caveats — stated plainly
+
+- **Browser-based mobile verification was not run.** The sandbox could not
+  download a headless browser, so horizontal-overflow testing at 390px was
+  verified statically instead: no fixed pixel widths above 360px anywhere in the
+  rendered HTML, the only `min-width` is on the table (inside its own
+  `overflow-x: auto` wrapper), the card grids collapse 3 → 2 → 1 at 900px and
+  640px, and `html`/`body` carry `overflow-x: clip`. That is strong evidence but
+  not a substitute for a real device pass — worth a look on a phone before
+  relying on it.
+- **FAQ rich results are no longer guaranteed.** Google restricted FAQ rich
+  results to authoritative government and health sites in 2023. The `FAQPage`
+  markup is accurate and mirrors visible content, so it is correct to keep, but
+  do not expect FAQ snippets in search results for these pages.
+- **No ranking outcome is predicted.** The pages are built to be crawlable,
+  well-structured and genuinely useful; whether they rank depends on competition,
+  domain authority and content quality over time.

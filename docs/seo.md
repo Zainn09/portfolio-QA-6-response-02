@@ -5,10 +5,11 @@ render from, so the published URLs can never drift from the live site.
 
 | Surface | Route | What it does |
 | --- | --- | --- |
-| Sitemap | `/sitemap.xml` | Every crawlable URL (currently 458) |
+| Sitemap | `/sitemap.xml` | Every crawlable URL (currently 468) |
 | Robots | `/robots.txt` | Opens public pages, blocks `/admin` + `/api/`, points to the sitemap |
 | RSS feed | `/feed.xml` | Latest 50 articles — aggregators, feed readers, AI answer engines |
-| Social card | `/opengraph-image` | Generated 1200×630 share image, applied site-wide |
+| Social card | `/opengraph-image` | Generated 1200×630 share image for the homepage |
+| Social card (per page) | `/og?t=…&k=…` | Generated card carrying a page's own headline — see below |
 | Structured data | every page | JSON-LD, see below |
 
 ## The canonical origin (`src/lib/site.ts`)
@@ -35,12 +36,13 @@ robots, the feed and the structured data follow automatically.
 | Section | Count | Source |
 | --- | --- | --- |
 | Core pages | 8 | `/`, `/work`, `/blogs`, `/audit`, `/about`, `/contact`, `/privacy`, `/terms` |
+| Service pages | 10 | `src/data/services` — see `docs/service-pages-seo-spec.md` |
 | Case studies | 93 | `getAllProjects()` — published projects only |
 | Blog articles | 305 | `allBlogArticles()` — 299 generated + 6 legacy posts |
 | Blog index pagination | 25 | `/blogs/page/2…26`, derived from `PAGE_SIZE` |
 | Topic hubs | 6 | `/blogs/category/[category]` |
 | Category pagination | 21 | `/blogs/category/[category]/page/[n]` |
-| **Total** | **458** | |
+| **Total** | **468** | |
 
 Conventions worth preserving:
 
@@ -69,6 +71,7 @@ Per route:
 | `/blogs` | `Blog` (canonical view only) + `BreadcrumbList` |
 | `/blogs/category/[category]` | `CollectionPage` + `ItemList` + `BreadcrumbList` |
 | `/blogs/[slug]` | `BlogPosting` + `BreadcrumbList` + `FAQPage` (where FAQs exist) |
+| 10 service pages | `Service` + `BreadcrumbList` + `FAQPage` |
 
 `ItemList` markup is intentional: it hands crawlers the full index of case
 studies and articles in one hop instead of relying on pagination chains.
@@ -123,3 +126,39 @@ no manual URL list to maintain:
 - **New case study** → add to `src/data/projects.ts` with
   `status: "published"`. Drafts stay out of the sitemap and the `/work`
   archive.
+
+## Social cards (`/og`)
+
+`/opengraph-image` serves the homepage card. Every other page that defines its
+own `openGraph` block needs an explicit image — Next.js stops merging the
+file-based one as soon as a page sets `openGraph` itself.
+
+Service pages use `/og`, which draws a branded 1200×630 card from the page's own
+headline and kicker, so no two pages share a preview image:
+
+```ts
+const card = socialCardUrl({ title: shopifyQaTesting.h1, kicker: shopifyQaTesting.eyebrow });
+// → https://<domain>/og?t=…&k=…
+```
+
+The route clamps text on a word boundary so a long headline cannot overflow the
+card. Adding this to another page means adding `images` to both its `openGraph`
+and `twitter` metadata.
+
+## Client-bundle rule
+
+The root layout renders the navigation, so a client component in the layout ships
+its imports to every page as JavaScript. The mega menu therefore receives the six
+records it renders as props from the server (`getMegaMenuData()` in
+`src/app/layout.tsx`) rather than importing the projects and articles datasets —
+that mistake cost ~5 MB of JavaScript on every page before it was fixed.
+
+If you add content-driven UI to the layout, resolve the data on the server and
+pass the minimum fields down. Verify with:
+
+```bash
+node -e "const d=require('./.next/diagnostics/route-bundle-stats.json');for(const r of d)if(['/','/work','/shopify-qa-testing'].includes(r.route))console.log(r.route, (r.firstLoadUncompressedJsBytes/1024).toFixed(0)+' KB')"
+```
+
+Expect roughly 560 KB per page and ~1 MB on the homepage (the extra is the hero
+and showreel animation code).
