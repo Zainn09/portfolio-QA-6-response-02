@@ -109,15 +109,33 @@ must be left untouched — a TXT record coexists with them.
 
 ## 4. Site base URL (sitemap / robots / canonicals)
 
-`sitemap.ts`, `robots.ts` and `metadataBase` all read from `src/lib/site-config.ts`
-instead of falling back to `http://localhost:3000` on the deployed site:
+`sitemap.ts`, `robots.ts`, `metadataBase` and every canonical read from
+`src/lib/site.ts` instead of falling back to `http://localhost:3000` on the
+deployed site:
 
-1. `NEXT_PUBLIC_SITE_URL` if you set it (explicit override, wins).
-2. On Vercel **production** builds, `https://$VERCEL_PROJECT_PRODUCTION_URL`
-   (i.e. `https://abdulrehman-qa.vercel.app`, or your custom domain once attached).
-   Preview deployments are deliberately excluded so preview URLs never reach the
-   sitemap.
-3. `http://localhost:3000` for local development.
+1. `NEXT_PUBLIC_SITE_URL` if you set it (explicit override, wins). Ignored in a
+   production build if it points at localhost, so a stray `.env` cannot poison
+   the published sitemap.
+2. `VERCEL_PROJECT_PRODUCTION_URL` — the project's production domain
+   (`https://abdulrehman-qa.vercel.app`, or your custom domain once attached).
+   Preferred over the deployment URL, so preview URLs do not reach the sitemap.
+3. `VERCEL_URL` — the current deployment, used only if no production URL exists.
+4. `http://localhost:3000` in development.
+5. `https://abdulrehman-qa.vercel.app` as the final fallback for production
+   builds running somewhere without Vercel's environment variables — a sitemap
+   full of localhost URLs is worse than no sitemap, so it never emits one.
+
+`src/lib/site.ts` also exports `absoluteUrl()`, `SITE_HOME` (homepage with the
+trailing slash, so the canonical matches the sitemap exactly),
+`socialCardUrl()` and `SITE_HOST`.
+
+> **Note (merge, 2026-10-04):** this logic previously lived in
+> `src/lib/site-config.ts`, added on `main` by PR #12, while this branch built
+> `src/lib/site.ts` in parallel. Both exported `SITE_URL` with different
+> resolution rules — two sources of truth for the same value, which is how a
+> sitemap ends up disagreeing with a canonical. They are unified on `site.ts`;
+> `site-config.ts` was removed and nothing references it. `SITE_HOST` was kept.
+
 
 This matters for verification: Google rejects a sitemap whose `<loc>` values point
 at `localhost`, and a `Sitemap:` directive in `robots.txt` that Googlebot cannot
