@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer } from "@/components/navigation/Footer";
+import { SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   },
   description:
     "Premium Quality Assurance for Shopify and Shopify Plus stores. 100+ stores tested. Functional, responsive, checkout, and accessibility QA.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     siteName: "QA Specialist Portfolio",

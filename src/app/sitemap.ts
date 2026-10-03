@@ -3,8 +3,8 @@ import { getAllProjects } from "@/data/projects";
 import { staticBlogPosts } from "@/data/blogs";
 import { articles, articleStubs, ARTICLE_CATEGORIES } from "@/data/articles";
 import { categorySlug } from "@/components/blog/categories";
+import { SITE_URL as BASE_URL } from "@/lib/site-config";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const PAGE_SIZE = 12;
 
 export default function sitemap(): MetadataRoute.Sitemap {
