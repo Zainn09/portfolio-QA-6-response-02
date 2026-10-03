@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
+  // Google Search Console ownership verification (HTML meta tag method).
+  // The companion DNS TXT-record method is documented in docs/google-site-verification.md
+  verification: {
+    google: "sFCobwdgJ47jkotq4vkO_mTo13ORcuoajMbTo7Y_O_A",
+  },
 };
 
 export default function RootLayout({
