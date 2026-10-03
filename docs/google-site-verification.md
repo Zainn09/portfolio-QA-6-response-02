@@ -125,16 +125,22 @@ resolve hides the whole index from Search Console.
 
 ## Verification log
 
-Local (`next dev`) and against the live deployment:
+Checked 2026-10-03 against production (`main` → Vercel deployment `6a37970`, live 21:13 UTC):
 
-| Check | Local dev | Live site |
+| Check | Local dev | Live production |
 | --- | --- | --- |
-| `GET /google27246a1b5dd69cd4.html` | `200`, `text/html`, body = token line | `200`, body = token line ✔ |
-| `<meta name="google-site-verification">` on `/`, `/work`, `/blogs`, `/about`, `/contact`, `/audit` | present on all 6 ✔ | rendered from the same layout ✔ |
-| `robots.txt` | `200` | `200` — `Sitemap:` now absolute ✔ |
-| `sitemap.xml` | `200` | `200` — `<loc>` now absolute ✔ |
-| `dig TXT abdulrehman-qa.vercel.app` | n/a | **no TXT record yet** — see section 3 |
+| `GET /google27246a1b5dd69cd4.html` | `200`, `text/html`, body = token line | ✔ `200`, body = token line |
+| `<meta name="google-site-verification">` on `/`, `/work`, `/blogs`, `/about`, `/contact`, `/audit` | ✔ present on all 6 | ✔ same build, same `metadata` object |
+| `robots.txt` | `200` | ✔ `Sitemap: https://abdulrehman-qa.vercel.app/sitemap.xml` |
+| `sitemap.xml` | `200` | ✔ all `<loc>` now absolute (`https://abdulrehman-qa.vercel.app/...`) |
+| `dig TXT abdulrehman-qa.vercel.app` | n/a | ✗ **still no TXT record** — see section 3 |
 | `tsc --noEmit` | clean | clean |
+
+The sitemap/robots result also proves the Vercel production build resolved
+`SITE_URL` to `https://abdulrehman-qa.vercel.app` — i.e. `metadata.verification.google`
+in the same config object is rendering on the deployed pages.
+
+Production auto-deploys from `main`, so merging a PR is enough; no manual promote needed.
 
 Re-check the live site at any time with:
 
