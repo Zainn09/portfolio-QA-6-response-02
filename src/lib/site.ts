@@ -69,6 +69,13 @@ function resolveSiteUrl(): string {
 /** Absolute site origin, no trailing slash. e.g. "https://example.com" */
 export const SITE_URL = resolveSiteUrl();
 
+/**
+ * Host only — e.g. "abdulrehman-qa.vercel.app". Used for display and
+ * verification checks. (Kept from src/lib/site-config.ts, which this file
+ * replaces — see the merge note in the git history for why they were unified.)
+ */
+export const SITE_HOST = new URL(SITE_URL).host;
+
 /** Site name used across structured data and metadata. */
 export const SITE_NAME = "QA Specialist";
 

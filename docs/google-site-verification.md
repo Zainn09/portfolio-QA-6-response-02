@@ -106,3 +106,65 @@ must be left untouched — a TXT record coexists with them.
 
 - Finally, click **Verify** in Google Search Console. Keep both the meta tag and
   the TXT record in place permanently; removing either can revoke ownership.
+
+## 4. Site base URL (sitemap / robots / canonicals)
+
+`sitemap.ts`, `robots.ts`, `metadataBase` and every canonical read from
+`src/lib/site.ts` instead of falling back to `http://localhost:3000` on the
+deployed site:
+
+1. `NEXT_PUBLIC_SITE_URL` if you set it (explicit override, wins). Ignored in a
+   production build if it points at localhost, so a stray `.env` cannot poison
+   the published sitemap.
+2. `VERCEL_PROJECT_PRODUCTION_URL` — the project's production domain
+   (`https://abdulrehman-qa.vercel.app`, or your custom domain once attached).
+   Preferred over the deployment URL, so preview URLs do not reach the sitemap.
+3. `VERCEL_URL` — the current deployment, used only if no production URL exists.
+4. `http://localhost:3000` in development.
+5. `https://abdulrehman-qa.vercel.app` as the final fallback for production
+   builds running somewhere without Vercel's environment variables — a sitemap
+   full of localhost URLs is worse than no sitemap, so it never emits one.
+
+`src/lib/site.ts` also exports `absoluteUrl()`, `SITE_HOME` (homepage with the
+trailing slash, so the canonical matches the sitemap exactly),
+`socialCardUrl()` and `SITE_HOST`.
+
+> **Note (merge, 2026-10-04):** this logic previously lived in
+> `src/lib/site-config.ts`, added on `main` by PR #12, while this branch built
+> `src/lib/site.ts` in parallel. Both exported `SITE_URL` with different
+> resolution rules — two sources of truth for the same value, which is how a
+> sitemap ends up disagreeing with a canonical. They are unified on `site.ts`;
+> `site-config.ts` was removed and nothing references it. `SITE_HOST` was kept.
+
+
+This matters for verification: Google rejects a sitemap whose `<loc>` values point
+at `localhost`, and a `Sitemap:` directive in `robots.txt` that Googlebot cannot
+resolve hides the whole index from Search Console.
+
+## Verification log
+
+Checked 2026-10-03 against production (`main` → Vercel deployment `6a37970`, live 21:13 UTC):
+
+| Check | Local dev | Live production |
+| --- | --- | --- |
+| `GET /google27246a1b5dd69cd4.html` | `200`, `text/html`, body = token line | ✔ `200`, body = token line |
+| `<meta name="google-site-verification">` on `/`, `/work`, `/blogs`, `/about`, `/contact`, `/audit` | ✔ present on all 6 | ✔ same build, same `metadata` object |
+| `robots.txt` | `200` | ✔ `Sitemap: https://abdulrehman-qa.vercel.app/sitemap.xml` |
+| `sitemap.xml` | `200` | ✔ all `<loc>` now absolute (`https://abdulrehman-qa.vercel.app/...`) |
+| `dig TXT abdulrehman-qa.vercel.app` | n/a | ✗ **still no TXT record** — see section 3 |
+| `tsc --noEmit` | clean | clean |
+
+The sitemap/robots result also proves the Vercel production build resolved
+`SITE_URL` to `https://abdulrehman-qa.vercel.app` — i.e. `metadata.verification.google`
+in the same config object is rendering on the deployed pages.
+
+Production auto-deploys from `main`, so merging a PR is enough; no manual promote needed.
+
+Re-check the live site at any time with:
+
+```bash
+curl -i  https://abdulrehman-qa.vercel.app/google27246a1b5dd69cd4.html
+curl -s  https://abdulrehman-qa.vercel.app/ | grep -i google-site-verification
+curl -s  https://abdulrehman-qa.vercel.app/robots.txt
+dig +short TXT abdulrehman-qa.vercel.app
+```
