@@ -6,6 +6,18 @@ const footerLinks = {
     { href: "/work?platform=Shopify+Plus", label: "Shopify Plus" },
     { href: "/work?platform=Shopify", label: "Shopify" },
   ],
+  services: [
+    { href: "/ecommerce-qa-testing", label: "Ecommerce QA" },
+    { href: "/shopify-qa-testing", label: "Shopify QA Testing" },
+    { href: "/shopify-plus-qa", label: "Shopify Plus QA" },
+    { href: "/shopify-checkout-testing", label: "Checkout Testing" },
+    { href: "/shopify-mobile-testing", label: "Mobile Testing" },
+    { href: "/shopify-accessibility-testing", label: "Accessibility Testing" },
+    { href: "/shopify-cross-browser-testing", label: "Cross-Browser Testing" },
+    { href: "/shopify-performance-testing", label: "Performance Testing" },
+    { href: "/shopify-regression-testing", label: "Regression Testing" },
+    { href: "/shopify-qa-audit", label: "Shopify QA Audit" },
+  ],
   pages: [
     { href: "/about", label: "About" },
     { href: "/blogs", label: "Blogs" },
@@ -78,6 +90,20 @@ export function Footer() {
             </p>
             <ul role="list" style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
               {footerLinks.work.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="footer-link">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>
+              Services
+            </p>
+            <ul role="list" style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+              {footerLinks.services.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="footer-link">{l.label}</Link>
                 </li>

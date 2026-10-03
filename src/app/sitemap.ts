@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/data/projects";
 import { getAllArticles, ARTICLE_CATEGORIES, type BlogArticle } from "@/data/articles";
 import { allBlogArticles } from "@/data/legacy-articles";
+import { servicePages } from "@/data/services";
 import { categorySlug } from "@/components/blog/categories";
 import { PAGE_SIZE } from "@/components/blog/BlogIndex";
 import { absoluteUrl } from "@/lib/site";
@@ -10,6 +11,7 @@ import { absoluteUrl } from "@/lib/site";
  * Full XML sitemap — every crawlable page on the site:
  *
  *   • 8 core pages            (/, /work, /blogs, /audit, /about, /contact, /privacy, /terms)
+ *   • 10 service pages        (/shopify-qa-testing, /shopify-plus-qa, …)
  *   • 93 case studies         (/work/[slug], published only — mirrors the /work archive)
  *   • 305 blog articles       (/blogs/[slug] — 299 generated + 6 legacy posts)
  *   • 6 topic hubs            (/blogs/category/[category])
@@ -95,6 +97,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: page.priority,
   }));
 
+  /* ── Service landing pages ────────────────────────────────────────────── */
+  // Commercial-intent pages, so they sit just below the core navigation in
+  // priority. Not date-tracked: they are evergreen and change by revision.
+  const serviceRoutes: Entry[] = servicePages.map((s) => ({
+    url: absoluteUrl(`/${s.slug}`),
+    changeFrequency: "monthly",
+    priority: s.slug === "shopify-qa-testing" || s.slug === "ecommerce-qa-testing" ? 0.9 : 0.8,
+  }));
+
   /* ── Blog index pagination (/blogs/page/2 … n) ─────────────────────────── */
   const blogIndexPages = Math.ceil(posts.length / PAGE_SIZE);
   const blogPaginationRoutes: Entry[] = [];
@@ -156,6 +167,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...coreRoutes,
+    ...serviceRoutes,
     ...blogPaginationRoutes,
     ...categoryRoutes,
     ...projectRoutes,

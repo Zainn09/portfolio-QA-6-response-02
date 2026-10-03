@@ -3,14 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import {
+  Accessibility,
   ArrowRight,
   ArrowUpRight,
   Bug,
+  ClipboardCheck,
   Compass,
+  CreditCard,
   Eye,
+  Gauge,
   Hammer,
   Map,
+  MonitorSmartphone,
+  RotateCcw,
   ShieldCheck,
+  Smartphone,
   Store,
   ShoppingBag,
   Sparkles,
@@ -69,6 +76,20 @@ const ABOUT_STATS = [
   { value: "20", label: "Shopify Plus Projects" },
   { value: "12+", label: "Industries Covered" },
   { value: "100%", label: "Verified Resolutions" },
+];
+
+/** Service landing pages — listed in the order they are grouped on the site. */
+const SERVICE_ROWS = [
+  { icon: ShoppingBag, label: "Ecommerce QA Testing", href: "/ecommerce-qa-testing", desc: "The full purchase journey, across platforms." },
+  { icon: Store, label: "Shopify QA Testing", href: "/shopify-qa-testing", desc: "Storefront, checkout, theme and apps." },
+  { icon: ShieldCheck, label: "Shopify Plus QA", href: "/shopify-plus-qa", desc: "Custom checkout, ERP and multi-market." },
+  { icon: CreditCard, label: "Checkout Testing", href: "/shopify-checkout-testing", desc: "Cart, payments, discounts, errors." },
+  { icon: Smartphone, label: "Mobile Testing", href: "/shopify-mobile-testing", desc: "Real devices, touch and mobile checkout." },
+  { icon: Accessibility, label: "Accessibility Testing", href: "/shopify-accessibility-testing", desc: "Keyboard, screen reader and WCAG." },
+  { icon: MonitorSmartphone, label: "Cross-Browser Testing", href: "/shopify-cross-browser-testing", desc: "Safari, Chrome, Firefox, Edge." },
+  { icon: Gauge, label: "Performance Testing", href: "/shopify-performance-testing", desc: "Core Web Vitals and page weight." },
+  { icon: RotateCcw, label: "Regression Testing", href: "/shopify-regression-testing", desc: "Protect journeys after every release." },
+  { icon: ClipboardCheck, label: "Shopify QA Audit", href: "/shopify-qa-audit", desc: "One structured pass, one report." },
 ];
 
 function formatDate(iso: string) {
@@ -187,6 +208,46 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
                     <span className="mega-card-foot">
                       <span className="mega-meta">View case study</span>
                       <ArrowUpRight size={14} className="mega-arrow" aria-hidden="true" />
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {open === "services" && (
+          <>
+            <Intro
+              eyebrow="Services"
+              title="Testing that follows the money path."
+              desc="Ten focused QA services — from a single checkout pass to enterprise Plus builds."
+              cta="Compare all services"
+              href="/ecommerce-qa-testing"
+              onNavigate={onNavigate}
+            />
+            <div className="mega-rows-2">
+              {SERVICE_ROWS.map((row, i) => {
+                const Icon = row.icon;
+                return (
+                  <Link
+                    key={row.href}
+                    href={row.href}
+                    onClick={onNavigate}
+                    className="mega-row mega-rise"
+                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.875rem", animationDelay: `${i * 40}ms` }}
+                  >
+                    <span className="mega-row-icon" aria-hidden="true" style={{ width: "32px", height: "32px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--radius-sm)", backgroundColor: "var(--accent-muted)", border: "1px solid var(--accent)", color: "var(--text-primary)", alignSelf: "flex-start", marginTop: "0.125rem" }}>
+                      <Icon size={16} strokeWidth={2} />
+                    </span>
+                    <span className="mega-row-body" style={{ display: "flex", flexDirection: "column", gap: "0.25rem", minWidth: 0, flex: "0 1 auto" }}>
+                      <span className="mega-row-head">
+                        <span className="mega-card-title">{row.label}</span>
+                      </span>
+                      <span className="mega-desc-sm">{row.desc}</span>
+                    </span>
+                    <span aria-hidden="true" className="mega-arrow" style={{ alignSelf: "center", marginLeft: "0.25rem", flexShrink: 0, position: "static", opacity: 1, transform: "none" }}>
+                      <ArrowUpRight size={13} strokeWidth={2} />
                     </span>
                   </Link>
                 );

@@ -10,6 +10,7 @@ import { MegaMenu } from "./MegaMenu";
 
 const navLinks = [
   { href: "/work", label: "Work", menu: "work" },
+  { href: "/ecommerce-qa-testing", label: "Services", menu: "services" },
   { href: "/#expertise", label: "Expertise", menu: "expertise" },
   { href: "/about", label: "About", menu: "about" },
   { href: "/#process", label: "Process", menu: "process" },
