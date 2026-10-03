@@ -24,11 +24,41 @@ import {
   Wrench,
   TrendingUp,
 } from "lucide-react";
-import { getFeaturedProjects } from "@/data/projects";
-import { articleStubs } from "@/data/articles";
+/**
+ * Data the menu actually renders, resolved on the server.
+ *
+ * Why it is passed in rather than imported: this is a client component, and
+ * the menu lives in the root layout — so anything imported here is bundled as
+ * JavaScript for every page on the site. Importing the full projects and
+ * articles datasets (5 MB of content between them) meant shipping all of it to
+ * every visitor to render three cards. The server picks out these few records
+ * and the rest stays on the server.
+ */
+export interface MegaMenuData {
+  featured: {
+    id: number;
+    slug: string;
+    title: string;
+    thumbnail: string;
+    industry: string;
+    platform: string;
+    featuredOrder: number;
+    hasCritical: boolean;
+  }[];
+  latestPosts: {
+    slug: string;
+    title: string;
+    category: string;
+    heroImage: string;
+    publishedAt: string;
+    readingTime: number;
+    articleType: string;
+  }[];
+}
 
 interface MegaMenuProps {
   open: string | null;
+  data: MegaMenuData;
   onEnterPanel: () => void;
   onLeavePanel: () => void;
   onNavigate: () => void;
@@ -143,13 +173,10 @@ function Intro({
   );
 }
 
-export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaMenuProps) {
+export function MegaMenu({ open, data, onEnterPanel, onLeavePanel, onNavigate }: MegaMenuProps) {
   if (!open) return null;
 
-  const featured = getFeaturedProjects().slice(0, 3);
-  const latestPosts = [...articleStubs]
-    .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
-    .slice(0, 3);
+  const { featured, latestPosts } = data;
 
   return (
     <div
@@ -173,7 +200,7 @@ export function MegaMenu({ open, onEnterPanel, onLeavePanel, onNavigate }: MegaM
             />
             <div className="mega-cards-3">
               {featured.map((p, i) => {
-                const hasCritical = p.issues.some((issue) => issue.severity === "critical");
+                const hasCritical = p.hasCritical;
                 return (
                   <Link
                     key={p.id}

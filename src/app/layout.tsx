@@ -4,9 +4,49 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Navbar } from "@/components/navigation/Navbar";
+import type { MegaMenuData } from "@/components/navigation/MegaMenu";
 import { Footer } from "@/components/navigation/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getFeaturedProjects } from "@/data/projects";
+import { articleStubs } from "@/data/articles";
 import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
+
+/**
+ * Resolve the navigation mega-menu's content on the server.
+ *
+ * The menu is a client component in this layout, so importing the projects and
+ * articles data inside it would bundle both full datasets (5 MB) as JavaScript
+ * on every page of the site. Selecting the six records the menu shows, here on
+ * the server, keeps the rest out of the browser entirely.
+ */
+function getMegaMenuData(): MegaMenuData {
+  return {
+    featured: getFeaturedProjects()
+      .slice(0, 3)
+      .map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        title: p.title,
+        thumbnail: p.thumbnail,
+        industry: p.industry,
+        platform: p.platform,
+        featuredOrder: p.featuredOrder,
+        hasCritical: p.issues.some((issue) => issue.severity === "critical"),
+      })),
+    latestPosts: [...articleStubs]
+      .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
+      .slice(0, 3)
+      .map((a) => ({
+        slug: a.slug,
+        title: a.title,
+        category: a.category,
+        heroImage: a.heroImage,
+        publishedAt: a.publishedAt,
+        readingTime: a.readingTime,
+        articleType: a.articleType,
+      })),
+  };
+}
 
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-FQM62EBQRD";
@@ -127,6 +167,8 @@ export const metadata: Metadata = {
   },
 };
 
+const megaMenuData = getMegaMenuData();
+
 export default function RootLayout({
   children,
 }: {
@@ -168,7 +210,7 @@ export default function RootLayout({
       <body style={{ fontFamily: "var(--font-sans)" }}>
         <JsonLd data={entityGraph} />
         <ThemeProvider>
-          <Navbar />
+          <Navbar megaData={megaMenuData} />
           <main id="main-content">{children}</main>
           <Footer />
         </ThemeProvider>
