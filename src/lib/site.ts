@@ -93,3 +93,14 @@ export function socialCardUrl({ title, kicker }: { title: string; kicker?: strin
   if (kicker) params.set("k", kicker);
   return absoluteUrl(`/og?${params.toString()}`);
 }
+
+/**
+ * The absolute homepage URL, including the trailing slash.
+ *
+ * `https://example.com` and `https://example.com/` are the same resource, but
+ * publishing the canonical as the bare origin means the tag and the sitemap
+ * disagree by one character, which is exactly the kind of ambiguity a canonical
+ * exists to remove. Emitting the trailing-slash form keeps the homepage's
+ * canonical identical to its sitemap entry.
+ */
+export const SITE_HOME = `${SITE_URL}/`;
