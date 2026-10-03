@@ -3,7 +3,7 @@ import type { ServicePageContent } from "./types";
 export const shopifyMobileTesting: ServicePageContent = {
   slug: "shopify-mobile-testing",
 
-  title: "Shopify Mobile Testing Services | QA Specialist",
+  title: "Shopify Mobile & Responsive Testing | QA Specialist",
   metaDescription:
     "Shopify mobile QA across phones and tablets: navigation, search, product pages, add-to-cart, forms and mobile checkout in real viewports.",
 

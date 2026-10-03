@@ -3,7 +3,7 @@ import type { ServicePageContent } from "./types";
 export const shopifyPerformanceTesting: ServicePageContent = {
   slug: "shopify-performance-testing",
 
-  title: "Shopify Performance Testing & Core Web Vitals QA",
+  title: "Shopify Performance Testing & Core Web Vitals | QA",
   metaDescription:
     "Shopify speed QA focused on Core Web Vitals — LCP, INP and CLS — plus theme weight, third-party apps, script and image bottlenecks.",
 

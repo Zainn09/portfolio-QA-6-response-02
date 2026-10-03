@@ -83,3 +83,13 @@ export function absoluteUrl(path = "/"): string {
  * which Next.js also injects into metadata for every page automatically.
  */
 export const DEFAULT_OG_IMAGE = absoluteUrl("/opengraph-image");
+
+/**
+ * Absolute URL of a generated social share card for a page.
+ * Rendered by the /og route from the page's own title and kicker.
+ */
+export function socialCardUrl({ title, kicker }: { title: string; kicker?: string }): string {
+  const params = new URLSearchParams({ t: title });
+  if (kicker) params.set("k", kicker);
+  return absoluteUrl(`/og?${params.toString()}`);
+}

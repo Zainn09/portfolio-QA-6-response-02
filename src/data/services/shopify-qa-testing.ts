@@ -3,7 +3,7 @@ import type { ServicePageContent } from "./types";
 export const shopifyQaTesting: ServicePageContent = {
   slug: "shopify-qa-testing",
 
-  title: "Shopify QA Testing Services | QA Specialist",
+  title: "Shopify QA Testing Services | Independent QA Specialist",
   metaDescription:
     "Independent QA for Shopify and Shopify Plus stores: functional, checkout, responsive, accessibility and performance testing, with reproducible bug reports.",
 

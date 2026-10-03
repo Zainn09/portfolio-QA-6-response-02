@@ -3,7 +3,7 @@ import type { ServicePageContent } from "./types";
 export const ecommerceQaTesting: ServicePageContent = {
   slug: "ecommerce-qa-testing",
 
-  title: "Ecommerce QA Testing Services | QA Specialist",
+  title: "Ecommerce QA Testing Services & Audits | QA Specialist",
   metaDescription:
     "Ecommerce QA across the full purchase journey: functional, cart, checkout, payment, search, integration, mobile and regression testing.",
 

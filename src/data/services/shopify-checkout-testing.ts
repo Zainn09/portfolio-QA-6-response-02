@@ -3,7 +3,7 @@ import type { ServicePageContent } from "./types";
 export const shopifyCheckoutTesting: ServicePageContent = {
   slug: "shopify-checkout-testing",
 
-  title: "Shopify Checkout Testing Services | QA Specialist",
+  title: "Shopify Checkout & Payment Testing | QA Specialist",
   metaDescription:
     "End-to-end Shopify checkout testing: cart, discounts, shipping, tax, payment methods, error states and order confirmation — across devices and markets.",
 
