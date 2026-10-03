@@ -106,3 +106,41 @@ must be left untouched — a TXT record coexists with them.
 
 - Finally, click **Verify** in Google Search Console. Keep both the meta tag and
   the TXT record in place permanently; removing either can revoke ownership.
+
+## 4. Site base URL (sitemap / robots / canonicals)
+
+`sitemap.ts`, `robots.ts` and `metadataBase` all read from `src/lib/site-config.ts`
+instead of falling back to `http://localhost:3000` on the deployed site:
+
+1. `NEXT_PUBLIC_SITE_URL` if you set it (explicit override, wins).
+2. On Vercel **production** builds, `https://$VERCEL_PROJECT_PRODUCTION_URL`
+   (i.e. `https://abdulrehman-qa.vercel.app`, or your custom domain once attached).
+   Preview deployments are deliberately excluded so preview URLs never reach the
+   sitemap.
+3. `http://localhost:3000` for local development.
+
+This matters for verification: Google rejects a sitemap whose `<loc>` values point
+at `localhost`, and a `Sitemap:` directive in `robots.txt` that Googlebot cannot
+resolve hides the whole index from Search Console.
+
+## Verification log
+
+Local (`next dev`) and against the live deployment:
+
+| Check | Local dev | Live site |
+| --- | --- | --- |
+| `GET /google27246a1b5dd69cd4.html` | `200`, `text/html`, body = token line | `200`, body = token line ✔ |
+| `<meta name="google-site-verification">` on `/`, `/work`, `/blogs`, `/about`, `/contact`, `/audit` | present on all 6 ✔ | rendered from the same layout ✔ |
+| `robots.txt` | `200` | `200` — `Sitemap:` now absolute ✔ |
+| `sitemap.xml` | `200` | `200` — `<loc>` now absolute ✔ |
+| `dig TXT abdulrehman-qa.vercel.app` | n/a | **no TXT record yet** — see section 3 |
+| `tsc --noEmit` | clean | clean |
+
+Re-check the live site at any time with:
+
+```bash
+curl -i  https://abdulrehman-qa.vercel.app/google27246a1b5dd69cd4.html
+curl -s  https://abdulrehman-qa.vercel.app/ | grep -i google-site-verification
+curl -s  https://abdulrehman-qa.vercel.app/robots.txt
+dig +short TXT abdulrehman-qa.vercel.app
+```

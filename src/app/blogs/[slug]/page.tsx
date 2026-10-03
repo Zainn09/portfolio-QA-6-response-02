@@ -6,12 +6,11 @@ import { legacyArticles } from "@/data/legacy-articles";
 import { Toc } from "@/components/blog/Toc";
 import { staticBlogPosts } from "@/data/blogs";
 import type { ReactNode } from "react";
+import { SITE_URL as SITE } from "@/lib/site-config";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 function resolveArticle(slug: string): BlogArticle | undefined {
   return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug);
