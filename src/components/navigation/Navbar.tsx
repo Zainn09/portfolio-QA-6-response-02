@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
-import { MegaMenu } from "./MegaMenu";
+import { MegaMenu, type MegaMenuData } from "./MegaMenu";
 
 const navLinks = [
   { href: "/work", label: "Work", menu: "work" },
+  { href: "/ecommerce-qa-testing", label: "Services", menu: "services" },
   { href: "/#expertise", label: "Expertise", menu: "expertise" },
   { href: "/about", label: "About", menu: "about" },
   { href: "/#process", label: "Process", menu: "process" },
@@ -17,7 +18,7 @@ const navLinks = [
   { href: "/contact", label: "Contact", menu: null },
 ];
 
-export function Navbar() {
+export function Navbar({ megaData }: { megaData: MegaMenuData }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -262,6 +263,7 @@ export function Navbar() {
         </div>
         <MegaMenu
           open={openMenu}
+          data={megaData}
           onEnterPanel={cancelClose}
           onLeavePanel={scheduleClose}
           onNavigate={closeMega}
