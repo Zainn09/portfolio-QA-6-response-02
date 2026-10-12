@@ -345,7 +345,7 @@ export function ShowreelSection() {
                         color: "#fff",
                       }}
                     >
-                      Drop the audit video at /videos/above-the-fold.mp4 to play it here
+                      {/* Drop the audit video at /videos/above-the-fold.mp4 to play it here */}
                     </div>
                   </>
                 )}
