@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTICLE_TYPE_LABEL, type BlogArticle, type ArticleBlock } from "@/data/articles";
 import { legacyArticles } from "@/data/legacy-articles";
+import { editorialArticles } from "@/data/editorial-articles";
 import { Toc } from "@/components/blog/Toc";
 import { staticBlogPosts } from "@/data/blogs";
 import { SITE_URL } from "@/lib/site";
@@ -13,11 +14,11 @@ interface Props {
 }
 
 function resolveArticle(slug: string): BlogArticle | undefined {
-  return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug);
+  return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug) ?? editorialArticles.find((a) => a.slug === slug);
 }
 
 export function generateStaticParams() {
-  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug }))];
+  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug })), ...editorialArticles.map((a) => ({ slug: a.slug }))];
 }
 
 export const dynamicParams = false;
