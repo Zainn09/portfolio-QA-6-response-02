@@ -598,7 +598,7 @@ export const editorialArticles: BlogArticle[] = [
     "id": 9107,
     "title": "Why Quality Assurance Matters in Ecommerce",
     "slug": "why-quality-assurance-matters-in-ecommerce",
-    "excerpt": "A broken checkout, a wrong variant, a slow page — each small failure is a [[silent revenue leak]]. What ecommerce QA actually covers, and how a structured audit finds the problems before your customers do.",
+    "excerpt": "A broken checkout, a wrong variant, a slow page — each small failure is a silent revenue leak. What ecommerce QA actually covers, and how a structured audit finds the problems before your customers do.",
     "articleType": "insight",
     "category": "QA",
     "tags": ["ecommerce QA", "store audits", "quality assurance", "checkout testing", "reliability"],
