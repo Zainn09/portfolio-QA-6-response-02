@@ -826,6 +826,17 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 }
 
 /* ── Blog article system ─────────────────────────────────────── */
+/* QA "flagged" highlight — marks key phrases the way an auditor
+   flags evidence: brand-accent highlighter sweep + accent rule. */
+.flagged {
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 0 0.12em 0.06em;
+  background-image: linear-gradient(to top, var(--accent-muted) 0%, var(--accent-muted) 42%, transparent 42%);
+  border-bottom: 2px solid var(--accent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
 .article-card:hover { border-color: var(--accent) !important; }
 .article-toc { display: none; }
 @media (min-width: 1024px) {

@@ -42,20 +42,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/* ---------- tiny inline-link parser: [text](/href) ---------- */
+/* ---------- tiny inline parser: [text](/href) links + [[flagged phrase]] ---------- */
 function Inline({ text }: { text: string }) {
   const parts: ReactNode[] = [];
-  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const re = /\[\[([^\]]+)\]\]|\[([^\]]+)\]\(([^)]+)\)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   let key = 0;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) parts.push(text.slice(last, m.index));
-    parts.push(
-      <Link key={key++} href={m[2]} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "underline", textDecorationColor: "var(--accent)", textUnderlineOffset: "3px" }}>
-        {m[1]}
-      </Link>
-    );
+    if (m[1] !== undefined) {
+      parts.push(<span key={key++} className="flagged">{m[1]}</span>);
+    } else {
+      parts.push(
+        <Link key={key++} href={m[3]} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "underline", textDecorationColor: "var(--accent)", textUnderlineOffset: "3px" }}>
+          {m[2]}
+        </Link>
+      );
+    }
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push(text.slice(last));
