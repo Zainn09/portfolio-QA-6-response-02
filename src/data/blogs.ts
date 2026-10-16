@@ -24,7 +24,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "AI × QA",
     tags: ["AI Testing", "Shopify QA", "Workflow", "2026 Trends"],
     author: "QA Specialist",
-    publishedAt: "2026-09-02T09:00:00Z",
+    publishedAt: "2025-11-21T09:00:00Z",
     readMinutes: 7,
     trending: true,
     series: "AI × QA Series",
@@ -62,7 +62,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "AI × QA",
     tags: ["AI Testing", "Checkout", "Experiments", "Shopify Plus"],
     author: "QA Specialist",
-    publishedAt: "2026-08-24T09:00:00Z",
+    publishedAt: "2025-09-15T09:00:00Z",
     readMinutes: 8,
     trending: true,
     series: "AI × QA Series",
@@ -97,7 +97,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "AI × QA",
     tags: ["AI Testing", "Tools", "Prompts", "Workflow"],
     author: "QA Specialist",
-    publishedAt: "2026-08-12T09:00:00Z",
+    publishedAt: "2025-07-07T09:00:00Z",
     readMinutes: 9,
     trending: true,
     series: "AI × QA Series",
@@ -136,7 +136,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "Checkout",
     tags: ["Checkout", "Checklist", "Shopify Plus", "Payments"],
     author: "QA Specialist",
-    publishedAt: "2026-07-28T09:00:00Z",
+    publishedAt: "2025-06-20T09:00:00Z",
     readMinutes: 10,
     content: `
 <p>Checkout bugs are uniquely cruel: the customer did everything right, and the store still said no. Over 100+ audits, I've distilled checkout testing into a 25-point checklist. Here it is — the same list I run on every store, from startup to Shopify Plus.</p>
@@ -192,7 +192,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "Accessibility",
     tags: ["Accessibility", "EAA", "WCAG", "Compliance"],
     author: "QA Specialist",
-    publishedAt: "2026-07-10T09:00:00Z",
+    publishedAt: "2025-04-13T09:00:00Z",
     readMinutes: 8,
     content: `
 <p>Since June 2025, the European Accessibility Act requires e-commerce stores serving EU customers to be accessible — and enforcement in 2026 is no longer theoretical. If you sell into the EU on Shopify, accessibility moved from "nice to have" to "legal requirement." Here's what that means in practice.</p>
@@ -228,7 +228,7 @@ export const staticBlogPosts: StaticBlogPost[] = [
     category: "Responsive",
     tags: ["Responsive", "Mobile", "CSS", "Devices"],
     author: "QA Specialist",
-    publishedAt: "2026-06-22T09:00:00Z",
+    publishedAt: "2025-02-08T09:00:00Z",
     readMinutes: 6,
     content: `
 <p>Here's a pattern I've seen on dozens of stores: flawless at 390px, flawless at 1440px, quietly broken everywhere between. Tablets, small laptops, unfolded foldables, and resized desktop windows live in the breakpoints nobody designed for. Welcome to the 768px problem.</p>

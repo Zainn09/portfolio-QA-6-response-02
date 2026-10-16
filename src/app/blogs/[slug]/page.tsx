@@ -3,21 +3,22 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTICLE_TYPE_LABEL, type BlogArticle, type ArticleBlock } from "@/data/articles";
 import { legacyArticles } from "@/data/legacy-articles";
+import { editorialArticles } from "@/data/editorial-articles";
 import { Toc } from "@/components/blog/Toc";
 import { staticBlogPosts } from "@/data/blogs";
+import { SITE_URL } from "@/lib/site";
 import type { ReactNode } from "react";
-import { SITE_URL as SITE } from "@/lib/site-config";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 function resolveArticle(slug: string): BlogArticle | undefined {
-  return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug);
+  return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug) ?? editorialArticles.find((a) => a.slug === slug);
 }
 
 export function generateStaticParams() {
-  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug }))];
+  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug })), ...editorialArticles.map((a) => ({ slug: a.slug }))];
 }
 
 export const dynamicParams = false;
@@ -41,20 +42,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-/* ---------- tiny inline-link parser: [text](/href) ---------- */
+/* ---------- tiny inline parser: [text](/href) links + [[flagged phrase]] ---------- */
 function Inline({ text }: { text: string }) {
   const parts: ReactNode[] = [];
-  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const re = /\[\[([^\]]+)\]\]|\[([^\]]+)\]\(([^)]+)\)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   let key = 0;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) parts.push(text.slice(last, m.index));
-    parts.push(
-      <Link key={key++} href={m[2]} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "underline", textDecorationColor: "var(--accent)", textUnderlineOffset: "3px" }}>
-        {m[1]}
-      </Link>
-    );
+    if (m[1] !== undefined) {
+      parts.push(<span key={key++} className="flagged">{m[1]}</span>);
+    } else {
+      parts.push(
+        <Link key={key++} href={m[3]} style={{ color: "var(--text-primary)", fontWeight: 600, textDecoration: "underline", textDecorationColor: "var(--accent)", textUnderlineOffset: "3px" }}>
+          {m[2]}
+        </Link>
+      );
+    }
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push(text.slice(last));
@@ -225,16 +230,32 @@ export default async function ArticlePage({ params }: Props) {
   const toc = a.body.map((b, i) => ({ text: b.type === "h2" && "text" in b ? b.text : "", i })).filter((x) => x.text);
   const showToc = toc.length >= 4;
   const ts = TYPE_STYLE[a.articleType] ?? TYPE_STYLE.insight;
+  const articleUrl = `${SITE_URL}/blogs/${a.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: a.title,
     description: a.metaDescription,
     image: a.heroImage ? [a.heroImage] : undefined,
     datePublished: a.publishedAt,
-    author: { "@type": "Person", name: a.author, jobTitle: a.authorRole },
-    publisher: { "@type": "Organization", name: "QA Specialist" },
-    mainEntityOfPage: `${SITE}/blogs/${a.slug}`,
+    dateModified: a.publishedAt,
+    articleSection: a.category,
+    keywords: a.tags.join(", "),
+    inLanguage: "en",
+    author: { "@id": `${SITE_URL}/#person`, name: a.author, jobTitle: a.authorRole },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    url: articleUrl,
+    ...(a.projectSlug
+      ? {
+          about: {
+            "@type": "CreativeWork",
+            name: a.projectTitle,
+            url: `${SITE_URL}/work/${a.projectSlug}`,
+          },
+        }
+      : {}),
   };
   const faqLd = a.faq.length > 0 ? {
     "@context": "https://schema.org",
@@ -249,9 +270,9 @@ export default async function ArticlePage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE}/blogs` },
-      { "@type": "ListItem", position: 3, name: a.title, item: `${SITE}/blogs/${a.slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blogs` },
+      { "@type": "ListItem", position: 3, name: a.title, item: `${SITE_URL}/blogs/${a.slug}` },
     ],
   };
 
@@ -284,8 +305,8 @@ export default async function ArticlePage({ params }: Props) {
           </div>
           <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem" }}>
             {[
-              { label: "Share on X", href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(a.title)}&url=${SITE}/blogs/${a.slug}`, txt: "𝕏" },
-              { label: "Share on LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${SITE}/blogs/${a.slug}`, txt: "in" },
+              { label: "Share on X", href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(a.title)}&url=${SITE_URL}/blogs/${a.slug}`, txt: "𝕏" },
+              { label: "Share on LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${SITE_URL}/blogs/${a.slug}`, txt: "in" },
             ].map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} style={{ width: "34px", height: "34px", border: "1px solid var(--border)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, color: "var(--text-secondary)" }}>{s.txt}</a>
             ))}
