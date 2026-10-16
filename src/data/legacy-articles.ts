@@ -1,6 +1,7 @@
 import type { BlogArticle } from "@/data/articles";
 import { getAllArticles, searchArticles } from "@/data/articles";
 import { staticBlogPosts } from "@/data/blogs";
+import { editorialArticles } from "@/data/editorial-articles";
 
 /** The 8 legacy hand-written posts, mapped onto the same article shape. */
 export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
@@ -30,18 +31,18 @@ export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
 
 /** Every article on the site — generated matrix first-class, legacy posts included. */
 export const allBlogArticles = (): BlogArticle[] =>
-  [...getAllArticles(), ...legacyArticles].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  [...getAllArticles(), ...legacyArticles, ...editorialArticles].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 
-/** Search across both the generated matrix and the legacy posts. */
+/** Search across the generated matrix, the legacy posts and the editorial series. */
 export const searchAllArticles = (q: string): BlogArticle[] => {
   const needle = q.trim().toLowerCase();
   if (!needle) return [];
-  const legacyHits = legacyArticles.filter(
+  const otherHits = [...legacyArticles, ...editorialArticles].filter(
     (a) =>
       a.title.toLowerCase().includes(needle) ||
       a.excerpt.toLowerCase().includes(needle) ||
       a.category.toLowerCase().includes(needle) ||
       a.tags.some((t) => t.toLowerCase().includes(needle))
   );
-  return [...searchArticles(q), ...legacyHits].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  return [...searchArticles(q), ...otherHits].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 };
