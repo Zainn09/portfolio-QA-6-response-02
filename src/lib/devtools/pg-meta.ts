@@ -268,14 +268,27 @@ export async function exportRows(table: string, limit: number): Promise<{ column
 
 /** True when the failure is a connectivity problem rather than a SQL problem. */
 export function isDbConnectionError(err: unknown): boolean {
-  if (!(err instanceof Error)) return false;
-  const code = (err as { code?: string }).code;
-  return (
-    code === "ECONNREFUSED" ||
-    code === "ECONNRESET" ||
-    code === "ETIMEDOUT" ||
-    code === "ENOTFOUND" ||
-    code === "28P01" ||
-    code === "3D000"
-  );
+  // Drizzle wraps driver errors in DrizzleQueryError (original in .cause) and
+  // pg reports dead sockets as AggregateError — walk the cause chain.
+  let current: unknown = err;
+  for (let depth = 0; depth < 4 && current; depth++) {
+    const e = current as { code?: string; message?: string; cause?: unknown };
+    const code = typeof e.code === "string" ? e.code : "";
+    if (
+      code === "ECONNREFUSED" ||
+      code === "ECONNRESET" ||
+      code === "ETIMEDOUT" ||
+      code === "ENOTFOUND" ||
+      code === "EAI_AGAIN" ||
+      code === "28P01" ||
+      code === "3D000"
+    ) {
+      return true;
+    }
+    if (typeof e.message === "string" && /ECONNREFUSED|ECONNRESET|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|getaddrinfo/i.test(e.message)) {
+      return true;
+    }
+    current = e.cause;
+  }
+  return false;
 }

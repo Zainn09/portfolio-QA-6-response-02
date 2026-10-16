@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { getIp, recordActivity, recordApiRequest, recordError } from "@/lib/devtools/log";
 import { rateLimit } from "@/lib/devtools/ratelimit";
 import { setAdminSession, sessionIsConfigured } from "@/lib/devtools/session";
+import { isDbConnectionError } from "@/lib/devtools/pg-meta";
 
 export async function POST(req: NextRequest) {
   const started = Date.now();
@@ -54,6 +55,13 @@ export async function POST(req: NextRequest) {
     recordApiRequest("POST", "/api/admin/login", 200, Date.now() - started);
     return response;
   } catch (error) {
+    if (isDbConnectionError(error)) {
+      recordApiRequest("POST", "/api/admin/login", 503, Date.now() - started, "db unreachable");
+      return NextResponse.json(
+        { error: "Database unreachable — admin accounts cannot be verified right now. Try again shortly." },
+        { status: 503 },
+      );
+    }
     recordError(
       "api/admin/login",
       error instanceof Error ? error.message : "Unknown login error",
