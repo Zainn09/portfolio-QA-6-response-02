@@ -196,7 +196,10 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image,
+      // allowBase64: pasted/dropped images are stored as data URLs. Without
+      // this, reopening a post re-parses its HTML and silently drops every
+      // image (the default parse rule only matches non-data: src values).
+      Image.configure({ allowBase64: true }),
       Link.configure({ openOnClick: false, autolink: true }),
       Placeholder.configure({
         placeholder: "Write your story — paste screenshots or photos straight into the text.",
