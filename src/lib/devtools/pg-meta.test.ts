@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isDbConnectionError } from "./pg-meta";
+import { isDbConnectionError, isMissingTableError } from "./pg-meta";
 
 function withCode(code: string): Error {
   return Object.assign(new Error(""), { code });
@@ -32,5 +32,28 @@ describe("isDbConnectionError", () => {
     expect(isDbConnectionError(null)).toBe(false);
     expect(isDbConnectionError(undefined)).toBe(false);
     expect(isDbConnectionError("a string")).toBe(false);
+  });
+});
+
+describe("isMissingTableError", () => {
+  it("recognizes Postgres 42P01 (undefined_table)", () => {
+    expect(isMissingTableError(Object.assign(new Error("relation \"api_requests\" does not exist"), { code: "42P01" }))).toBe(true);
+  });
+
+  it("recognizes the plain message form", () => {
+    expect(isMissingTableError(new Error('relation "app_errors" does not exist'))).toBe(true);
+  });
+
+  it("recognizes it through the drizzle cause chain", () => {
+    const wrapped = Object.assign(new Error("Failed query: select * from api_requests"), {
+      cause: Object.assign(new Error('relation "api_requests" does not exist'), { code: "42P01" }),
+    });
+    expect(isMissingTableError(wrapped)).toBe(true);
+  });
+
+  it("does not fire for other query failures", () => {
+    expect(isMissingTableError(new Error("syntax error at or near SELECT"))).toBe(false);
+    expect(isMissingTableError(Object.assign(new Error("column \"x\" does not exist"), { code: "42703" }))).toBe(false);
+    expect(isMissingTableError(null)).toBe(false);
   });
 });
