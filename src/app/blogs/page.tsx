@@ -6,10 +6,16 @@ import { allBlogArticles, searchAllArticles } from "@/data/legacy-articles";
 import { CategoryChips, FeaturedCard, IndexCard, Pagination, SearchBox, PAGE_SIZE } from "@/components/blog/BlogIndex";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE_URL, absoluteUrl } from "@/lib/site";
+import { getPublishedDbPosts, dbPostToArticle } from "@/lib/blog-html";
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
 }
+
+// The index also shows posts written in the /admin editor (Postgres), so the
+// listing renders per request; the git-served articles themselves are
+// unchanged in content or order.
+export const dynamic = "force-dynamic";
 
 const SORTS = ["newest", "oldest", "az"] as const;
 
@@ -42,6 +48,30 @@ export default async function BlogsPage({ searchParams }: Props) {
   let list = (q && q.trim() ? searchAllArticles(q) : allBlogArticles());
   if (featured && !q?.trim()) list = list.filter((a) => a.slug !== featured.slug);
   if (validCategory) list = list.filter((a) => a.category === validCategory);
+
+  // Merge the posts written in the /admin editor (Postgres). Git articles win
+  // on slug collisions; search and category filters apply to both sources.
+  const dbArticles = (await getPublishedDbPosts()).map(dbPostToArticle);
+  const needle = (q ?? "").trim().toLowerCase();
+  const dbHits = dbArticles.filter((x) => {
+    if (list.some((z) => z.slug === x.slug)) return false;
+    if (
+      needle &&
+      !(
+        x.title.toLowerCase().includes(needle) ||
+        x.excerpt.toLowerCase().includes(needle) ||
+        x.category.toLowerCase().includes(needle) ||
+        x.tags.some((t) => t.toLowerCase().includes(needle))
+      )
+    ) {
+      return false;
+    }
+    if (validCategory && x.category.toLowerCase() !== validCategory.toLowerCase()) return false;
+    return true;
+  });
+  list = [...list, ...dbHits];
+
+  if (sortKey === "newest") list = [...list].sort((x, y) => Date.parse(y.publishedAt) - Date.parse(x.publishedAt));
   if (sortKey === "oldest") list = [...list].reverse();
   if (sortKey === "az") list = [...list].sort((x, y) => x.title.localeCompare(y.title));
 
