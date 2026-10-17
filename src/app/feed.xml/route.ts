@@ -1,15 +1,14 @@
 import { allBlogArticles } from "@/data/legacy-articles";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { getPublishedDbPosts, dbPostToArticle } from "@/lib/blog-html";
 
 /**
  * RSS 2.0 feed for the blog — /feed.xml
  *
  * Discovery layer for crawlers, aggregators, feed readers and AI answer
- * engines. Content is static data, so the feed is fully static too and costs
- * nothing at runtime.
+ * engines. Serves the git-served articles plus the posts written in the
+ * /admin editor (Postgres), newest first.
  */
-
-export const dynamic = "force-static";
 
 const FEED_LIMIT = 50;
 
@@ -22,7 +21,11 @@ const escapeXml = (value: string): string =>
     .replace(/'/g, "&apos;");
 
 export async function GET(): Promise<Response> {
-  const posts = allBlogArticles().slice(0, FEED_LIMIT);
+  const dbPosts = (await getPublishedDbPosts()).map(dbPostToArticle);
+  const seen = new Set(allBlogArticles().map((a) => a.slug));
+  const posts = [...allBlogArticles(), ...dbPosts.filter((a) => !seen.has(a.slug))]
+    .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
+    .slice(0, FEED_LIMIT);
   const lastBuild = posts.length ? new Date(posts[0].publishedAt).toUTCString() : new Date().toUTCString();
 
   const items = posts

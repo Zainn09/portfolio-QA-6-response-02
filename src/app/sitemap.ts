@@ -3,6 +3,7 @@ import { getAllProjects } from "@/data/projects";
 import { getAllArticles, ARTICLE_CATEGORIES, type BlogArticle } from "@/data/articles";
 import { allBlogArticles } from "@/data/legacy-articles";
 import { servicePages } from "@/data/services";
+import { getPublishedDbPosts, dbPostToArticle } from "@/lib/blog-html";
 import { categorySlug } from "@/components/blog/categories";
 import { PAGE_SIZE } from "@/components/blog/BlogIndex";
 import { absoluteUrl } from "@/lib/site";
@@ -62,12 +63,18 @@ const imagesOf = (heroImage?: string): string[] | undefined => {
   return [absoluteUrl(src)];
 };
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Published projects only — the same set the /work archive renders.
   const projects = getAllProjects();
 
-  // Every article shown on /blogs (generated matrix + legacy posts), newest first.
-  const posts = allBlogArticles();
+  // Every article shown on /blogs (generated matrix + legacy posts + posts
+  // written in the /admin editor), newest first. Git articles win on slug
+  // collisions; the database degrades to "no posts" when unreachable.
+  const dbPosts = (await getPublishedDbPosts()).map(dbPostToArticle);
+  const seenSlugs = new Set(allBlogArticles().map((a) => a.slug));
+  const posts = [...allBlogArticles(), ...dbPosts.filter((a) => !seenSlugs.has(a.slug))].sort(
+    (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
+  );
 
   // The generated matrix only — this is what the category hubs and their
   // pagination slice, so category counts must be derived from it.
