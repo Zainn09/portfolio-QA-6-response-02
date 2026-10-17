@@ -866,6 +866,14 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 .legacy-post-content ul, .legacy-post-content ol { margin: 0 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .legacy-post-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
 .legacy-post-content a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.legacy-post-content p { margin: 0 0 1.25rem; }
+.legacy-post-content blockquote { margin: 2rem 0; padding-left: 1.25rem; border-left: 3px solid var(--accent); font-size: 1.1875rem; font-weight: 600; color: var(--text-primary); line-height: 1.6; }
+.legacy-post-content pre { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; overflow-x: auto; margin: 0 0 1.5rem; }
+.legacy-post-content code { font-family: var(--font-mono); font-size: 0.875em; }
+.legacy-post-content pre code { background: none; padding: 0; }
+.legacy-post-content hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+.legacy-post-content figure { margin: 2rem 0; }
+.legacy-post-content figcaption { margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); text-align: center; }
 .blog-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 @media (min-width: 640px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
