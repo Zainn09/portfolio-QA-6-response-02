@@ -7,6 +7,7 @@ import { editorialArticles } from "@/data/editorial-articles";
 import { Toc } from "@/components/blog/Toc";
 import { staticBlogPosts } from "@/data/blogs";
 import { SITE_URL } from "@/lib/site";
+import { getPublishedDbPostBySlug, dbPostToArticle, sanitizeBlogHtml, type DbBlogPost } from "@/lib/blog-html";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -21,12 +22,30 @@ export function generateStaticParams() {
   return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug })), ...editorialArticles.map((a) => ({ slug: a.slug }))];
 }
 
-export const dynamicParams = false;
+// Slugs not in generateStaticParams fall through to a runtime render, which
+// checks the posts written in the /admin editor (Postgres) before 404ing.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const a = resolveArticle(slug);
-  if (!a) return {};
+  if (!a) {
+    const dbPost = await getPublishedDbPostBySlug(slug);
+    if (!dbPost) return {};
+    const art = dbPostToArticle(dbPost);
+    return {
+      title: art.metaTitle,
+      description: art.metaDescription || art.excerpt,
+      alternates: { canonical: `/blogs/${art.slug}` },
+      openGraph: {
+        title: art.metaTitle,
+        description: art.metaDescription || art.excerpt,
+        type: "article",
+        publishedTime: art.publishedAt,
+        authors: [art.author],
+        images: art.heroImage ? [art.heroImage] : undefined,
+      },
+    };
+  }
   return {
     title: a.metaTitle,
     description: a.metaDescription,
@@ -219,11 +238,74 @@ function ArticleCard({ stub }: { stub: ReturnType<typeof stubOf> }) {
   );
 }
 
+/* ---------- posts written in the /admin editor (stored as HTML in Postgres) ---------- */
+function DbPostPage({ post }: { post: DbBlogPost }) {
+  const art = dbPostToArticle(post);
+  const articleUrl = `${SITE_URL}/blogs/${art.slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: art.title,
+    description: art.metaDescription || art.excerpt,
+    image: art.heroImage ? [art.heroImage] : undefined,
+    datePublished: art.publishedAt,
+    dateModified: art.publishedAt,
+    articleSection: art.category,
+    author: { "@id": `${SITE_URL}/#person`, name: art.author },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    url: articleUrl,
+  };
+  const crumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blogs` },
+      { "@type": "ListItem", position: 3, name: art.title, item: articleUrl },
+    ],
+  };
+  const ts = TYPE_STYLE[art.articleType] ?? TYPE_STYLE.insight;
+
+  return (
+    <article style={{ paddingTop: "calc(var(--nav-height) + 2.5rem)" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
+      <div className="container" style={{ maxWidth: "52rem" }}>
+        {art.heroImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={art.heroImage} alt={art.heroAlt} loading="eager" decoding="async" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: "top", display: "block", borderRadius: "var(--radius-lg)", border: "1px solid var(--border)", marginBottom: "2.25rem" }} />
+        ) : null}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, backgroundColor: ts.kickerBg, color: ts.kickerColor, padding: "0.1875rem 0.5rem", borderRadius: "3px" }}>{ARTICLE_TYPE_LABEL[art.articleType]}</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{art.category}</span>
+        </div>
+        <h1 style={{ fontSize: "clamp(1.9rem, 4.5vw, 3rem)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.15, color: "var(--text-primary)", margin: "0 0 1.25rem" }}>{art.title}</h1>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", margin: "0 0 2.25rem" }}>
+          {art.author} · {fmtDate(art.publishedAt)} · {art.readingTime} min read
+        </p>
+        {/* Content is sanitized server-side (scripts, event handlers and
+            javascript: URLs are stripped) before it is ever saved. */}
+        <div className="legacy-post-content" dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(post.content ?? "") }} />
+        <div style={{ marginTop: "3.5rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border)" }}>
+          <Link href="/blogs" style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 700, color: "var(--accent)" }}>← All articles</Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 /* ---------- the page ---------- */
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const a = resolveArticle(slug);
-  if (!a) notFound();
+  if (!a) {
+    // Not in the git-served sources — check the posts written in /admin.
+    const dbPost = await getPublishedDbPostBySlug(slug);
+    if (!dbPost) notFound();
+    return <DbPostPage post={dbPost} />;
+  }
 
   const related = getRelatedArticles(a, 4);
   const { prev, next } = PREV_NEXT(a.slug);
