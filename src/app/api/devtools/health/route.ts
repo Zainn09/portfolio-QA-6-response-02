@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 import { db, pool } from "@/db";
 import { requireAdmin } from "@/lib/devtools/session";
-import { isDbConnectionError, isMissingTableError, SCHEMA_HINT } from "@/lib/devtools/pg-meta";
+import { isDbConnectionError, isMissingTableError, SCHEMA_HINT, errorDetail } from "@/lib/devtools/pg-meta";
 import { recordApiRequest, recordError } from "@/lib/devtools/log";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     if (isMissingTableError(error)) return NextResponse.json({ error: SCHEMA_HINT }, { status: 503 });
     recordError("devtools/health", error instanceof Error ? error.message : "Unknown error", error instanceof Error ? error.stack : undefined);
     recordApiRequest("GET", "/api/devtools/health", 500, Date.now() - started, "internal error");
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", detail: errorDetail(error) }, { status: 500 });
   }
 }
 
