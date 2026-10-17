@@ -1,60 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
 import { db } from "@/db";
 import { getAdminSession, requireAdmin } from "@/lib/devtools/session";
 import { toCsv } from "@/lib/devtools/csv";
-import { isDbConnectionError } from "@/lib/devtools/pg-meta";
+import { isDbConnectionError, errorDetail } from "@/lib/devtools/pg-meta";
+import { buildSubmissionsQuery } from "@/lib/devtools/monitor-queries";
 import { getIp, recordActivity, recordApiRequest, recordError } from "@/lib/devtools/log";
 
 export const dynamic = "force-dynamic";
 
 const STATUSES = ["new", "in_progress", "completed", "archived"] as const;
-
-/**
- * Merged submissions query across audit_requests and contact_messages.
- * All user-supplied values are bound as parameters; table names are fixed.
- */
-function baseSelect(params: { form: string; status: string; q: string }) {
-  const whereParts: string[] = [];
-  const values: unknown[] = [];
-  if (params.form === "audit" || params.form === "contact") {
-    values.push(params.form);
-    whereParts.push(`form = $${values.length}`);
-  }
-  if (params.status) {
-    values.push(params.status);
-    whereParts.push(`status = $${values.length}`);
-  }
-  if (params.q) {
-    values.push(`%${params.q.slice(0, 200)}%`);
-    const n = values.length;
-    whereParts.push(`(name ilike $${n} or email ilike $${n} or store_url ilike $${n} or company ilike $${n} or website ilike $${n} or message ilike $${n})`);
-  }
-  const where = whereParts.length > 0 ? ` where ${whereParts.join(" and ")}` : "";
-
-  const union = `
-    select
-      'audit'::text as form,
-      ar.id, ar.name, ar.email,
-      coalesce(ar.status, 'new')::text as status,
-      ar.notes,
-      ar.created_at,
-      ar.store_url, ar.platform, ar.review_scope, ar.message,
-      null::text as company, null::text as website, null::text as project_type
-    from audit_requests ar
-    union all
-    select
-      'contact'::text,
-      cm.id, cm.name, cm.email,
-      coalesce(cm.status, 'new')::text,
-      cm.notes,
-      cm.created_at,
-      null::text, null::text, null::text, cm.message,
-      cm.company, cm.website, cm.project_type
-    from contact_messages cm
-  `;
-  return { union, where, values };
-}
 
 function migrationHint(error: unknown): string | null {
   if (error instanceof Error && /column .* does not exist/i.test(error.message)) {
@@ -80,12 +34,10 @@ export async function GET(req: NextRequest) {
   const pageSize = Math.max(1, Math.min(100, Number(params.get("pageSize") ?? "25") || 25));
 
   try {
-    const { union, where, values } = baseSelect({ form: form, status, q });
-
     if (params.get("export") === "csv") {
-      const exportLimit = Math.min(1000, 1000);
-      values.push(exportLimit);
-      const res = await db.execute(sql.raw(`select * from (${union}) s${where} order by created_at desc, id desc limit $${values.length}`));
+      const exportLimit = 1000;
+      const exportQuery = buildSubmissionsQuery({ form, status, q, page, pageSize, exportLimit }).export!;
+      const res = await db.execute(exportQuery);
       const rows = res.rows as unknown as Record<string, unknown>[];
       const columns = ["form", "id", "name", "email", "status", "store_url", "company", "website", "platform", "project_type", "review_scope", "message", "notes", "created_at"];
       const csv = toCsv(
@@ -102,10 +54,10 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    values.push(pageSize, (page - 1) * pageSize);
+    const built = buildSubmissionsQuery({ form, status, q, page, pageSize });
     const [countRes, dataRes] = await Promise.all([
-      db.execute(sql.raw(`select count(*)::int as n from (${union}) s${where}`)),
-      db.execute(sql.raw(`select * from (${union}) s${where} order by created_at desc, id desc limit $${values.length - 1} offset $${values.length}`)),
+      db.execute(built.count),
+      db.execute(built.page),
     ]);
 
     recordApiRequest("GET", "/api/devtools/submissions", 200, Date.now() - started);
@@ -128,6 +80,6 @@ export async function GET(req: NextRequest) {
     }
     recordError("devtools/submissions", error instanceof Error ? error.message : "Unknown error", undefined, { op: "list" });
     recordApiRequest("GET", "/api/devtools/submissions", 500, Date.now() - started, "internal error");
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", detail: errorDetail(error) }, { status: 500 });
   }
 }
