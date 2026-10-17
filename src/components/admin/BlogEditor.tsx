@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -40,6 +40,65 @@ function generateSlug(title: string) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
+}
+
+/**
+ * Clipboard/dropped image → resized data URL.
+ * Downscaled to 1400px on the long edge and re-encoded (JPEG 0.82, or PNG for
+ * small originals so logos keep their transparency), so a pasted screenshot
+ * lands in the post at a sane size instead of a multi-megabyte original.
+ */
+async function fileToResizedDataUrl(file: File): Promise<string> {
+  interface Drawable {
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
+    width: number;
+    height: number;
+    close: () => void;
+  }
+  let source: Drawable;
+  if (typeof createImageBitmap === "function") {
+    const bitmap = await createImageBitmap(file);
+    source = {
+      draw: (ctx, w, h) => ctx.drawImage(bitmap, 0, 0, w, h),
+      width: bitmap.width,
+      height: bitmap.height,
+      close: () => bitmap.close(),
+    };
+  } else {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const i = new window.Image();
+        i.onload = () => resolve(i);
+        i.onerror = () => reject(new Error("decode failed"));
+        i.src = url;
+      });
+      source = {
+        draw: (ctx, w, h) => ctx.drawImage(img, 0, 0, w, h),
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        close: () => {},
+      };
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  try {
+    const MAX = 1400;
+    const scale = Math.min(1, MAX / Math.max(source.width, source.height));
+    const w = Math.max(1, Math.round(source.width * scale));
+    const h = Math.max(1, Math.round(source.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("canvas unavailable");
+    source.draw(ctx, w, h);
+    const keepPng = file.type === "image/png" && file.size < 300 * 1024;
+    return canvas.toDataURL(keepPng ? "image/png" : "image/jpeg", 0.82);
+  } finally {
+    source.close();
+  }
 }
 
 function ToolbarButton({
@@ -88,6 +147,8 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
   const [activeTab, setActiveTab] = useState<"content" | "seo">("content");
   const [tagsInput, setTagsInput] = useState(post?.tags?.join(", ") || "");
   const [showSource, setShowSource] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
+  const imageBusyRef = useRef(false);
 
   const [form, setForm] = useState<BlogPost>({
     title: post?.title || "",
@@ -106,6 +167,32 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
     seoCanonical: post?.seoCanonical || "",
   });
 
+  const insertPastedImage = async (editor: Editor, file: File) => {
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 12 * 1024 * 1024) {
+      toast.error("That image is too large (max 12 MB).");
+      return;
+    }
+    if (imageBusyRef.current) return;
+    imageBusyRef.current = true;
+    setImageBusy(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file);
+      const kb = Math.round((dataUrl.length * 3) / 4 / 1024);
+      editor.chain().focus().setImage({ src: dataUrl, alt: file.name || "image" }).run();
+      if (kb > 1500) {
+        toast(`Image embedded at ~${kb} KB — the post is getting heavy.`, { icon: "⚠️" });
+      } else {
+        toast.success("Image added");
+      }
+    } catch {
+      toast.error("Couldn't read that image.");
+    } finally {
+      imageBusyRef.current = false;
+      setImageBusy(false);
+    }
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -117,7 +204,37 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
       CharacterCount,
     ],
     content: form.content || "",
-    editorProps: { attributes: { class: "blog-editor-prose" } },
+    editorProps: {
+      attributes: { class: "blog-editor-prose" },
+      // Shopify-style image paste: a clipboard image becomes an inline image
+      // node at the cursor; everything else pastes normally.
+      handlePaste: (view, event) => {
+        const items = event.clipboardData?.items;
+        if (!items || !editor) return false;
+        for (const item of Array.from(items)) {
+          if (item.type.startsWith("image/")) {
+            const file = item.getAsFile();
+            if (file) {
+              event.preventDefault();
+              void insertPastedImage(editor, file);
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+      handleDrop: (view, event) => {
+        const files = event.dataTransfer?.files;
+        if (!files || !editor) return false;
+        const file = Array.from(files).find((f) => f.type.startsWith("image/"));
+        if (file) {
+          event.preventDefault();
+          void insertPastedImage(editor, file);
+          return true;
+        }
+        return false;
+      },
+    },
     onUpdate: ({ editor: e }) => {
       setForm((f) => ({ ...f, content: e.getHTML() }));
     },
@@ -322,6 +439,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                     <label style={{ ...labelStyle, marginBottom: 0 }}>Content</label>
                     <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", color: "var(--text-tertiary)" }}>
                       {words} words · {contentKb} KB
+                      {imageBusy ? " · embedding image…" : ""}
                     </span>
                   </div>
                   <p style={{ fontSize: "0.75rem", color: "var(--text-tertiary)", marginBottom: "0.5rem" }}>
