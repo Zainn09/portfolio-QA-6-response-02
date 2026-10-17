@@ -267,6 +267,25 @@ export async function exportRows(table: string, limit: number): Promise<{ column
 }
 
 /** True when the failure is a connectivity problem rather than a SQL problem. */
+/**
+ * True when a query failed because a table does not exist (Postgres 42P01).
+ * The DevTools tables are created by migration 0001 (Settings → "Apply schema
+ * updates"); until it runs, the monitors must explain themselves instead of
+ * returning a bare "Internal server error".
+ */
+export function isMissingTableError(err: unknown): boolean {
+  let current: unknown = err;
+  for (let depth = 0; depth < 4 && current; depth++) {
+    const e = current as { code?: string; message?: string; cause?: unknown };
+    if (typeof e.code === "string" && e.code === "42P01") return true;
+    if (typeof e.message === "string" && /does not exist/i.test(e.message) && /relation|table/i.test(e.message)) return true;
+    current = e.cause;
+  }
+  return false;
+}
+
+export const SCHEMA_HINT = 'DevTools tables not found yet — open Settings and click "Apply schema updates" (or run drizzle/0001_devtools.sql), then retry.';
+
 export function isDbConnectionError(err: unknown): boolean {
   // Drizzle wraps driver errors in DrizzleQueryError (original in .cause) and
   // pg reports dead sockets as AggregateError — walk the cause chain.
