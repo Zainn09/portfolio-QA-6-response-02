@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
 import { db } from "@/db";
 import { requireAdmin } from "@/lib/devtools/session";
-import { isDbConnectionError, isMissingTableError, SCHEMA_HINT } from "@/lib/devtools/pg-meta";
+import { isDbConnectionError, isMissingTableError, SCHEMA_HINT, errorDetail } from "@/lib/devtools/pg-meta";
+import { buildActivityQuery } from "@/lib/devtools/monitor-queries";
 import { recordApiRequest, recordError } from "@/lib/devtools/log";
 
 export const dynamic = "force-dynamic";
@@ -19,18 +19,10 @@ export async function GET(req: NextRequest) {
   const days = Math.max(1, Math.min(365, Number(params.get("days") ?? "30") || 30));
 
   try {
-    const values: unknown[] = [];
-    values.push(new Date(Date.now() - days * 86_400_000));
-    const where = `where created_at >= $${values.length}`;
-
-    values.push(pageSize, (page - 1) * pageSize);
+    const built = buildActivityQuery({ days, page, pageSize });
     const [countRes, dataRes] = await Promise.all([
-      db.execute(sql.raw(`select count(*)::int as n from admin_activity ${where}`)),
-      db.execute(
-        sql.raw(
-          `select id, actor_email, action, target, detail, ip, created_at from admin_activity ${where} order by created_at desc limit $${values.length - 1} offset $${values.length}`,
-        ),
-      ),
+      db.execute(built.count),
+      db.execute(built.page),
     ]);
 
     recordApiRequest("GET", "/api/devtools/activity", 200, Date.now() - started);
@@ -45,6 +37,6 @@ export async function GET(req: NextRequest) {
     if (isMissingTableError(error)) return NextResponse.json({ error: SCHEMA_HINT }, { status: 503 });
     recordError("devtools/activity", error instanceof Error ? error.message : "Unknown error", undefined, { op: "list" });
     recordApiRequest("GET", "/api/devtools/activity", 500, Date.now() - started, "internal error");
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", detail: errorDetail(error) }, { status: 500 });
   }
 }
