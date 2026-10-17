@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "drizzle-orm";
 import { db, pool } from "@/db";
 import { requireAdmin } from "@/lib/devtools/session";
-import { isDbConnectionError } from "@/lib/devtools/pg-meta";
-import { recordApiRequest } from "@/lib/devtools/log";
+import { isDbConnectionError, isMissingTableError, SCHEMA_HINT } from "@/lib/devtools/pg-meta";
+import { recordApiRequest, recordError } from "@/lib/devtools/log";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +23,18 @@ export async function GET(req: NextRequest) {
   const denied = await requireAdmin(req);
   if (denied) return denied;
 
+  try {
+    return await handle(req, started);
+  } catch (error) {
+    if (isDbConnectionError(error)) return NextResponse.json({ error: "Database unreachable." }, { status: 503 });
+    if (isMissingTableError(error)) return NextResponse.json({ error: SCHEMA_HINT }, { status: 503 });
+    recordError("devtools/health", error instanceof Error ? error.message : "Unknown error", error instanceof Error ? error.stack : undefined);
+    recordApiRequest("GET", "/api/devtools/health", 500, Date.now() - started, "internal error");
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+async function handle(req: NextRequest, started: number): Promise<NextResponse> {
   let dbStatus: "up" | "down" = "down";
   let dbLatencyMs: number | null = null;
   let dbError: string | null = null;
