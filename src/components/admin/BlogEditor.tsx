@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -8,6 +8,7 @@ import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
+import { FULL_IMAGE_PCT, imagePctForWidth, imageWidthForPct } from "@/lib/blog-image-size";
 
 interface BlogPost {
   id?: number;
@@ -193,6 +194,8 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
     }
   };
 
+  const [columnWidth, setColumnWidth] = useState(0);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -242,6 +245,52 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
       setForm((f) => ({ ...f, content: e.getHTML() }));
     },
   });
+
+  // ── Image resize ─────────────────────────────────────────────────────────
+  // Selecting an image node shows width controls in the toolbar. The chosen
+  // width is stored on the image as a fixed pixel value (HTML width
+  // attribute); post CSS caps it with max-width: 100% so it stays
+  // responsive. "Full" clears the attribute for fluid full-column width.
+  const measureColumnWidth = (): number => {
+    if (!editor) return 0;
+    const prose = editor.view.dom as HTMLElement;
+    if (!prose.isConnected) return 0;
+    const cs = window.getComputedStyle(prose);
+    return Math.round(prose.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  };
+
+  useEffect(() => {
+    if (!editor) return;
+    const measure = () => setColumnWidth(measureColumnWidth());
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  const imageSelected = editor?.isActive("image") ?? false;
+  const rawImageWidth = editor?.getAttributes("image")?.width;
+  // tiptap stores the parsed width as a string after a raw-HTML round trip
+  const imageWidth =
+    typeof rawImageWidth === "number"
+      ? rawImageWidth
+      : typeof rawImageWidth === "string" && /^\d+$/.test(rawImageWidth)
+        ? Number(rawImageWidth)
+        : null;
+  const imagePct = imagePctForWidth(imageWidth, columnWidth);
+
+  const applyImagePct = (pct: number) => {
+    if (!editor || !editor.isActive("image")) return;
+    const col = columnWidth > 0 ? columnWidth : measureColumnWidth();
+    const width = imageWidthForPct(pct, col);
+    if (width == null) return;
+    editor.chain().focus().updateAttributes("image", { width }).run();
+  };
+
+  const resetImageWidth = () => {
+    if (!editor || !editor.isActive("image")) return;
+    editor.chain().focus().updateAttributes("image", { width: null }).run();
+  };
 
   const handleChange = (field: keyof BlogPost, value: string) => {
     setForm((f) => ({ ...f, [field]: value }));
@@ -446,7 +495,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                     </span>
                   </div>
                   <p style={{ fontSize: "0.75rem", color: "var(--text-tertiary)", marginBottom: "0.5rem" }}>
-                    Paste screenshots or photos from your clipboard straight into the text (or drag them in) — they are resized and saved with the post.
+                    Paste screenshots or photos from your clipboard straight into the text (or drag them in) — they are resized and saved with the post. Click an image to select it, then set its width with the presets or the slider (images never exceed the column width).
                   </p>
 
                   {showSource ? (
@@ -512,6 +561,35 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                         >
                           Image
                         </ToolbarButton>
+                        {imageSelected && (
+                          <>
+                            <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                              Resize
+                            </span>
+                            {[25, 50, 75].map((pct) => (
+                              <ToolbarButton key={pct} label={`Set image width to ${pct}% of the column`} active={imagePct === pct} onClick={() => applyImagePct(pct)}>
+                                {pct}%
+                              </ToolbarButton>
+                            ))}
+                            <ToolbarButton label="Reset image to full column width" active={imageWidth === null} onClick={resetImageWidth}>
+                              Full
+                            </ToolbarButton>
+                            <input
+                              type="range"
+                              min={10}
+                              max={FULL_IMAGE_PCT}
+                              step={1}
+                              value={imagePct}
+                              onChange={(e) => applyImagePct(Number(e.target.value))}
+                              aria-label="Image width, percentage of column"
+                              style={{ width: 96, accentColor: "var(--accent)", cursor: "pointer", margin: "0 0.25rem" }}
+                            />
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", color: "var(--text-secondary)", minWidth: "2.25rem", textAlign: "right" }} aria-live="polite">
+                              {imagePct}%
+                            </span>
+                          </>
+                        )}
                         {editor?.getAttributes("image").src && (
                           <ToolbarButton label="Remove selected image" onClick={() => editor?.chain().focus().deleteSelection().run()}>Remove image</ToolbarButton>
                         )}
@@ -624,6 +702,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
         .blog-editor-prose pre { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; overflow-x: auto; }
         .blog-editor-prose pre code { background: none; padding: 0; }
         .blog-editor-prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; }
+        .blog-editor-prose .ProseMirror-selectednode { outline: 2px solid var(--accent); outline-offset: 2px; }
         .blog-editor-prose a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
         .blog-editor-prose hr { border: none; border-top: 1px solid var(--border-strong); margin: 1.5rem 0; }
         .blog-editor-prose p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--text-tertiary); float: left; height: 0; pointer-events: none; }
