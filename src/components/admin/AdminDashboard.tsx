@@ -73,7 +73,7 @@ export function AdminDashboard() {
   }
 
   return (
-    <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh", backgroundColor: "var(--bg-secondary)" }}>
+    <div style={{ paddingTop: 0, minHeight: "100vh", backgroundColor: "var(--bg-secondary)" }}>
       {/* Admin header */}
       <div style={{ backgroundColor: "var(--bg-surface)", borderBottom: "1px solid var(--border)", padding: "1rem 0" }}>
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>

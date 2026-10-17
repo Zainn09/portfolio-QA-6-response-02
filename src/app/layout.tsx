@@ -3,9 +3,8 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { Navbar } from "@/components/navigation/Navbar";
 import type { MegaMenuData } from "@/components/navigation/MegaMenu";
-import { Footer } from "@/components/navigation/Footer";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getFeaturedProjects } from "@/data/projects";
 import { articleStubs } from "@/data/articles";
@@ -213,9 +212,7 @@ export default function RootLayout({
       <body style={{ fontFamily: "var(--font-sans)" }}>
         <JsonLd data={entityGraph} />
         <ThemeProvider>
-          <Navbar megaData={megaMenuData} />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <SiteChrome megaData={megaMenuData}>{children}</SiteChrome>
         </ThemeProvider>
         <Analytics />
         <Script
