@@ -1,6 +1,6 @@
 import "server-only";
 import { db, pool } from "@/db";
-import { sql } from "drizzle-orm";
+import { sql, type SQL } from "drizzle-orm";
 import { isSafeIdentifier } from "@/lib/devtools/ident";
 
 /**
@@ -197,25 +197,25 @@ export async function queryRows(opts: {
     throw new Error(`Table "${opts.table}" has no discoverable columns.`);
   }
 
-  // Search predicate: ILIKE over every column, cast to text. Values are bound.
-  let where = "";
-  const params: unknown[] = [];
+  // Search predicate: ILIKE over every column, cast to text. Table and column
+  // names were validated against information_schema above; every search value
+  // is interpolated into the tagged template, so drizzle binds it as a driver
+  // parameter (no manual placeholder bookkeeping that could go out of sync).
+  let where: SQL = sql.raw("");
   if (q) {
-    const parts = columns.map((c) => {
-      params.push(`%${q}%`);
-      return `"${c}"::text ilike $${params.length}`;
-    });
-    where = ` where (${parts.join(" or ")})`;
+    const like = `%${q}%`;
+    const parts: SQL[] = columns.map((c) => sql`${sql.identifier(c)}::text ilike ${like}`);
+    where = sql` where ${sql.join(parts, sql` or `)}`;
   }
 
   // Sort column must be a real column; default to the first one.
   const sortCol = opts.sort && columns.includes(opts.sort) ? opts.sort : columns[0];
-  const dir = opts.dir === "desc" ? "DESC" : "ASC";
+  const dir = opts.dir === "desc" ? sql.raw("DESC") : sql.raw("ASC");
 
   const [countRes, dataRes] = await Promise.all([
-    db.execute(sql`select count(*)::int as n from ${sql.raw(opts.table)}${where ? sql.raw(where) : sql``}`),
+    db.execute(sql`select count(*)::int as n from ${sql.identifier(opts.table)}${where}`),
     db.execute(
-      sql`select * from ${sql.raw(opts.table)}${where ? sql.raw(where) : sql``} order by ${sql.raw(sortCol)} ${sql.raw(dir)} limit ${pageSize} offset ${(page - 1) * pageSize}`,
+      sql`select * from ${sql.identifier(opts.table)}${where} order by ${sql.identifier(sortCol)} ${dir} limit ${pageSize} offset ${(page - 1) * pageSize}`,
     ),
   ]);
 
@@ -285,6 +285,17 @@ export function isMissingTableError(err: unknown): boolean {
 }
 
 export const SCHEMA_HINT = 'DevTools tables not found yet — open Settings and click "Apply schema updates" (or run drizzle/0001_devtools.sql), then retry.';
+
+/**
+ * Short, safe-to-show description of a failure for the admin-only 500
+ * responses. Without the real reason, a broken monitor tab is impossible to
+ * diagnose from the UI; these endpoints are auth-gated, so surfacing the
+ * driver error text (no credentials, no request data) is acceptable.
+ */
+export function errorDetail(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.slice(0, 300);
+}
 
 export function isDbConnectionError(err: unknown): boolean {
   // Drizzle wraps driver errors in DrizzleQueryError (original in .cause) and
