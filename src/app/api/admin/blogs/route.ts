@@ -5,6 +5,7 @@ import { desc } from "drizzle-orm";
 import { z } from "zod";
 import { getAdminSession } from "@/lib/devtools/session";
 import { getIp, recordActivity, recordApiRequest, recordError } from "@/lib/devtools/log";
+import { sanitizeBlogHtml } from "@/lib/blog-html";
 
 /**
  * Blog posts stored in the database (used by the /admin content editor).
@@ -37,7 +38,7 @@ function toValues(data: z.infer<typeof postSchema>) {
     publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
     category: data.category ?? null,
     tags: data.tags || [],
-    content: data.content ?? null,
+    content: data.content ? sanitizeBlogHtml(data.content) : null,
     status: data.status,
     seoTitle: data.seoTitle ?? null,
     seoDescription: data.seoDescription ?? null,

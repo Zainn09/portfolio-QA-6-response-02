@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getAdminSession } from "@/lib/devtools/session";
 import { getIp, recordActivity, recordApiRequest, recordError } from "@/lib/devtools/log";
+import { sanitizeBlogHtml } from "@/lib/blog-html";
 
 /**
  * Update / delete a single blog post.
@@ -50,7 +51,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const body = await req.json().catch(() => null);
     const data = updateSchema.parse(body);
     const values: Record<string, unknown> = { updatedAt: new Date() };
-    for (const [key, value] of Object.entries(data)) {
+    for (const [key, rawValue] of Object.entries(data)) {
+      let value = rawValue;
+      if (key === "content" && typeof rawValue === "string") value = sanitizeBlogHtml(rawValue);
       if (key === "publishedAt") values[key] = value ? new Date(value as string) : null;
       else values[key] = value;
     }
