@@ -1617,4 +1617,89 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Shopify Help Center — managing online orders", "url": "https://help.shopify.com/en/manual/online-store"}
     ]
   },
+  {
+    "id": 9208,
+    "slug": "qa-ai-generated-product-descriptions",
+    "title": "How to QA AI-Generated Product Descriptions Before Publishing",
+    "excerpt": "The verification workflow for AI-written product copy: the five failure classes, a spec-by-spec check against the source record, the approval pipeline, and the sampling that catches what publishing misses.",
+    "articleType": "guide",
+    "category": "AI Commerce",
+    "tags": ["AI content", "product descriptions", "content QA", "approval workflow", "AI-generated copy"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "QA AI-generated product descriptions",
+    "searchIntent": "informational / problem-solving — a verification workflow for AI-written copy",
+    "metaTitle": "How to QA AI-Generated Product Descriptions",
+    "metaDescription": "The five ways AI product descriptions fail, the spec-by-spec check against your source record, the approval pipeline, and the post-publish sampling plan.",
+    "heroImage": "/images/blog/qa-ai-generated-product-descriptions-hero.jpg",
+    "heroAlt": "An editor comparing an AI-written product description on a blurred screen with a printed spec sheet, red pen circling a line",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-12T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "The store that taught me this workflow didn’t do anything dramatic. They ran an AI description tool over three hundred products over a weekend, the way the tool was designed to be used, and Monday morning the catalog looked freshly written and a little too smooth. It took the merchandiser eleven minutes to find the first problem: forty jackets described as having a water resistance rating the brand had never claimed. It took another hour to find the worst one — a description, confidently written, for a product that had been retired two seasons ago, its template never cleared. Nothing was flagged. The tool worked exactly as advertised. The missing piece was the only piece that mattered: a verification step that treats the machine’s output as a draft, because that’s what it is."},
+      {"type": "p", "text": "This post is that verification step, written down. It’s the inverse of the piece on [AI-powered QA for product data](/blogs/ai-powered-qa-for-product-data-and-content) — there, the machine checks the data; here, a person checks the machine. Both are QA. The difference is who the defect hides in, and in this direction it hides in your own published copy, which makes it the class of defect you least want to find out about from a customer."},
+      {"type": "h2", "text": "Why AI descriptions fail in characteristic ways"},
+      {"type": "p", "text": "The important thing to understand about AI-written product copy is that its failures are not random typos. They’re [[characteristic]] — the same five classes, in the same order of frequency, in every catalog I’ve checked. A tool that fails characteristically is a tool you can test, because the test is a list. The five classes:"},
+      {"type": "list", "items": [
+        "Fabricated specifics — the number that isn’t there. A water rating, a battery life, a load capacity, a certification. The model fills the slot with a plausible value because the slot asks for one, and plausibility is the whole test it applies. This is the most dangerous class, because a fabricated spec is a false claim the store is now legally and commercially attached to.",
+        "Cross-contamination — the description of the other product. The model blends the target product with neighbours in the feed: the waterproof jacket’s claim lands on the shell that isn’t waterproof, the size range from one line lands on another. It reads as fluent and wrong, and it’s the class that survives a skim the fastest, because every sentence is about the right product except one.",
+        "Stale facts — the description of last season. Generated from a cached or partial source, the copy carries the old price point, the retired material, the delivery promise that changed. Individually harmless; across a catalog, a store that quietly disagrees with itself on season.",
+        "Dropped specifics — the details the source had and the draft lost. The one attribute that mattered, the one a customer would search for, flattened into “high quality.” The model summarises because it’s told to write a description, not a record, and the summary is where the specific goes to die.",
+        "Claim inflation — the superlative that can’t be checked. “Luxurious,” “premium,” “perfect for any occasion.” Not false, exactly — untestable, which is worse for trust, because a page full of untestable claims teaches the reader to discount the testable ones beside them. The same calibration problem from [writing product page copy](/blogs/how-to-write-product-page-copy), arrived at by a different route."
+      ]},
+      {"type": "p", "text": "Notice what’s missing from the list: bad grammar, wrong tone, generic fluff. The model’s prose is fine. That’s precisely the trap — the copy reads well enough to ship, and the defects live in the facts, which are the only part of a product description a buyer actually verifies. The QA pass has to be built around that: not a proofread, a [[fact audit]]."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/qa-ai-generated-product-descriptions-versions.jpg", "alt": "A laptop screen showing two blurred versions of a product description side by side"},
+        {"src": "/images/blog/qa-ai-generated-product-descriptions-desk.jpg", "alt": "A product sample beside its printed description, one line highlighted with a marker, pen nearby"}
+      ]},
+      {"type": "h2", "text": "The five-check verification pass, per description"},
+      {"type": "p", "text": "Run this on every AI-written description before it publishes. It’s short enough to do per item and specific enough to catch the five classes — each check exists because one of the classes above has been caught by it in a real catalog:"},
+      {"type": "checklist", "title": "The AI-description fact audit", "items": [
+        "Spec-by-spec: every number, material, rating and claim in the draft, checked against the source record — the admin fields, the spec sheet, the certificate. Anything the source doesn’t state gets cut, not fixed. A value the model added is a value the store didn’t claim, and claiming it is the defect.",
+        "Cross-check: the draft held against the product it describes, not the feed it was generated from. The retired product, the swapped variant, the neighbour’s claim — this check is the one that requires a human, because it requires knowing what the product is.",
+        "Freshness: the seasonal facts — price point, delivery promise, availability language, the material that changed between seasons — against this season’s record. Stale copy is a cross-surface defect, the same class as [the feed/page/schema drift](/blogs/product-data-quality-checklist-ai-search), with a prose coat on.",
+        "Specificity: did the draft keep the one attribute that matters most for this product? If the source had it and the draft flattened it, restore it. The summary bias works in one direction only, and the direction is away from the differentiator.",
+        "Claim audit: every adjective in the draft, tested. “Premium” with no fact attached gets rewritten into the fact or cut. The test is the one from the copy side: could a customer verify this sentence at home? If not, it’s decoration wearing a claim’s voice."
+      ]},
+      {"type": "p", "text": "Do those five on one description and it takes two to four minutes. Do them on three hundred and the math starts to hurt — which is exactly the point the workflow below exists to solve, because the alternative to the math is the Monday-morning catalog."},
+      {"type": "h2", "text": "The approval pipeline that makes the math work"},
+      {"type": "p", "text": "The verification pass scales only when it’s a pipeline with stages and owners, not a hope. The shape I’d build, from the stores that run it well:"},
+      {"type": "list", "ordered": true, "items": [
+        "Generate, never publish. The AI output lands in a draft state the store’s customers can’t see. The moment a model’s output can reach a live page without a gate, every downstream check is optional, and optional checks don’t run.",
+        "Automate the cheap checks first. The checks that are mechanical get scripts, not people: the spec fields parsed from the draft and compared to the record (a fabricated number is a diff), the banned-claims list, the season vocabulary, the length and structure rules. Automation catches the fabricated-specifics class at scale, which is the class that hurts most.",
+        "Sample the rest by risk, not by randomness. The human pass goes where the defect probability is highest: new products (the template is least settled), changed products (the stale-facts class), and the top sellers (the blast radius). A ten-percent random sample on top, because the model’s failure rate is the one number the store can only measure.",
+        "One human sign-off per product, with the diff in front of them. The reviewer sees the draft against the source record — not the draft alone — and signs off the record, not the prose. The signature is on the facts.",
+        "Publish, then sample after. A standing sample of live descriptions — five a week, random, checked against the record — catches the class that no pre-publish pass sees: the description that passed, shipped, and then the product or the record changed underneath it. The catalog is a moving target; the sample keeps the verification moving with it."
+      ]},
+      {"type": "image", "src": "/images/blog/qa-ai-generated-product-descriptions-pipeline.jpg", "alt": "A laptop showing a blurred content workflow interface, a printed approval checklist beside it, warm desk light"},
+      {"type": "p", "text": "The division of labour in that pipeline is the whole design: the machine does the volume, the scripts do the mechanical, the human does the knowing. Skip any stage and the defect class that stage owned comes back — usually inside a customer email, which is the most expensive channel a store has for finding out its own copy is wrong."},
+      {"type": "h2", "text": "What to watch after publishing"},
+      {"type": "p", "text": "The post-publish signals are the ones that turn the workflow from a project into a practice, because they’re the defect reports written in the customer’s hand:"},
+      {"type": "list", "items": [
+        "The returns reason that mentions a spec — “not the waterproof rating the site said” is a fabricated-specifics defect with a return label on it. Track these reasons; they’re the QA ticket the customer filed for you.",
+        "The support question that asks about a detail the description should have answered — the dropped-specifics class, surfacing as workload. A question the description could have prevented is a defect with a cost in hours.",
+        "The search console’s own vocabulary — the queries the product page isn’t winning are often the specifics the draft flattened. The search data is the specificity check, running itself.",
+        "The drift sample from the pipeline above — the standing five-a-week, the one number that tells you whether the failure rate is holding."
+      ]},
+      {"type": "p", "text": "Four signals, all of them already flowing through the store’s existing channels. The stores that catch AI-copy defects early are not the ones with better tools; they’re the ones that read their own channels as a defect report instead of a business report. Same data, different discipline — which is, again, the entire definition of QA."},
+      {"type": "h2", "text": "The line between assistance and authorship"},
+      {"type": "p", "text": "One last thing, because it decides how strict the workflow has to be, and it’s a positioning call the store makes once: who is the author of the description? The honest answer for a store is that the [[publisher is the author]] — the machine is a drafter, and the drafter’s output becomes the store’s claim the moment it ships. That’s not a limitation on using AI at scale; it’s the reason the pipeline above has a gate in it. The tool can write three hundred descriptions in a weekend, and it will, and some of them will contain a number no human ever decided on. The store that ships them owns that number, in the same way the store owns the price, the stock and the delivery promise — because to the customer and to the law, it’s the same kind of sentence."},
+      {"type": "p", "text": "So the workflow isn’t bureaucracy between the store and its tools. It’s the boundary where the store’s claims begin — and a boundary is worth having exactly where the claims begin. The data underneath it is checked the way the [product data quality checklist](/blogs/product-data-quality-checklist-ai-search) describes, the copy on top is checked the way this post describes, and the page as a whole is checked the way the [Shopify QA audit](/shopify-qa-audit) does it — claim by claim, surface by surface, with a reproduction for every finding. If the description pipeline is new and you don’t yet have the gate, [the audit](/audit) is the fastest way to get the list of what’s currently live and unverified, which is the list you don’t want to meet at a customer’s desk."},
+      {"type": "cta", "title": "See what’s live and unverified", "text": "A data and content audit samples your published descriptions against the source records — and hands you the unverified list before a customer hands it to you.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "Can AI check AI-written descriptions reliably?", "answer": "Partly — and the split is the design. Scripts and a second model catch the mechanical classes well: fabricated numbers against the record, banned claims, stale vocabulary. They can’t catch the cross-contamination class, which requires knowing what the product is — that’s the human check. The pipeline is built around that split, not despite it."},
+      {"question": "How many descriptions should a human review before trusting the pipeline?", "answer": "Until the measured failure rate is low and stable — in practice, a full pass on the first batch (it’s the batch that settles the templates), then the risk-based sample. The number to trust is the sample’s failure rate, checked weekly, not a feeling about the first batch."},
+      {"question": "Is it safer to write the descriptions by hand?", "answer": "For the top sellers, usually yes — or at least to have them written by hand and the AI doing the long tail. The cost math is the blast radius: a fabricated spec on a best seller is a different incident than one on a long-tail item. The pipeline above is what makes the long tail safe at all, which is the part hand-writing can’t scale to."},
+      {"question": "What’s the single most valuable check in the pipeline?", "answer": "The spec-by-spec check against the source record, automated where possible. It catches the fabricated-specifics class, which is the only one that turns a copy problem into a liability problem. Everything else is a trust defect; that one is a claim the store made and can’t stand behind."},
+      {"question": "Does this apply to AI-generated titles and bullet points too?", "answer": "The same classes, smaller blast radius. Titles carry the fabricated-spec risk in compressed form (a rating in a title is a claim in the most visible slot there is), and bullets carry the cross-contamination risk. The same five checks, run lighter — but run. The gate is at the publish edge, whatever the field."}
+    ],
+    "sources": [
+      {"label": "Shopify Help Center — product descriptions and content", "url": "https://help.shopify.com/en/manual/products"},
+      {"label": "Google Search Central — creating helpful content", "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"}
+    ]
+  },
 ]
