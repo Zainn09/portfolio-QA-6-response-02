@@ -2596,4 +2596,124 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Google Search Central — SEO starter guide (content and URL changes)", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"}
     ]
   },
+
+  {
+    "id": 9305,
+    "slug": "why-qa-is-essential-during-migration",
+    "title": "Why QA Is Essential During Migration",
+    "excerpt": "Migrations fail in the seams: the field that mapped wrong, the integration that kept pointing at the old host, the URL that stopped resolving. The checks that protect each one — before, during, and after the cutover — with a practical checklist.",
+    "articleType": "guide",
+    "category": "Quality Engineering",
+    "tags": ["migration QA", "data migration testing", "cutover testing", "regression after migration", "system migration"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "QA during migration",
+    "searchIntent": "informational / commercial investigation",
+    "metaTitle": "Why QA Is Essential During Migration",
+    "metaDescription": "How QA protects data, integrations, and user experience during migrations — the pre-checks, cutover tests, and post-migration validation that keep the business running.",
+    "heroImage": "",
+    "heroAlt": "",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-06T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "The pattern I see in the migrations that go wrong is the same pattern every time, and it’s worth stating plainly because it’s the pattern the schedule hides: the transform works, the pilot looked clean, the cutover night went by the book — and the first week after is where the defects arrive, wearing the face of normal operations. The customer who can’t find the order. The feed that stopped delivering at 2 a.m. The report that runs on the new system and returns a number nobody recognises. None of those is a surprise to the team that ran the checks; all of them are surprises to the team that ran the pilot on the clean ten percent of the data and called it a verification. This post is the case for the full set of checks — before, during, and after — because the migration is the one piece of software work where the cost of skipping a check is paid by the business on the day it can least afford it."},
+      {"type": "p", "text": "The previous post in the cluster — [what a migration is](/blogs/what-is-data-system-migration) — established the constraint this one works under: continuity. The business keeps running across the transfer, and the transfer carries the history that was never documented. QA during migration is the practice that makes the continuity a checked property instead of an assumption, and it’s essential for a reason that’s easier to show than to argue: the migration’s failure modes don’t respect the schedule. They don’t wait for the release to be convenient. The field that mapped wrong maps wrong on the first real order, and the integration that kept pointing at the old host stops delivering the morning after the old host is decommissioned. The checks are the only thing standing between the schedule and those dates, which is why they have to be designed — not discovered — into the window."},
+      {"type": "html", "html": "<div style=\"margin:2.5rem 0;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-surface);overflow:hidden;\">\n<div style=\"display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.9rem 1.25rem;border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary);\"><span>pre-cutover gate</span><span style=\"color:var(--accent);\">every row must pass</span></div>\n<div style=\"padding:1rem 1.5rem;font-family:var(--font-mono);font-size:0.8125rem;line-height:2.2;color:var(--text-secondary);\">\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">records &amp; counts</span> source inventoried &middot; target reconciled &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">field mappings</span> edge records tested &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">users &amp; access</span> logins, roles, permissions &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">orders &amp; history</span> findable, trackable, returnable &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">URLs &amp; content</span> redirects mapped, nothing dead &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">integrations</span> every seam confirmed &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n<p style=\"margin:0;\"><span style=\"display:inline-block;min-width:11rem;color:var(--text-primary);\">rollback</span> the plan, tested in the window &nbsp;<span style=\"color:var(--accent);\">&check;</span></p>\n</div>\n<div style=\"padding:1.25rem 1.5rem 1.5rem;border-top:1px solid var(--border);\"><p style=\"font-size:clamp(1.4rem,3.6vw,2.1rem);font-weight:800;letter-spacing:-0.02em;color:var(--text-primary);margin:0;line-height:1.15;\">Verify before you cutover.<br><span style=\"color:var(--accent);\">The reconciliation is the evidence.</span></p></div>\n</div>"},
+      {"type": "h2", "text": "Why migrations are a quality-critical moment"},
+      {"type": "p", "text": "The argument is structural, and it has four parts, each one visible in the failure pattern I opened with:"},
+      {"type": "list", "items": [
+        "The risk concentrates in the seams. The transform, the mapping, the cutover, the re-pointing — the migration’s defects don’t live in the features, they live in the joins between what moved and what stayed. A feature works on the new platform exactly as it did on the old one; the join — the order history that has to attach to the customer, the feed that has to follow the host, the redirect that has to carry the URL — is where the continuity breaks, and the joins are the parts no single team owns, which is the condition that produces the part nobody tests."
+      ]},
+      {"type": "list", "items": [
+        "The deadline is hard, and the pressure is on the checks. The lease, the sunset, the contract — the cutover date doesn’t move, so the pressure finds the flexible part of the plan, and the flexible part is always the verification. The pilot shrinks from the full inventory to a representative slice; the after-window shrinks from a week to a smoke; the rollback stops being tested because the window is “for the cutover.” Each shrink is individually reasonable and collectively fatal, which is the arithmetic the [neglected QA post](/blogs/why-quality-assurance-is-neglected) names at the process level."
+      ]},
+      {"type": "list", "items": [
+        "The evidence has to exist before the decision. The cutover is a go/no-go, and a go/no-go made on “the pilot looked clean” is a decision made without evidence — the pilot is the clean ten percent, and the decision carries the other ninety. The [release readiness discipline](/blogs/qa-before-client-handover) applies with extra weight here because the release is the business itself, and the readiness checklist is the thing that puts the reconciliation, the open defects, and the rollback in the room where the decision gets made."
+      ]},
+      {"type": "list", "items": [
+        "The defects after the cutover are the business’s, not the project’s. The greenfield defect is rework; the migration defect after cutover is the customer, the integration, the report, the morning meeting. The severity scale has to be the business scale from the design phase onward, because the [defect that gets severity-assessed as “minor”](/blogs/how-to-report-bugs-to-developers) in the window is the one that’s “critical” the morning after — and the re-grade costs the team its credibility for the next call."
+      ]},
+      {"type": "p", "text": "The four parts share a shape: the migration is the piece of software work where the cost of the skipped check is largest, the pressure to skip it is strongest, and the window to catch it is shortest. That’s the definition of essential, in the operational sense — the check whose absence the business feels first."},
+      {"type": "h2", "text": "What QA checks before, during, and after the cutover"},
+      {"type": "p", "text": "The three windows, with the checks in each — the checklist is the deliverable, because the window only works when the check is named, owned, and recorded:"},
+      {"type": "checklist", "title": "The migration QA checklist, by window", "items": [
+        "BEFORE — the data inventory with counts per state, so the reconciliation has its baseline. The behaviour baseline captured on the source, the critical journeys walked with real selections and every state recorded. The field mappings written down as rules — source field, target field, the transform, the edge handling — because a mapping that exists only in the transform script is a rule the reconciliation can’t check.",
+        "BEFORE — the continuity requirements stated as testable criteria: the order findable and returnable, the feed delivering, the URL resolving, the report returning the number the business runs on. The criteria are the acceptance test for the migration, and the [requirements review treatment](/blogs/qa-throughout-software-development-lifecycle) applies — untestable criterion, ambiguous criterion, unnamed edge case, all of it written down before the window.",
+        "BEFORE — the rollback plan named and tested: the window in which the old system can be re-pointed, the data state it restores to, the delta that can’t be un-moved. The tested rollback is a procedure; the untested one is a sentence, and the sentence is what the cutover night actually has."
+      ]},
+      {"type": "checklist", "title": "The migration QA checklist, continued", "items": [
+        "DURING — the transform tested on the edge records, not the clean sample: the order with the partial refund, the customer with the duplicate email, the product with the state the target doesn’t model the same way. The pilot on a representative slice with the reconciliation run on it — the counts, the sampled records field by field, the mismatches written up as defects with the source record, the target record, the delta, and the rule that produced it.",
+        "DURING — the dual-running defects hunted: the write that lands in the source after the freeze was supposed to start, the report that reads the wrong system, the integration that delivers to both. The coexistence window has its own defect class, and it only exists in this window, which is why the check has to be designed for it instead of borrowed from a single-system regression.",
+        "AFTER — the cutover smoke before the front door opens: the critical journeys on the live target, the integrations confirmed delivering, the search and the feeds, the morning report. Each one recorded as a pass, because the cutover night is the one where “it looked fine” stops being acceptable evidence — the [captured-states standard](/shopify-qa-testing) is the bar.",
+        "AFTER — the first week as an extended verification: the first real orders checked against the baseline, the first real returns against the moved history, the first report compared against the old system’s number. The escapes written up and fed into the reconciliation loop, the way the [visibility post](/blogs/how-to-demonstrate-qa-value) describes — because the first week’s data is what turns the cutover from a prayer into a measured event."
+      ]},
+      {"type": "p", "text": "The checklist is the same shape as the gate panel at the top of this post — every row must pass, and the row that passes is the row with its evidence. The distinction is the one the [QA vs QC split](/blogs/qa-vs-qc-difference) draws: the window designs the check (QA), and the execution produces the evidence (QC), and the cutover decision is made on the evidence in the room."},
+      {"type": "h2", "text": "Common migration defects, and the check that catches each"},
+      {"type": "p", "text": "The defect classes repeat across migrations, and each one has a check that exists to catch it — the mapping between the two is the test design:"},
+      {"type": "list", "items": [
+        "The silent mapping — the field that lands in the target with the meaning shifted: the status that meant “refunded” now reads “pending,” the currency that lost its symbol, the date that crossed a time zone. The check: the field-by-field reconciliation on sampled records, with the edge records where the meaning is most likely to move."
+      ]},
+      {"type": "list", "items": [
+        "The missing record — the order, the customer, the line that the transform dropped: the record in a state the mapping rules didn’t name, the record that arrived in the last hour before the freeze, the record the pilot’s slice didn’t include. The check: the counts per state, source against target, with the delta explained — every unexplained delta is an open defect until the explanation is a rule."
+      ]},
+      {"type": "list", "items": [
+        "The orphaned reference — the order that points at a customer that didn’t move, the line that points at a product in a new ID space, the report that joins on a key the transform renumbered. The check: the referential walk on the sampled records — does every pointer in the target resolve, and does it resolve to the thing the source pointer resolved to?"
+      ]},
+      {"type": "list", "items": [
+        "The stale integration — the seam that kept pointing at the old host: the feed delivering to the decommissioned endpoint, the webhook firing into the old system’s queue, the sync job that ran on the old schedule against the old database. The check: the integration inventory, each seam confirmed before, during, and after — the three moments the pointer changes its mind, and the only moments where the defect is catchable without the business finding it."
+      ]},
+      {"type": "list", "items": [
+        "The dead URL — the page, the redirect, the deep link that stopped resolving: the content that moved without its address, the campaign link that now 404s, the API route the client apps still call. The check: the URL inventory with the redirect map, and the crawl after the cutover — the dead link found by the crawl is a defect; the dead link found by the customer is a support ticket, and the [SEO fundamentals](https://developers.google.com/search/docs/fundamentals/seo-starter-guide) are the reason the inventory is part of the quality gate and not an afterthought."
+      ]},
+      {"type": "p", "text": "The list is not exhaustive — it’s the shape of exhaustiveness. The discipline is the one from the [organisation post](/blogs/how-to-organize-qa-in-software-teams): the defect class names the check, the check gets its owner, and the owner’s evidence is the row in the gate. A migration that can’t name its defect classes can’t design its checks, and a migration that can’t design its checks is running the pilot on faith."},
+      {"type": "h2", "text": "A worked example: the cutover week, week by week"},
+      {"type": "p", "text": "The shape I run on the platform moves — because the week structure is the thing the schedule keeps, and the checks are the things it doesn’t:"},
+      {"type": "list", "ordered": true, "items": [
+        "Week 1 — the source characterised. The inventory with the counts per state; the behaviour baseline with the money path captured; the continuity criteria written and reviewed. The deliverable is the baseline document, and the document is the thing the rest of the week verifies against — without it, every later check is a comparison against a memory."
+      ]},
+      {"type": "list", "ordered": true, "items": [
+        "Week 2 — the mapping proven. The rules written and reviewed; the edge records tested on the transform; the pilot run on the representative slice with the reconciliation on it. The deliverable is the reconciliation report — the counts, the samples, the mismatches as defects with their rules. The pilot’s job is to be wrong, and the pilot that isn’t is the one that didn’t look hard enough."
+      ]},
+      {"type": "list", "ordered": true, "items": [
+        "Cutover window — the freeze, the delta sync, the final reconciliation on the last hour’s records, the rollback tested in the window, the smoke before the front door opens. The deliverable is the go/no-go in the room: the evidence, the open defects with their severities, the rollback ready, the decision recorded. The window is the [release decision](/blogs/qa-before-client-handover) run on a migration, and the room is the one where the business is the build."
+      ]},
+      {"type": "list", "ordered": true, "items": [
+        "Week 3 — the extended verification. The first real orders against the baseline; the first real returns against the moved history; the first report against the old number; the integrations confirmed on the live traffic. The escapes written up, the reconciliation updated, the regression suite fed with the edge cases the live week surfaced. The deliverable is the escape list — and the escape list is the data the [business value case](/blogs/how-qa-supports-business-growth) is built on, because it’s the measured difference between the cutover that was planned and the cutover that happened."
+      ]},
+      {"type": "p", "text": "The week structure is the answer to the question the deadline asks — “what can we cut” — and the answer is what the structure says: nothing in the windows can be cut without the decision being made without the corresponding evidence. The cut is always a decision, and the decision is the one the room has to make on the record."},
+      {"type": "h2", "text": "How to prepare your team — the minimal set"},
+      {"type": "p", "text": "The preparation that fits a team without a dedicated migration practice — the minimal set that produces the evidence the cutover room needs:"},
+      {"type": "list", "items": [
+        "Name the continuity criteria first. The five or six properties the business has to keep across the transfer — written, reviewed, testable. Everything else is detail; these are the acceptance test."
+      ]},
+      {"type": "list", "items": [
+        "Build the inventory before the transform. The counts per state are the reconciliation baseline, and the baseline has to exist before the first record moves — after that, the counts are a mystery instead of a check."
+      ]},
+      {"type": "list", "items": [
+        "Test the edges on purpose. The edge records are a named list, not a hope — the refund, the duplicate, the discontinued state, the last-hour write. The list gets built with the data team, because the edges are the states the data team remembers and the transform doesn’t."
+      ]},
+      {"type": "list", "items": [
+        "Rehearse the rollback in the window. The tested rollback is a procedure with a time budget, and the time budget is the number the cutover room makes its call on — the window it fits in, the state it restores to, the delta it can’t reverse."
+      ]},
+      {"type": "list", "items": [
+        "Plan the first week as testing, not operations. The extended verification is scheduled work with an owner and a deliverable — the escape list — and the scheduling is the difference between the week that produces data and the week that produces tickets."
+      ]},
+      {"type": "p", "text": "The minimal set is the whole argument in operational form: the checks before the decision, the evidence in the room, the loop after the cutover. The [SDLC fit post](/blogs/where-qa-fits-in-software-development-lifecycle) is where the same structure shows up on the feature side, and the [visibility post](/blogs/how-to-demonstrate-qa-value) is where the migration’s evidence becomes the record the next project gets funded by. If the migration in front of you is the kind where the cutover carries the business — the platform move, the consolidation, the sunset with a hard date — [the audit](/audit) is where I walk the three windows with the team before the freeze, and [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) shows the method at the finish line, with the evidence in the room it was made for."},
+      {"type": "cta", "title": "Get the gate built before the freeze", "text": "A migration QA readiness review produces the checklist — the inventory, the mappings, the rollback, the cutover smoke, the first-week verification — with an owner per row, before the window closes.", "href": "/audit", "label": "Request a migration readiness review"}
+    ],
+    "faq": [
+      {"question": "What’s the single most important migration QA activity?", "answer": "The reconciliation — the comparison of source and target that proves the transfer preserved what it moved. Everything else is supporting evidence: the inventory builds the baseline, the edge tests prove the mapping, the smoke proves the seams. The reconciliation is the one check that looks at the meaning of what moved, and the meaning is the part the transform can get wrong while still landing every row."},
+      {"question": "How much data do we need to pilot on?", "answer": "A representative slice — representative by state, not by size. The slice has to contain the edge states: the refunded order, the duplicate customer, the discontinued product, the record in the state the mapping rules named least confidently. A pilot on the clean ten percent verifies the transform on the easy data, and the easy data is the part everyone already believed would work."},
+      {"question": "When do we know the cutover is ready?", "answer": "When the go/no-go can be made on evidence in the room: the reconciliation passed or its deltas explained, the open defects named with their severities, the rollback tested in the window, the smoke plan named. The readiness is the checklist at the top of this post — every row with its pass — and the row without its evidence is the row that becomes the first week’s defect."},
+      {"question": "Can we do the QA during the cutover week to save time?", "answer": "The cutover week is where the checks get executed, not where they get designed — the inventory, the baseline, the mapping rules, the rollback, all of it has to exist before the window, because the window is short by design and the evidence has to be ready before the decision. Designing in the week is the configuration where the week finds the baseline missing, and the missing baseline is the migration that can’t reconcile."},
+      {"question": "What happens to the defects found after cutover?", "answer": "They get written up on the business severity scale, fixed on the migration’s defect process, and fed back into the reconciliation and the regression suite — the loop the [visibility post](/blogs/how-to-demonstrate-qa-value) describes. The escape list is the deliverable of the first week, and it’s also the input for the next migration: the edge case that escaped this one is the edge record the next pilot tests first."}
+    ],
+    "sources": [
+      {"label": "ISTQB — software testing glossary and CTFL curriculum", "url": "https://www.istqb.org/"},
+      {"label": "Google Search Central — SEO starter guide (URL and content changes)", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"}
+    ]
+  },
 ]
