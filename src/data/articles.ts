@@ -48,9 +48,10 @@ export interface BlogArticle {
 }
 
 export interface ArticleStub {
-  slug: string; title: string; excerpt: string; articleType: ArticleType;
+  id: number; slug: string; title: string; excerpt: string; articleType: ArticleType;
   category: string; heroImage: string; heroAlt: string; readingTime: number;
   publishedAt: string; projectSlug: string; projectTitle: string;
+  primaryKeyword: string;
 }
 
 export const ARTICLE_CATEGORIES = [
@@ -369,10 +370,11 @@ const bySlug = new Map(articles.map((a) => [a.slug, a]));
 const byDateDesc = [...articles].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 
 export const stubOf = (a: BlogArticle): ArticleStub => ({
-  slug: a.slug, title: a.title, excerpt: a.excerpt, articleType: a.articleType,
+  id: a.id, slug: a.slug, title: a.title, excerpt: a.excerpt, articleType: a.articleType,
   category: a.category, heroImage: a.heroImage, heroAlt: a.heroAlt,
   readingTime: a.readingTime, publishedAt: a.publishedAt,
   projectSlug: a.projectSlug, projectTitle: a.projectTitle,
+  primaryKeyword: a.primaryKeyword,
 });
 
 export const getAllArticles = (): BlogArticle[] => byDateDesc;

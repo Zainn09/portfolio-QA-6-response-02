@@ -5,6 +5,7 @@ import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTI
 import { legacyArticles } from "@/data/legacy-articles";
 import { editorialArticles } from "@/data/editorial-articles";
 import { Toc } from "@/components/blog/Toc";
+import { KeywordVisual } from "@/components/blog/BlogIndex";
 import { staticBlogPosts } from "@/data/blogs";
 import { SITE_URL } from "@/lib/site";
 import { getPublishedDbPostBySlug, dbPostToArticle, sanitizeBlogHtml, type DbBlogPost } from "@/lib/blog-html";
@@ -220,7 +221,7 @@ function ArticleCard({ stub }: { stub: ReturnType<typeof stubOf> }) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={stub.heroImage} alt={stub.heroAlt} loading="lazy" decoding="async" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: "top", display: "block" }} />
       ) : (
-        <div style={{ width: "100%", aspectRatio: "16/9", backgroundColor: "var(--accent-muted)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "var(--accent)" }}>QA</div>
+        <KeywordVisual a={stub} />
       )}
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.625rem", flex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>

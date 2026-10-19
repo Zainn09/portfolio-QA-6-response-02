@@ -15,6 +15,80 @@ const TYPE_STYLE: Record<string, { bg: string; color: string }> = {
 };
 const typeLabel = (t: string) => (t === "insight" ? "Insight" : t === "guide" ? "Practical Guide" : "Case Story");
 
+const SMALL_WORDS = new Set(["of", "in", "the", "a", "an", "to", "and", "for", "on", "vs"]);
+const titleCase = (s: string) =>
+  s
+    .split(" ")
+    .map((w, i) => (i > 0 && SMALL_WORDS.has(w.toLowerCase()) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+
+/** Typographic featured visual for posts without a hero image: the post's primary keyword, with four distinct treatments keyed to the post id. */
+export function KeywordVisual({ a, tall }: { a: ArticleStub; tall?: boolean }) {
+  const kw = titleCase(a.primaryKeyword || a.title);
+  const v = a.id % 4;
+  const base: CSSProperties = {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    padding: "1.25rem",
+    gap: "0.5rem",
+    position: "relative",
+    overflow: "hidden",
+  };
+  const kwStyle: CSSProperties = {
+    fontSize: tall ? "clamp(1.125rem, 2.6vw, 1.625rem)" : "clamp(0.9375rem, 2.1vw, 1.375rem)",
+    fontWeight: 800,
+    letterSpacing: "-0.01em",
+    lineHeight: 1.25,
+    margin: 0,
+    maxWidth: "90%",
+  };
+  if (v === 0)
+    return (
+      <div aria-hidden="true" style={{ ...base, aspectRatio: "16/9", backgroundColor: "var(--accent-muted)" }}>
+        <span style={{ position: "absolute", top: "0.625rem", left: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-secondary)" }}>featured · {a.category}</span>
+        <p style={{ ...kwStyle, color: "var(--text-primary)" }}>{kw}</p>
+        <span style={{ position: "absolute", bottom: "0.625rem", right: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-secondary)" }}>{a.readingTime} min read</span>
+      </div>
+    );
+  if (v === 1)
+    return (
+      <div aria-hidden="true" style={{ ...base, aspectRatio: "16/9", backgroundColor: "var(--bg-surface)", borderLeft: "3px solid var(--accent)" }}>
+        <span style={{ position: "absolute", top: "0.375rem", right: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "1.5rem", fontWeight: 800, color: "var(--border)", lineHeight: 1 }}>#{String(a.id).slice(-2)}</span>
+        <p style={{ ...kwStyle, color: "var(--text-primary)" }}>{kw}</p>
+        <span style={{ position: "absolute", bottom: "0.625rem", left: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{a.category}</span>
+      </div>
+    );
+  if (v === 2) {
+    const words = kw.split(" ");
+    return (
+      <div aria-hidden="true" style={{ ...base, aspectRatio: "16/9", backgroundColor: "var(--text-primary)" }}>
+        <span style={{ position: "absolute", top: "0.625rem", left: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-secondary)" }}>{a.category}</span>
+        <p style={{ ...kwStyle, color: "var(--bg-primary)" }}>
+          {words.map((w, i) => (
+            <span key={i} style={i === 0 ? { color: "var(--accent)" } : undefined}>
+              {w}
+              {i < words.length - 1 ? " " : ""}
+            </span>
+          ))}
+        </p>
+        <span style={{ position: "absolute", bottom: "0.625rem", right: "0.75rem", fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-secondary)" }}>featured</span>
+      </div>
+    );
+  }
+  return (
+    <div aria-hidden="true" style={{ ...base, aspectRatio: "16/9", backgroundColor: "var(--bg-surface)" }}>
+      <div aria-hidden="true" style={{ position: "absolute", inset: "0.5rem", border: "1px dashed var(--border)", borderRadius: "var(--radius-sm)" }} />
+      <span style={{ position: "absolute", top: "0.625rem", left: "0.75rem", zIndex: 1, fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>featured keyword</span>
+      <p style={{ ...kwStyle, color: "var(--accent)" }}>{kw}</p>
+      <span style={{ position: "absolute", bottom: "0.625rem", right: "0.75rem", zIndex: 1, fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{a.readingTime} min</span>
+    </div>
+  );
+}
+
 export function IndexCard({ a }: { a: ArticleStub }) {
   const ts = TYPE_STYLE[a.articleType] ?? TYPE_STYLE.insight;
   return (
@@ -23,7 +97,7 @@ export function IndexCard({ a }: { a: ArticleStub }) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={a.heroImage} alt={a.heroAlt} loading="lazy" decoding="async" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: "top", display: "block" }} />
       ) : (
-        <div aria-hidden="true" style={{ width: "100%", aspectRatio: "16/9", backgroundColor: "var(--accent-muted)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "var(--accent)" }}>QA</div>
+        <KeywordVisual a={a} />
       )}
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.625rem", flex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
@@ -45,9 +119,11 @@ export function FeaturedCard({ a }: { a: ArticleStub }) {
   const ts = TYPE_STYLE[a.articleType] ?? TYPE_STYLE.insight;
   return (
     <Link href={`/blogs/${a.slug}`} className="article-card" style={{ display: "grid", gridTemplateColumns: "1fr", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", overflow: "hidden", backgroundColor: "var(--bg-surface)" }}>
-      {a.heroImage && (
+      {a.heroImage ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={a.heroImage} alt={a.heroAlt} decoding="async" style={{ width: "100%", height: "100%", minHeight: "260px", objectFit: "cover", objectPosition: "top", display: "block" }} />
+      ) : (
+        <KeywordVisual a={a} tall />
       )}
       <div style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "0.75rem", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", flexWrap: "wrap" }}>
