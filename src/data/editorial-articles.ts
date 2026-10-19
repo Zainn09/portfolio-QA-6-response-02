@@ -1,20 +1,18 @@
 import type { BlogArticle } from "@/data/articles";
 
 /**
- * Editorial series — AI × product data × QA (added 2026-10-13, expanded 2026-10-14).
+ * Editorial series (added 2026-10-13, expanded through 2026-10-20).
  *
- * Twenty hand-written, SEO-optimised posts covering how AI reads product
- * data, PDP copywriting, AI diamond shopping, why QA matters, GEO and trust
- * in AI-powered commerce. Unlike src/data/articles.ts (generated), this file is
- * maintained by hand — it is safe to edit directly.
- *
- * Format notes:
- * - Body text supports [text](/href) for internal links and [[phrase]] for a
- *   QA "flagged" highlight (see .flagged in globals.css).
- * Dated across the last 15 days (6 – 20 Oct 2026), interleaved with the
- * second wave (9201 – 9210) below, which differentiates the same topics
- * from a new angle per post.
- */
+ * Forty hand-written, SEO-optimised posts across three clusters:
+ *   9101-9110  AI × product data × QA (how AI reads product data, PDP
+ *              copywriting, AI diamond shopping, why QA matters, GEO, trust
+ *              in AI-powered commerce).
+ *   9201-9215  E-commerce QA & AI (roadmap program; 9211-9215 are
+ *              image-free text-visual posts).
+ *   9301-9315  Software Quality Engineering (SWE-QA cluster: QA
+ *              fundamentals, migration & delivery, QA culture, professional
+ *              development, communication & operating models).
+ * Unlike src/data/articles.ts (generated), this file is*/
 export const editorialArticles: BlogArticle[] = [
   {
     "id": 9101,
