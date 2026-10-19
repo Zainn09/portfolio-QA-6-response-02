@@ -2392,4 +2392,103 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Google Search Central — SEO starter guide (helpful, original content)", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"}
     ]
   },
+
+  {
+    "id": 9302,
+    "slug": "qa-vs-qc-difference",
+    "title": "QA vs QC: What Is the Difference?",
+    "excerpt": "QA prevents; QC evaluates. The difference between quality assurance and quality control — goals, activities, examples in software, and how testing sits under QC — explained without the circular definitions.",
+    "articleType": "insight",
+    "category": "Quality Engineering",
+    "tags": ["QA vs QC", "quality control", "quality assurance", "software testing", "defect detection"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "difference between QA and QC",
+    "searchIntent": "informational — comparison",
+    "metaTitle": "QA vs QC: What Is the Difference?",
+    "metaDescription": "Understand the difference between quality assurance and quality control, including their goals, activities, examples, and roles in software delivery.",
+    "heroImage": "",
+    "heroAlt": "",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-04T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "The reason this pair of words confuses people is that the definitions are circular — the QA literature explains quality assurance using the word quality, and quality control gets explained with both of them. I’ve watched the loop happen live: a team asks what QC is, gets a definition that contains QA, asks what QA is, gets a definition that contains QC, and spends the rest of the meeting on etymology. So this post does what the definitions won’t: it separates the two by their jobs, with examples a developer can recognise from their own project, and it puts software testing where it actually belongs in the split — which is the detail most explainers skip."},
+      {"type": "p", "text": "The one-line version, for the impatient: [[QA is process prevention, QC is product evaluation]]. QA asks “is our process good enough that the software will meet its quality requirements?” QC asks “does this built software meet the criteria, right now, and can we show it?” Both are real work, both are necessary, and the confusion happens when a team does one and calls it the other — usually the second calling itself the first, because prevention sounds better in the retro than evaluation does."},
+      {"type": "html", "html": "<div style=\"margin:2.5rem 0;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-surface);overflow:hidden;\"><div style=\"display:flex;align-items:stretch;flex-wrap:wrap;\"><div style=\"flex:1 1 13rem;padding:1.75rem 1.5rem;border-right:1px solid var(--border);\"><p style=\"font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;color:var(--accent);margin:0;line-height:1;\">QA</p><p style=\"font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary);margin:0.75rem 0 0.75rem;\">assurance</p><p style=\"font-size:0.9375rem;line-height:1.6;color:var(--text-secondary);margin:0;\">trust the process</p></div><div style=\"flex:0 0 auto;display:flex;align-items:center;padding:0 0.75rem;\"><span style=\"font-family:var(--font-mono);font-size:0.625rem;letter-spacing:0.14em;text-transform:uppercase;border:1px solid var(--border);border-radius:999px;padding:0.375rem 0.75rem;color:var(--text-tertiary);\">vs</span></div><div style=\"flex:1 1 13rem;padding:1.75rem 1.5rem;\"><p style=\"font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;color:var(--text-primary);margin:0;line-height:1;\">QC</p><p style=\"font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary);margin:0.75rem 0 0.75rem;\">control</p><p style=\"font-size:0.9375rem;line-height:1.6;color:var(--text-secondary);margin:0;\">check the product</p></div></div><div style=\"padding:1.25rem 1.5rem;border-top:1px solid var(--border);background:var(--bg-surface);\"><p style=\"font-family:var(--font-mono);font-size:0.625rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-secondary);margin:0;\">different questions · different moments · same goal: software that keeps its promises</p></div></div>"},
+      {"type": "h2", "text": "What is quality assurance, in the split?"},
+      {"type": "p", "text": "In this post’s framing, QA is the set of activities that make the delivery process capable of producing quality software — and the evidence that it’s doing so. The word to hold onto is [[capable]]: QA isn’t inspecting this build, it’s engineering the process so the builds come out right, and so the team can prove the process is working. The activities, in the order a project meets them:"},
+      {"type": "list", "items": [
+        "Requirements review — checking the acceptance criteria for ambiguity, gaps, and untestable statements before the build starts. This is QA’s highest-leverage activity, because a defect in the spec is a defect in every build that follows it, and no amount of downstream testing will ever find what was never written.",
+        "Test strategy and design — deciding what will be tested, at which level, with which evidence, and what the entry and exit criteria are. The design happens before execution, and the quality of the design bounds the quality of everything after it.",
+        "Process definition — the definition of done, the defect triage rules, the release readiness criteria, the metrics that get reported. The boring documents that make the project’s quality decisions repeatable.",
+        "Audit and improvement — reviewing whether the process did what it said it would: did the reviews happen, did the evidence get captured, did the escapes get fed back into the regression suite? The [SDLC post](/blogs/where-qa-fits-in-software-development-lifecycle) shows this audit at each stage."
+      ]},
+      {"type": "p", "text": "The tell that tells you you’re looking at QA: the output is a process and a record, not a verdict on a build. “We reviewed the criteria, here’s the test design, here’s the release checklist, here’s the metric trend” — that sentence is QA speaking. Its failure mode is the one the [neglected QA post](/blogs/why-quality-assurance-is-neglected) covers: the process gets skipped under deadline pressure, and the team discovers it at the last stage, where the fix is most expensive."},
+      {"type": "h2", "text": "What is quality control, in the split?"},
+      {"type": "p", "text": "QC is the set of activities that evaluate the built product against defined criteria and document the result. Where QA’s object is the process, QC’s object is the [[product]] — this build, this feature, this environment, at this moment. The activities:"},
+      {"type": "list", "items": [
+        "Test execution — running the functional, regression, integration and non-functional tests against the build, on the environments the strategy named. This is where testing lives, and the reason to name the relationship honestly: testing is the primary instrument of QC, but QC is also the framework — the criteria the results are judged against, and the documentation that makes the judgment auditable.",
+        "Defect detection and documentation — finding the gaps between expected and actual behaviour and writing them up with reproduction, evidence and impact, the way the [bug report post](/blogs/how-to-report-bugs-to-developers) describes.",
+        "Verification of fixes — re-running the reproductions on the fixed build, across every surface the defect could have touched, until the evidence says closed.",
+        "Release evaluation — the go/no-go input: what passed, what failed, what’s open, what the residual risk is. QC provides the facts for the release decision; the [handover post](/blogs/qa-before-client-handover) is where those facts get turned into a sign-off."
+      ]},
+      {"type": "p", "text": "The tell that tells you you’re looking at QC: the output is a verdict with evidence — “this build passed 214 of 221 checks, the seven failures are documented here, three are fixed and re-tested, four are open with severities.” That sentence is QC speaking. Its failure mode is different from QA’s: QC can run perfectly and still miss what the spec never said, because QC evaluates against criteria — and when the criteria are thin, QC certifies the thin version."},
+      {"type": "h2", "text": "The core of the difference: prevention versus evaluation"},
+      {"type": "p", "text": "Put side by side, the split is a set of contrasts, and each contrast has a practical consequence for how the team spends its time:"},
+      {"type": "list", "items": [
+        "Object — QA works on the process; QC works on the product. Consequence: QA’s findings are process changes (“the spec review needs a second pair of eyes”), QC’s findings are defects (“the drawer loses the selection at 390px”).",
+        "Timing — QA is front-loaded, heaviest before code; QC is build-anchored, heaviest after it. Consequence: a team that only feels “quality activity” in the last week is running QC and calling it QA.",
+        "Question — QA asks whether the process is capable; QC asks whether this build conforms. Consequence: the answers have different shapes — capability is a trend, conformance is a snapshot.",
+        "Cost curve — QA’s fixes get cheaper the earlier they land (a sentence in the spec costs minutes); QC’s fixes get more expensive the later they land (a defect found in the client’s hand costs the release, the relationship, and the rework). This is the economics the [business value post](/blogs/how-qa-supports-business-growth) develops."
+      ]},
+      {"type": "p", "text": "The pair that trips people up is the middle one: timing. Because QA’s work is front-loaded and quiet, a team under deadline pressure cuts it first — the spec review is “nice to have,” the test design is “we’ll figure it out” — and then discovers that the QC window has grown to fill the schedule, with all the risk the skipped upstream work was supposed to have reduced. The [why-QA-at-every-stage post](/blogs/qa-throughout-software-development-lifecycle) is the full argument; the contrast above is the one-line version."},
+      {"type": "h2", "text": "Examples in software, the way a project actually runs"},
+      {"type": "p", "text": "The same project, seen through the two lenses — because the split is clearest when both are doing their jobs on the same change. The change: a store adds a loyalty discount that stacks with a sale price, and the cart has to show the arithmetic honestly."},
+      {"type": "list", "items": [
+        "QA, before the build: the requirements review finds the gap — the spec says “stacks with sale” but never says what the stacked total displays, or what happens at the free-shipping threshold with the stacked price. Two sentences added to the spec. Cost: minutes. The alternative — finding it in the client’s first order — costs the release and a support ticket.",
+        "QA, in parallel: the test design names the risky paths — stacking at the threshold, stacking with a discount code, stacking then removing the item — and the entry criteria say the environment needs the sale price and the loyalty state, which the test data setup now has to provide.",
+        "QC, on the build: the execution runs the designed paths and finds the real defect — the stacked total displays correctly, but the free-shipping threshold evaluates against the pre-stack price, so the meter lies by exactly the discount. Captured, reproduced, severity-assigned, reported.",
+        "QC, on the fix: the reproduction is re-run on the fixed build — threshold now evaluates on the stacked price, the meter agrees with the total, the edge case (stack, remove, restack) holds. Closed with evidence.",
+        "Both, at release: QC provides the verdict — what passed, what’s open, the residual risk; QA provides the process check — were the criteria reviewed, is the evidence captured, does the regression suite now carry the stacked-discount case so the next change can’t quietly break it?"
+      ]},
+      {"type": "p", "text": "Notice what the example shows: the defect the project remembers was found by QC, but the defect that never became a defect was found by QA, and it was found in a document. That asymmetry is the whole relationship — QC earns the credit for the catches, QA earns the silence, and the teams that only fund the credit end up living in the noise."},
+      {"type": "h2", "text": "Who is responsible for which, and who signs?"},
+      {"type": "p", "text": "The accountability question comes up in every version of this topic, and the honest answer is shared, in the way the [credit and accountability post](/blogs/qa-development-credit-and-accountability) works out: quality is built by the developers, verified by QA/QC, and owned by the release decision. The division of labour that holds:"},
+      {"type": "list", "items": [
+        "Developers own the code and the unit-level evidence — they write the components and the tests that prove the components, and they fix the defects QC finds.",
+        "QA owns the process — the reviews, the strategy, the criteria, the metrics — and the evidence that the process ran.",
+        "QC (the execution, whoever staffs it) owns the verdict on the build — the test results, the defect records, the verification of fixes.",
+        "The product owner or release lead owns the decision — go or no-go on the QC facts and the QA process check, with the residual risk stated out loud and signed."
+      ]},
+      {"type": "p", "text": "The failure mode to design against is the one where “quality” has one owner and that owner is the tester — because then every defect is the tester’s problem to find and the process’s problem to prevent, and the prevention half is the one that gets skipped. The [organisation post](/blogs/how-to-organize-qa-in-software-teams) covers the structures that keep the ownership shared instead of siloed."},
+      {"type": "h2", "text": "How QA and QC work together — the loop"},
+      {"type": "p", "text": "The two aren’t sequential departments; they’re a loop, and the loop is what makes the system better than either half alone. The sequence, with the feedback that people forget:"},
+      {"type": "list", "ordered": true, "items": [
+        "QA reviews the requirements and designs the test strategy — the process says what will be checked and how.",
+        "The build happens, and QC executes against the design — the product gets evaluated, and the defects get documented.",
+        "The fixes land and QC verifies them — the reproduction is re-run, the evidence says closed.",
+        "The escapes and the near-misses feed back into QA — the defect that slipped past the design becomes a regression case, the pattern that repeated becomes a review checkpoint, the metric that drifted becomes a process question.",
+        "The next change starts with a better review and a thicker suite — the loop has done its job, and the cost of the next defect is lower than the last."
+      ]},
+      {"type": "p", "text": "That fourth step is the one teams skip, and skipping it is how the loop degrades into a conveyor: the same class of defect arrives every release, the suite never grows, and the team concludes that quality is the testers’ problem to chase forever. The [metrics post](/blogs/how-to-demonstrate-qa-value) covers how to make the feedback visible — escaped defects by class, rework by cause — because the loop only improves what it measures."},
+      {"type": "quote", "text": "QA is the question asked before the build. QC is the question asked after it. Software that keeps its promises is the team that asks both — and writes down the answers.", "cite": "The split, in the form I use it on calls"},
+      {"type": "h2", "text": "The takeaway, and where to go next"},
+      {"type": "p", "text": "The difference, held as a working definition: QA engineers the process and documents its capability; QC evaluates the build and documents its conformance; testing is QC’s main instrument; and the loop that feeds QC’s findings back into QA’s design is what turns the pair from two activities into a system. If your team can’t say which half it’s running — or can only say the evaluation half, because the prevention half got cut for schedule — that’s the diagnostic, and the [why QA gets neglected](/blogs/why-quality-assurance-is-neglected) post is the one that names the forces that do the cutting. From here, the cluster goes deeper in the directions the definition points: the [SDLC fit](/blogs/where-qa-fits-in-software-development-lifecycle), the [tools that run the loop](/blogs/software-qa-testing-tools), and the [practice that makes it visible to the people who fund it](/blogs/how-to-demonstrate-qa-value). And if the question behind the reading is whether your own project’s loop is actually running — [the audit](/audit) is where I check, with the evidence in the room, the way [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) shows the method finished."},
+      {"type": "cta", "title": "Find out which half your team is running", "text": "A structured QA process review checks the prevention side — reviews, strategy, criteria, evidence — and hands you the gap list, so the loop can actually close.", "href": "/audit", "label": "Request a QA assessment"}
+    ],
+    "faq": [
+      {"question": "Can a team do QC without QA?", "answer": "Yes — and it’s the common configuration: a build gets tested, defects get fixed, and nobody ever reviews the spec or designs the strategy. The cost shows up as the same classes of defect arriving every release, because nothing upstream is learning. QC without QA is inspection; inspection is valuable but it’s the most expensive line of defence, and the one that can’t catch what the spec never said."},
+      {"question": "Is testing part of QA or QC?", "answer": "In this split, test execution is the primary instrument of QC — it evaluates the built product against criteria. The design of the tests is QA’s work, because the design is a process decision about what the build will be checked against. The same activity, two ownerships: QA decides what gets checked, QC checks it."},
+      {"question": "Who should run QC — QA engineers or developers?", "answer": "Both, at different levels. Developers run the unit and component tests as they build; dedicated QA/QC runs the integration, system, and regression execution. The split isn’t a wall — it’s the difference between the evidence the builder produces and the verdict the independent check provides, and the independence is what the release decision needs."},
+      {"question": "Do small projects need both?", "answer": "The motion does, even if the people don’t. A small team can run the QA half as a spec review and a risk-based test design — an hour of the right questions — and the QC half as the execution with captured evidence. What small projects can’t afford is skipping the first half, because the cheap fixes are the upstream ones."},
+      {"question": "Which comes first — QA or QC?", "answer": "QA, by design: the process has to say what will be checked before anything gets checked. If a project’s first quality activity is running tests on a finished build, the prevention half has already been skipped, and the testing will be as good as the spec it was never given a chance to review."}
+    ],
+    "sources": [
+      {"label": "ISTQB — software testing glossary and CTFL curriculum", "url": "https://www.istqb.org/"},
+      {"label": "ISO/IEC/IEEE 29119 — international software testing standards", "url": "https://www.iso.org/standard/77500.html"}
+    ]
+  },
 ]
