@@ -1240,4 +1240,99 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Shopify Help Center — selling products online", "url": "https://help.shopify.com/en/manual/products"}
     ]
   },
+  {
+    "id": 9204,
+    "slug": "product-page-seo-copywriting",
+    "title": "Product Page SEO Copywriting: Clarity Without Keyword Stuffing",
+    "excerpt": "How to cover the full family of queries a product attracts — title, headings, natural related terms and structured-data alignment — without a single stuffed sentence.",
+    "articleType": "guide",
+    "category": "CRO",
+    "tags": ["product page SEO", "copywriting", "on-page SEO", "keyword strategy", "PDP"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "product page SEO copywriting",
+    "searchIntent": "informational / problem-solving — on-page copy craft",
+    "metaTitle": "Product Page SEO Copywriting: Clarity Without Stuffing",
+    "metaDescription": "Cover the full family of queries a product attracts with clear, human-readable copy: title, headings, natural related terms and aligned structured data.",
+    "heroImage": "/images/blog/product-page-seo-copywriting-hero.jpg",
+    "heroAlt": "A desk with a printed product page, a search console report and a notebook of query terms, natural light",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-16T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "A store I audited a while back was ranking in the top three for its best-selling product — and converting almost nothing. The title tag was a wall of keywords: the product name, three synonyms, “buy,” “cheap” and “online” stacked like bricks. It had done exactly what keyword-stuffing is supposed to do: put the page in front of people searching those words. And it had attracted precisely the wrong people — bargain-scanners with no intent to commit, landing on a page whose first line made it look like a spam ad. The fix took twenty minutes and cut the title roughly in half. The traffic got a little worse; the orders got a lot better. That’s the whole argument of this post in miniature: coverage without clarity is a leak with a ranking."},
+      {"type": "p", "text": "The two companion pieces cover the adjacent ground — [how to write product page copy customers actually buy from](/blogs/how-to-write-product-page-copy) and how [AI and search engines read your PDPs](/blogs/pdp-copywriting-for-ai-and-search-engines). This one is the SEO craft between them: how to make one product page answer a whole family of related queries, in clear language a human enjoys reading, without repeating yourself into penalty territory."},
+      {"type": "h2", "text": "Stop optimising for a phrase. Optimise for a query family"},
+      {"type": "p", "text": "The instinct that leads to stuffing is the belief that a page targets one keyword, so you cram that keyword everywhere. The modern reality is the opposite: a good product page already covers a [[query family]] naturally — the product name, the category, the material, the use case, the comparisons, the “is it good for X” questions. Someone searching “wool blend jacket for winter commute” wants your jacket page. Someone searching “warm jacket for standing outside” may want the same page. None of those searches contains your primary phrase, and a stuffed title aimed at one phrase helps none of them."},
+      {"type": "p", "text": "So the first move is inventory, not writing: list the query family. What do customers actually type when they want this product? The product name, the category, the material variants (“wool,” “wool blend,” “wool mix”), the use cases (“winter commute,” “cold weather”), the comparisons (“wool vs cashmere jacket”), and the qualification questions (“is a wool blend itchy?”). Five to fifteen terms, in the customer’s own words — pulled from your search data, your reviews, and your support inbox, not from a keyword tool’s imagination. That list is your coverage map. Every term on it should appear somewhere on the page, in a sentence that would read fine if the term were never there."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/product-page-seo-copywriting-queries.jpg", "alt": "A printed list of search query terms pinned beside a notebook on a desk"},
+        {"src": "/images/blog/product-page-seo-copywriting-page.jpg", "alt": "A printed product page with headings circled, next to a laptop showing a blurred search report"}
+      ]},
+      {"type": "h2", "text": "The title tag: one job, one reader, one sentence"},
+      {"type": "p", "text": "The title tag has two readers with different jobs: the person in the search results deciding whether to click, and the system deciding whether this page is the best answer. Stuffing fails both. For the searcher, a keyword wall reads as low trust — it’s the visual signature of spam, and your competitor with the clean title looks more credible next to you. For the system, repetition no longer signals emphasis; it signals uncertainty about what the page actually is, which is exactly the backwards outcome of what stuffing is meant to do."},
+      {"type": "list", "items": [
+        "Lead with what the product is, in customer words — the name and the category, not the promo angle.",
+        "Add the one differentiator that matters for the decision — material, the key spec, the defining use case. One. Not three.",
+        "Keep it under roughly sixty characters so it survives truncation, and make the first thirty do the work — that’s what shows on most phone results.",
+        "The brand goes last, if at all. A first-time searcher is not loyal to you yet; the title’s job is to be the right answer, not the right advertiser."
+      ]},
+      {"type": "p", "text": "The test: read the title out loud as a human sentence. “Wool Blend Commuter Jacket — Warm, Layered, Machine-Washable” works. “Wool Jacket Winter Warm Coat Buy Online Cheap Best Price” is a receipt. One of these is a person; the other is a keyword bag, and searchers can tell the difference in a quarter-second glance."},
+      {"type": "h2", "text": "Headings: the page’s table of contents, for people and machines"},
+      {"type": "p", "text": "Your H2s are the second-most-read part of the page by a system, and the second-most-skipped part by a human — so they have to serve both. A heading has one job: tell the skimmer (and the crawler) what the section answers. That means headings should read as topics or answers, not as cleverness:"},
+      {"type": "list", "items": [
+        "“What it’s made of” beats “Premium materials.” The specific heading is the one that matches the query — and the one a skimmer believes.",
+        "“How it fits” beats “Sizing.” The customer’s word, not the internal one — this is the same rule as the [product data consistency checks](/blogs/product-data-quality-checklist-ai-search), applied to words instead of fields.",
+        "One concept per heading, and no heading without content under it that actually covers it. A heading is a promise; an empty section is a broken one, and it’s how pages learn to underdeliver.",
+        "Use the query-family terms in headings where they’re natural — “Wool vs cashmere: which is warmer?” covers the comparison query with a heading that a human would genuinely click."
+      ]},
+      {"type": "p", "text": "There’s a discipline rule here worth stating flatly: [[one page, one job]]. A product page answers the questions about that product. It is not the place for the category guide, the gift guide, or the blog post about the season. When a page tries to cover three jobs, it covers each one at two-thirds strength — and the two-thirds show up in rankings as a page that’s relevant to everything and definitive about nothing. The category job belongs on the collection page, linked from here with an internal link that says what the link covers."},
+      {"type": "h2", "text": "Natural coverage: related terms that write themselves"},
+      {"type": "p", "text": "This is where clarity and coverage stop being a trade-off, and the mechanism is simple: when you write a specific, honest description of the product, the related terms appear on their own. A page that explains that the jacket is a wool blend, is machine-washable, layers under a shell, and runs warm for a winter commute has naturally used a dozen query-family terms — in sentences that would read fine if you deleted the search intent entirely."},
+      {"type": "p", "text": "The anti-pattern is the reverse: sentences built to contain terms. “This warm jacket is a great winter jacket for cold weather, perfect as a wool jacket for commuting” — every word is a keyword, no word is a fact. Two ways to spot the damage: the [[read-aloud test]] (does this sentence sound like a person, or like a form filling itself out?), and the [[delete test]] (if you remove the repeated term, does the sentence still say something true?). A stuffed sentence fails both; a specific one passes both, every time."},
+      {"type": "image", "src": "/images/blog/product-page-seo-copywriting-edit.jpg", "alt": "A printed paragraph with repeated phrases struck through in red, marker pen beside it"},
+      {"type": "h2", "text": "The meta description: earning the click the title earned"},
+      {"type": "p", "text": "The title gets the relevance; the meta description gets the click. Treat it as one or two sentences that answer the searcher’s implied question — what is this, and why is it the right one — not as a second keyword slot. Include the one differentiator, the one reassurance (returns, delivery, the spec that matters), and a reason to choose this page over the next result. Roughly 140–160 characters, first sentence doing the work."},
+      {"type": "p", "text": "One QA habit that keeps these honest: the meta description is a claim. It says the jacket is machine-washable, ships in two days, fits true to size. Every one of those claims is now something the page must keep — and the store must keep after the page ships. When the policy changes and the meta description doesn’t, you’ve built a trust defect with a click-through rate attached. I check the description’s claims against the live page the same way I check any other surface, because it is one."},
+      {"type": "h2", "text": "Alignment: what the copy says and what the data says"},
+      {"type": "p", "text": "The last SEO layer is the one that’s silently failing most often: the structured data. The product schema — name, description, price, availability, brand — is the machine’s fast lane to the same facts the copy states, and when the two disagree, you’re not just confusing a system, you’re contradicting yourself on the record. The classic find: a schema block copy-pasted from another product, still carrying its name and price, while the page says something entirely different."},
+      {"type": "list", "items": [
+        "Schema name and description should match the page’s primary terms — same product, same words, not synonyms swapped for coverage (that’s the data version of stuffing).",
+        "Price and availability in the schema must match the page exactly, including sale prices — [Google’s product structured data guidance](https://developers.google.com/search/docs/appearance/structured-data) is explicit that enrichment fields should match the visible page.",
+        "Review and rating markup only where the reviews are real and visible — markup without the content is not alignment, it’s fabrication with a schema id.",
+        "Check the rendered source, not the admin screen: what the crawler reads is what the browser sends after scripts run."
+      ]},
+      {"type": "p", "text": "This is the same cross-surface honesty from the [product data quality checklist](/blogs/product-data-quality-checklist-ai-search), extended one surface. Copy and schema are two renderings of one truth; the moment they drift, the page stops being a page and becomes a pair of competing claims."},
+      {"type": "h2", "text": "Internal links: the coverage you don’t write"},
+      {"type": "p", "text": "A product page doesn’t have to cover every related query itself — it has to route the ones that belong elsewhere. The category queries go to the collection page. The comparison query (“wool vs cashmere”) can go to a comparison article. The gift-use query goes to the gift guide. Each of those is an internal link with an anchor that says what it covers — “compare wool and cashmere jackets” — which is itself coverage: the anchor text is how the page tells systems what the destination is about."},
+      {"type": "p", "text": "The rule is the same as for external answers: three or four deliberate links beat ten sprinkled ones, and every anchor is written as a description, not as “click here” or a bare product name. A product page that routes its overflow well is a hub; one that tries to absorb everything is a page that diluted itself."},
+      {"type": "h2", "text": "The pre-publish SEO pass"},
+      {"type": "p", "text": "Ten minutes, before the page ships. Run it on the top products first; it’s short enough to be real and specific enough to catch the gaps that actually move rankings:"},
+      {"type": "checklist", "title": "The clarity-without-stuffing check", "items": [
+        "Write the query family for this product — five to fifteen terms. Is every one of them on the page, in a sentence that survives the delete test?",
+        "Read the title out loud. Is it a human sentence under sixty characters, with the first thirty doing the work?",
+        "Skim the headings only. Do they read as a table of contents for the questions this page answers — one concept each, no empty promises?",
+        "Find the most-repeated word on the page. Is its repetition natural, or is a sentence built to contain it?",
+        "Check the meta description: does it make a claim the live page actually keeps?",
+        "Open the page source: does the schema agree with the page on name, price and availability?"
+      ]},
+      {"type": "p", "text": "Do that pass and the page becomes something rare in SEO: a page that covers its query family completely and reads like it was written for the human who will buy it. Coverage and clarity were never in competition. What’s in competition with both is repetition."},
+      {"type": "h2", "text": "When the copy is covered, verify the page keeps its promises"},
+      {"type": "p", "text": "Everything above makes the page a better answer. What keeps it honest after it ships is verification: the meta description’s claims, the schema’s facts, the delivery promise — all of them are surfaces that drift, and drift is a defect. That’s the [Shopify QA audit](/shopify-qa-audit) scope, and the wider [Shopify QA testing](/shopify-qa-testing) practice — the page walked state by state, the copy treated as a claim set, and the machine-read view checked against the human one. If you want the copy and the data and the behaviour on one verified table, [start with the audit](/audit) — and for the AI side of the same page, [how AI shopping tools understand product data](/blogs/how-ai-shopping-tools-understand-product-data) is where the machine’s reading starts."},
+      {"type": "cta", "title": "Get the full page verified", "text": "An audit checks your product page’s copy, its structured data and its behaviour as one claim set — and documents every place they drift apart.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "Is keyword stuffing still a penalty in 2026?", "answer": "There’s no button that gets pressed. What happens is subtler and worse: repetition reads as low quality to both the system and the searcher, the click-through suffers, and the page attracts the wrong intent. You don’t get penalised — you just stop being the credible answer, which costs more."},
+      {"question": "How many times should my main term appear?", "answer": "As many times as the honest description needs it — usually three to six, including the title, one heading and the natural mentions. The real test isn’t a count; it’s the delete test. If removing a repetition changes nothing, it was never doing work."},
+      {"question": "Do long-tail “is it good for X” queries matter for a product page?", "answer": "They’re often where the buying intent actually is — the qualification question is the last question before the purchase. Answer it on the page, in a heading and a sentence or two, and you cover the query with content a human would have written anyway."},
+      {"question": "Should the title tag match the H1?", "answer": "They should match in substance and can differ in phrasing. The H1 can be the human version (“Wool Blend Commuter Jacket”); the title tag can carry one extra differentiator. What they can’t do is disagree about what the product is — that’s the copy-and-schema drift problem at heading level."},
+      {"question": "Does this guarantee better rankings?", "answer": "No — and be wary of anyone who guarantees them. What it does is remove the controllable failures: a page that covers its query family, reads clearly, and keeps its machine-readable facts aligned. Rankings then depend on factors you don’t control; the page stops being one of the reasons it loses."}
+    ],
+    "sources": [
+      {"label": "Google Search Central — SEO starter guide", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"},
+      {"label": "Google Search Central — product structured data", "url": "https://developers.google.com/search/docs/appearance/structured-data"}
+    ]
+  },
 ]
