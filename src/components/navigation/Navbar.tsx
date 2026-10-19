@@ -65,10 +65,14 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  useEffect(() => {
+  // Reset open menu state when the route changes (render-time adjustment,
+  // so the effect-free pattern avoids cascading re-renders on navigation).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMenuOpen(false);
     setOpenMenu(null);
-  }, [pathname]);
+  }
 
   useEffect(() => clearMegaTimers, []);
 
