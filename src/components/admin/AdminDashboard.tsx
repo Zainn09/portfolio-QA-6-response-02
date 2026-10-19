@@ -43,6 +43,10 @@ export function AdminDashboard() {
     }
   }, [router]);
 
+  // On-mount fetch: the state updates run after the awaited response, not
+  // synchronously in the effect, so the cascade the rule guards against
+  // cannot occur here.
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- async fetch, state set post-await
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   const handleLogout = async () => {
