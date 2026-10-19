@@ -2716,4 +2716,116 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Google Search Central — SEO starter guide (URL and content changes)", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"}
     ]
   },
+
+  {
+    "id": 9306,
+    "slug": "why-quality-assurance-is-neglected",
+    "title": "Why Is Quality Assurance Often Neglected in Software Development?",
+    "excerpt": "A constructive look at the forces that push QA to the back of the schedule — and the specific, fundable steps that reverse the neglect one stage at a time, without turning the conversation into blame.",
+    "articleType": "insight",
+    "category": "Quality Engineering",
+    "tags": ["QA neglect", "software quality culture", "quality investment", "QA strategy", "engineering management"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "why is QA neglected in software development",
+    "searchIntent": "informational / insight",
+    "metaTitle": "Why QA Is Often Neglected (and How to Reverse It)",
+    "metaDescription": "Understand why QA is deprioritised under deadline pressure, the real costs of that neglect, and the practical steps teams take to make quality visible and funded.",
+    "heroImage": "",
+    "heroAlt": "",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-02T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "I want to be careful with this topic, because it has a habit of becoming a complaint, and the complaint is the one form of the argument that never changes anything. The version that doesn’t change anything: QA gets neglected because the business doesn’t value quality, because the developers don’t care, because the testers aren’t good enough. Each of those is a verdict on people, and verdicts on people end the conversation — the team that gets told it doesn’t value quality stops hearing what the person who says it is trying to say. So this post does the other thing: it names the forces that push QA back in the schedule, because they’re structural forces and they act on every team, including the ones that intend to do better. And then it does the second half the complaint version skips: what reversing the neglect actually looks like, as steps a team can fund, one at a time, with evidence each step produces. The neglect is the process the [QA vs QC post](/blogs/qa-vs-qc-difference) calls the prevention half being cut — and like any process, it has steps, and steps have causes, and causes have levers."},
+      {"type": "p", "text": "My own history with this is the reason I take the careful version seriously. I’ve been on both sides of the room where the neglect gets decided: the side that watches the spec review get cut for the demo, and the side that makes the cut, with the deadline that made the review the flexible line. The second side is the one the complaint version never visits, and it’s the side that knows the cut wasn’t a verdict on quality — it was a verdict on the schedule, made by a person who needed the release and had one line they could move. The forces this post names are the forces that made that person, and the levers at the end are the levers that change what the next person has to decide. That’s the frame: not blame, but mechanics — and the mechanics are the same on every team, which is the reason the post is worth reading even if your own project is the one doing the neglecting."},
+      {"type": "html", "html": "<div style=\"margin:2.5rem 0;display:flex;flex-direction:column;align-items:center;\">\n<div style=\"width:100%;max-width:26rem;border:2px dashed var(--border);border-radius:var(--radius-lg);padding:2.25rem 1.75rem;text-align:center;background:var(--bg-surface);\">\n<p style=\"font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 1rem;\">the planning meeting</p>\n<p style=\"font-family:var(--font-mono);font-size:1.5rem;color:var(--text-tertiary);letter-spacing:0.1em;margin:0;\">[ QA ]</p>\n<p style=\"font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary);margin:0.75rem 0 0;\">the last seat in the room</p>\n</div>\n<p style=\"font-size:clamp(1.5rem,4vw,2.4rem);font-weight:800;letter-spacing:-0.02em;color:var(--text-primary);margin:1.75rem 0 0;line-height:1.15;text-align:center;\">Neglect is a process too.<br><span style=\"color:var(--accent);\">It has steps. Steps have levers.</span></p>\n</div>"},
+      {"type": "h2", "text": "The five forces that push QA back"},
+      {"type": "p", "text": "The forces are structural — they don’t require a bad manager or a bad team, they require a schedule. Each one, and the lever it has:"},
+      {"type": "list", "items": [
+        "The cost is invisible until it isn’t. The work QA does well is the defect that doesn’t exist, and a defect that doesn’t exist doesn’t invoice itself — the team that reviews the spec and catches the gap saves a rework that never shows up on any report, which is the reason the report can’t see the work. The force is the measurement: the ledger that records only what happened, not what didn’t. The lever is the [visibility work](/blogs/how-to-demonstrate-qa-value) — the escape rate, the rework by cause, the defect found per stage — because the metric that shows the prevention is the one that funds it next."
+      ]},
+      {"type": "list", "items": [
+        "The value shows up as absence. The quality the customer experiences is the quality they don’t notice — the order that worked, the return that processed, the number that was right. The force is the same invisibility at the customer edge: the product that keeps its promises gets no review section for the promises it kept. The lever is the frame — the [business value post](/blogs/how-qa-supports-business-growth) makes the case in the terms the business already budgets: risk made visible, cost moved left, decision made on evidence — not in the terms the customer can’t see."
+      ]},
+      {"type": "list", "items": [
+        "The deadline always finds the flexible line. The schedule has teeth — the lease, the sunset, the contract, the season — and when the schedule breaks, the pressure looks for the line it can move, and the quality line is the one that looks movable, because the quality work is the work nobody has seen happen yet. The force is the asymmetry: the demo is visible, the review is not, so the review is the one that gets cut “this once.” The lever is making the quality work visible at the same resolution as the build — the [stage-by-stage practice](/blogs/qa-throughout-software-development-lifecycle) with its records, so the review is on the board next to the feature, and cutting it is a visible decision instead of a quiet one."
+      ]},
+      {"type": "list", "items": [
+        "The terminology confuses the conversation. QA, QC, testing, quality — the words are loose, and the loose words let the team do one thing and name it another: run the last-week testing and call it QA, skip the prevention and call the evaluation the practice. The force is the [QA vs QC split](/blogs/qa-vs-qc-difference) unexamined, because the split is where the prevention half hides — the team that can’t name the two halves can’t see which one got cut. The lever is the vocabulary: the team that can say “we ran QC and skipped QA” can fund the next QA, because the sentence names the gap."
+      ]},
+      {"type": "list", "items": [
+        "The ownership is assumed to be one person’s. The team that believes quality is the tester’s job has a structural reason to deprioritise it: the tester is a cost centre with a budget, and the budget is the line that gets cut. The force is the [accountability assumption](/blogs/qa-development-credit-and-accountability) — quality as a department instead of a shared outcome — because the shared outcome has no budget to cut, it has a practice to fund. The lever is the ownership model: the quality that belongs to the release decision, with the evidence from everyone, stops being the one budget on the board."
+      ]},
+      {"type": "p", "text": "The five forces share a pattern, and the pattern is the point: each one makes the quality work look smaller than it is, later than it is, and other people’s more than it is. The neglect isn’t a decision against quality — it’s the accumulation of five measurements that make quality look like the flexible line, and the accumulation happens on the best-intentioned teams, which is the reason the fix has to be in the measurements and the structure, not in the intentions."},
+      {"type": "h2", "text": "What the neglect actually costs — the mechanics, not the statistics"},
+      {"type": "p", "text": "The honest version of the cost argument doesn’t need the statistics — it needs the mechanics, because the mechanics are the part the team can check against its own history. The costs, in the order they arrive:"},
+      {"type": "list", "items": [
+        "The rework, first. The defect found late is the same defect fixed twice: once in the build, once in the hotfix, with the schedule paying for both. The rework is the visible cost, and it’s the cost the team can already see — which is the reason it’s the cost the budget already argues about, and the reason the prevention that would have avoided it is the one that never gets the line item."
+      ]},
+      {"type": "list", "items": [
+        "The release risk, second. The release made on the thin evidence carries the risk the evidence didn’t cover, and the risk doesn’t expire at the cutover — it arrives in the first week, in the first real order, in the first report. The risk cost is the one the [migration posts](/blogs/why-qa-is-essential-during-migration) describe at full force, and it’s the cost the business feels before the engineering team has finished the hotfix."
+      ]},
+      {"type": "list", "items": [
+        "The trust, third — and the one that compounds. The client who finds the defect the evidence didn’t show stops believing the evidence; the customer who finds it in the product stops believing the product. The trust cost is the slow one, and it’s the one that outlives the fix — the [handover discipline](/blogs/qa-before-client-handover) exists because the sign-off is where the trust gets written down, and the sign-off made on the thin evidence writes down the thin version."
+      ]},
+      {"type": "list", "items": [
+        "The culture, last. The team that learns its quality work gets cut every deadline learns to stop doing the visible version of it — the review becomes a checkbox, the evidence becomes a formality, the tester becomes the one who apologises. The culture cost is the one the [credit post](/blogs/qa-development-credit-and-accountability) is about at the individual level: the practice that gets punished for doing its job stops doing it, and the team keeps the defects and loses the people who would have caught them."
+      ]},
+      {"type": "p", "text": "The four costs are the same cost at four distances — the rework is the week’s cost, the risk is the month’s, the trust is the quarter’s, the culture is the year’s. The neglect argument, honestly made, is the argument that the cheap line on the board is the expensive line on the ledger, and the ledger is the one the [metrics post](/blogs/how-to-demonstrate-qa-value) exists to make readable."},
+      {"type": "h2", "text": "Where the neglect shows up, stage by stage"},
+      {"type": "p", "text": "The neglect has a signature, and the signature is the stage pattern — the same shape on every team that’s living it, because the forces act at the same stages on every schedule:"},
+      {"type": "list", "items": [
+        "Requirements — the review gets cut first, because it’s the furthest from the demo and the cheapest to lose. The gap goes into the build, and the build inherits it, and the defect that the review would have found for the cost of a sentence arrives in the testing window at the cost of a rework. The signature: the testing window keeps finding the same class of defect, and the class is the spec gap, and the spec never gets the review."
+      ]},
+      {"type": "list", "items": [
+        "Design — the testability check goes quietly, because the design review isn’t on the board as a quality item, it’s on the board as “design,” and the quality lens is the part of the lens nobody named. The signature: the testing window discovers the state it can’t reach, the data it can’t build, the timing it can’t hold — the testability defects the design review was the cheap window for."
+      ]},
+      {"type": "list", "items": [
+        "Development — the evidence stops arriving at merge, because the merge doesn’t require it and the deadline doesn’t reward it. The signature: the testing window finds the component defects the unit evidence would have carried, and the suite stops growing, because the suite grows from the evidence and the evidence stopped arriving."
+      ]},
+      {"type": "list", "items": [
+        "Testing — the window grows to fill the schedule, and the growth is the tell: a testing window that’s most of the schedule is a testing window that’s doing the work of the whole lifecycle. The signature is the one the [every-stage post](/blogs/qa-throughout-software-development-lifecycle) names — the last line doing the work of every line, at the cost of the last line."
+      ]},
+      {"type": "list", "items": [
+        "Release — the decision gets made on the feeling, because the evidence didn’t arrive in time, and the feeling is what’s in the room. The signature: the release note that says “known issues” without the issues named, the sign-off without the conditions, the first-week defect list that the release note didn’t predict — the [handover post](/blogs/qa-before-client-handover) is the antidote, and the antidote is the evidence in the room."
+      ]},
+      {"type": "p", "text": "The signature is useful because it’s a diagnostic the team can run on its own history: the stage that keeps finding the class the earlier stage should have caught is the stage the neglect is living in, and the earlier stage is the one the lever belongs to. The team that can name the pair — the class, the stage — can fund the fix, because the fix has a name and a place, and the place has a budget line it can sit on."},
+      {"type": "h2", "text": "How teams reverse the neglect — the steps that actually work"},
+      {"type": "p", "text": "The reversal is a sequence, and the sequence matters, because the step that skips ahead is the step that gets cut again — the team that starts with the metrics before it has the evidence builds a dashboard of nothing, and the dashboard of nothing is the one that gets used to argue the practice isn’t there. The sequence, in the order that holds:"},
+      {"type": "list", "items": [
+        "Start with one stage, and do it visibly. The requirements review, the release decision — one stage, done properly, with the record on the board next to the features. The visible stage is the one the deadline can see, and the deadline that sees the review cutting the rework stops cutting the review — the [every-stage post](/blogs/qa-throughout-software-development-lifecycle) is the map, and one stage is the entry."
+      ]},
+      {"type": "list", "items": [
+        "Make the evidence the deliverable. The review produces its findings, the testing produces its captures, the release produces its decision record — the evidence as the thing the stage is done when it has, the way the [captured-states standard](/shopify-qa-testing) makes it concrete. The deliverable evidence is the one the budget can see, and the budget that can see it can fund it."
+      ]},
+      {"type": "list", "items": [
+        "Report the prevention, not just the catches. The escape rate, the rework by cause, the defect found per stage — the [metrics the visibility post](/blogs/how-to-demonstrate-qa-value) names, reported on the schedule the business already reads. The prevention metric is the one that funds the next prevention, and the report is the room where the funding decision gets made."
+      ]},
+      {"type": "list", "items": [
+        "Put the quality on the shared ownership. The release decision owns the quality outcome, the developers own the build evidence, the QA owns the process and the verification — the [accountability structure](/blogs/qa-development-credit-and-accountability) that stops the quality from being the one budget on the board. The shared ownership is the lever for the force that assumed the one person, and it’s the one that makes the practice outlive the person."
+      ]},
+      {"type": "list", "items": [
+        "Let the practice earn the next stage. The stage that produces its evidence, the metric that shows the rework moving left, the release decision that gets made on the record — the practice that earns its keep gets the next stage, and the sequence continues. The earning is the mechanism the complaint version never offers, because the complaint asks for the belief and the earning asks for the budget, and the budget is the one that changes the schedule."
+      ]},
+      {"type": "p", "text": "The sequence is the constructive version of the argument: not “the business doesn’t value quality,” but “the quality work isn’t visible at the resolution the budget decides at, and here’s the sequence that makes it visible, one stage, one deliverable, one metric at a time.” The team that runs the sequence is the team that stops having the argument, because the argument was the measurement, and the measurement got fixed."},
+      {"type": "quote", "text": "The neglect isn’t a verdict on the quality work. It’s the accumulation of five measurements that make the work look flexible. Fix the measurements, and the schedule fixes itself — one stage, one deliverable, one metric at a time.", "cite": "The frame of the post, stated the way I use it with the teams I audit"},
+      {"type": "h2", "text": "The takeaway — and the honest note"},
+      {"type": "p", "text": "The honest note, because the post would be incomplete without it: some of the neglect is the right kind. The team that cuts the redundant check, the over-built environment, the ceremony that produces no evidence — that cut is the practice working, not the practice dying, and the [organisation post](/blogs/how-to-organize-qa-in-software-teams) covers the difference between the quality that’s load and the quality that’s practice. The neglect this post names is the specific kind: the prevention cut for the schedule, the evidence skipped for the deadline, the decision made on the feeling — the kind with the signature, the stages, and the costs this post measured. The constructive path is the sequence: one stage, visible; the evidence as the deliverable; the prevention reported; the ownership shared; the practice earning the next stage. It’s not a belief campaign, and it doesn’t need one — it needs the budget line, and the budget line is the thing the evidence buys. If your project is living the signature — the same defect class, the same late stage, the same release note — [the audit](/audit) is where I run the diagnostic stage by stage, and [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) is what the reversal looks like at the finish line, with the evidence in the room it was made for."},
+      {"type": "cta", "title": "Find the stage your neglect is living in", "text": "A QA process audit walks your project’s stages and names the signature — the defect class, the late stage, the missing evidence — with the reversal sequence sized to your schedule.", "href": "/audit", "label": "Request a QA process audit"}
+    ],
+    "faq": [
+      {"question": "Is neglecting QA just bad management?", "answer": "No — that’s the verdict this post exists to replace. The neglect is structural: the cost is invisible, the value shows up as absence, the deadline finds the flexible line, the terminology hides the split, and the ownership assumes one person. The forces act on well-managed teams with good intentions, which is the reason the fix is in the measurements and the structure — the visible stage, the deliverable evidence, the prevention metric, the shared ownership — not in the management style."},
+      {"question": "How do we prove the cost of the neglect without inventing numbers?", "answer": "With the team’s own history: the rework it already paid, the escape it already shipped, the release it already made on the thin evidence. The [visibility post](/blogs/how-to-demonstrate-qa-value) covers the metrics — the escape rate, the rework by cause — and the baseline is the first release the team measures, not a number from another company’s history. The honest cost is the cost the team can check against its own records, and that’s the cost that changes the budget."},
+      {"question": "What if the deadline really is immovable?", "answer": "Then the decision is the scope, not the evidence — the feature list is the flexible line, not the verification. The [release readiness discipline](/blogs/qa-before-client-handover) makes the trade explicit: what ships, what’s deferred, what the residual risk is, decided in the room on the record. The deadline that cuts the evidence doesn’t become the deadline that makes the business decision — the business decision is the one that owns the immovable date, and the evidence is what it decides on."},
+      {"question": "Does adding a QA person fix the neglect?", "answer": "It can make it worse, if the QA person inherits the one-person ownership this post names — the budget line that gets cut, the blame line that gets blamed. The headcount is the input; the ownership model is the lever. The [organisation post](/blogs/how-to-organize-qa-in-software-teams) covers the structures — the shared ownership, the stage roles, the evidence as the deliverable — that make the headcount a practice instead of a budget line."},
+      {"question": "How long does the reversal take to show up?", "answer": "The first stage shows up in the next release cycle — the review that caught the gap, the rework that didn’t happen, the record on the board. The metric shows up when the baseline exists and the next cycle has a comparison — typically two to three releases of the measured practice. The culture is the slow one, and it’s the one the [credit post](/blogs/qa-development-credit-and-accountability) is about: the practice that stops getting punished for its work is the one that keeps doing it, and the keeping is the part that compounds."}
+    ],
+    "sources": [
+      {"label": "ISTQB — software testing glossary and CTFL curriculum", "url": "https://www.istqb.org/"},
+      {"label": "ISO/IEC/IEEE 29119 — software testing standards", "url": "https://www.iso.org/standard/77500.html"}
+    ]
+  },
 ]
