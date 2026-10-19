@@ -1702,4 +1702,103 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Google Search Central — creating helpful content", "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"}
     ]
   },
+  {
+    "id": 9209,
+    "slug": "shopify-product-page-qa-ai-shopping-agents",
+    "title": "Shopify Product Page QA for AI Shopping Agents",
+    "excerpt": "A practical QA process for making Shopify product pages agent-ready: the admin data pass, the machine-readable layer, the journey under the agent, and the regression cadence that keeps it true.",
+    "articleType": "guide",
+    "category": "Shopify",
+    "tags": ["Shopify QA", "AI shopping agents", "product page", "structured data", "feed testing"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "Shopify product page QA AI shopping agents",
+    "searchIntent": "informational / problem-solving — a Shopify QA process for agent readiness",
+    "metaTitle": "Shopify Product Page QA for AI Shopping Agents",
+    "metaDescription": "A four-part QA process for Shopify product pages under AI shopping agents: the admin pass, the machine-readable layer, the journey test, and the regression cadence.",
+    "heroImage": "/images/blog/shopify-product-page-qa-ai-shopping-agents-hero.jpg",
+    "heroAlt": "A QA engineer validating product data on a laptop with a phone and a printed checklist beside it, natural light",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-19T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "A while back I did something I do on every store now, and it should probably have been standard practice years earlier: I asked an AI shopping agent, in plain customer language, for a product the store actually sells — the use case, the budget, the constraint. The agent recommended the product. It also quoted a price the page had not shown in a month. I checked the page: correct, current, fine. I checked the feed the store pushed to its channels: stale, carrying the old price and an availability flag from last season. The page a human saw and the record a machine read were two different stores, and the machine had been trusted with the worse one. I ran the same test on three other stores that week. Two of them had an agent-visible price the page didn’t show. None of the three had a single alert about it."},
+      {"type": "p", "text": "That’s the gap this post closes. It’s a practical QA process — four parts, in order, with a sixty-minute quick version at the end — for making a Shopify product page something an AI shopping agent can reach, read, verify and trust. The theory lives in [how AI shopping tools understand product data](/blogs/how-ai-shopping-tools-understand-product-data) and the data side is [the product data quality checklist](/blogs/product-data-quality-checklist-ai-search). This is the Shopify-shaped procedure, the one I’d run on the store in front of me."},
+      {"type": "h2", "text": "What “agent-ready” actually means"},
+      {"type": "p", "text": "Before the steps, the definition, because “optimise for AI” is a mood and a QA process needs a testable bar. A product page is agent-ready when four things hold, each one checkable:"},
+      {"type": "list", "items": [
+        "Reachable — the agent can find the product from a natural-language query, which means the title, category and attribute data carry the customer’s words, not the internal ones.",
+        "Readable — the facts the agent would quote (price, availability, the key specs) exist in the machine-readable view of the store, not only in the rendered page a human sees.",
+        "Verifiable — the machine-readable facts agree with the page and with the source of truth. One agreement is a page; three agreements (admin, page, feed/schema) are a fact.",
+        "Trustworthy — the journey the agent hands off, from recommendation to product page to cart, keeps every claim it made. The handoff is where the recommendation either stands or dies."
+      ]},
+      {"type": "p", "text": "Notice the last one, because it’s the part most “AI optimisation” work skips: the agent doesn’t just read your page, it [[sends customers to it]] with a set of quoted claims attached. The page has to stand behind those claims, on the device the customer actually has, in the state the customer actually arrives in. That’s a QA problem with a journey in it, and that’s why this post is a testing procedure instead of a content guide."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/shopify-product-page-qa-ai-shopping-agents-source.jpg", "alt": "A laptop showing blurred page source code beside a printed note of checked fields"},
+        {"src": "/images/blog/shopify-product-page-qa-ai-shopping-agents-phone.jpg", "alt": "A phone showing a blurred product page next to a laptop with a blurred product admin panel"}
+      ]},
+      {"type": "h2", "text": "Part one — the product data audit, in the admin"},
+      {"type": "p", "text": "The first part runs entirely in Shopify admin, on a sample — top ten sellers, five recent arrivals, five long-tail — the same sampling from the [data quality checklist](/blogs/product-data-quality-checklist-ai-search), because the defects are the same class: the feed-imported and bulk-synced products fail, the human-entered ones pass. Per product, the pass is:"},
+      {"type": "list", "items": [
+        "The title in customer words — the product, the category, the defining attribute. Not the internal code, not the season, not the promo. The title is the field retrieval matches on, so it’s the field an agent query lives or dies by.",
+        "The attributes that carry comparison — material, size range, fit, the key specs — filled with real values, in one vocabulary across the catalog. The checklist’s consistency section, applied where it matters most for matching.",
+        "The variants complete and honest — every combination that exists listed, the ones that don’t marked unavailable, and the names consistent so “XL” and “Extra Large” stop being two different things.",
+        "The media — one image per variant where it matters, and alt text on every image written for a human, because it’s the only voice the visual layer has for a machine that reads words.",
+        "The price and availability truth — the admin record checked against the live page and against the feed, the three-surface check that caught the stale price in my opening story. This is the single highest-value check in the whole process, and it’s the one stores never do, because it needs two screens open and a moment of suspicion."
+      ]},
+      {"type": "p", "text": "The output of part one is the usual audit shape: findings with reproductions, ranked by the money path first. A stale price on a best seller is a launch-class defect in agent terms, because the agent is the surface where the wrong price gets quoted to a stranger with intent — the worst possible audience for a trust defect."},
+      {"type": "h2", "text": "Part two — the machine-readable layer: what the agent actually reads"},
+      {"type": "p", "text": "Here’s the principle the whole part rests on, and the one most audits get wrong by assuming: [[the agent reads what the browser sends, not what the theme renders]]. A theme can render a price the admin never stored, a feed can carry a field the page doesn’t show, and a schema block can be a copy-paste from last year’s product. Each is invisible on the page and fully visible to the machine. So part two is the check of the machine’s view, layer by layer:"},
+      {"type": "list", "items": [
+        "The feed or channel sync — export it, and compare the same fields you just checked in the admin: name, price, availability, the key attributes. The feed is what assistants and external channels read, so a feed that disagrees with the admin is the store disagreeing with itself on the surface the agent trusts.",
+        "The structured data in the rendered source — open the page source, find the product schema, and check the four fields that carry claims: name, description, price, availability. The classic finds: a schema block copy-pasted between products, still carrying its predecessor’s price, and an availability flag the theme computes one way and the schema computes another.",
+        "The metafields that carry the extras — the specs, the certifications, the comparison attributes that live in metafields because the standard fields ran out. They’re invisible in most admin views and invisible in most audits, which is exactly where a silent gap hides: the field exists, the value is blank, and the agent reads the blank as absence.",
+        "The rendered truth for facts that need scripts — the price after a discount app rewrites it, the availability after an inventory app updates it. Check what the page sends after JavaScript runs, because that’s the version the index and the agent see, and it’s the version that drifts from the admin the moment an app does its job."
+      ]},
+      {"type": "p", "text": "Part two is where my opening story lives: the page was right, the admin was right, and the feed was wrong — a three-surface disagreement where two surfaces agreed, which is the configuration that passes a casual check and fails the agent. The pass criterion is blunt: one truth, every surface identical. Same rule as [the cross-surface section of the data checklist](/blogs/product-data-quality-checklist-ai-search), extended to the surfaces a Shopify store actually has."},
+      {"type": "h2", "text": "Part three — the journey under the agent"},
+      {"type": "p", "text": "Parts one and two check the record. Part three checks what happens when a machine sends a human to the page, because the handoff is a journey with a claim set attached. I run it as a test, not a browse:"},
+      {"type": "list", "ordered": true, "items": [
+        "Ask, in customer language, in at least two different tools — the use case, the budget, the constraint, in the words a buyer would use. Note what gets shortlisted. A product the store sells and the tools can’t surface is a reachability defect, and the fix is in part one’s title and attributes, not in the tools.",
+        "Land on the product page the agent quoted. Check the quoted facts against the page: the price the agent stated, the availability it implied, the spec it cited. The page has to stand behind the agent’s sentence, or the recommendation dies at the boundary and the store takes the blame for a lie it didn’t write.",
+        "Walk the money path from there — add to cart, the drawer, the checkout reachability — on a phone at 390px, because the customer the agent sends arrives on a phone with one thumb. The journey has to survive the arrival state: fresh session, no history, the product the agent described. That’s the [mobile testing](/shopify-mobile-testing) and [checkout testing](/shopify-checkout-testing) scope, run with the agent’s claims as the acceptance criteria.",
+        "Check the post-purchase surface for the same order — thank-you page, order email — because the agent’s quote becomes the store’s promise the moment the order exists, and a promise that changes after the sale is the trust defect with the longest half-life."
+      ]},
+      {"type": "p", "text": "The output is a claim trace: every fact the agent stated, every surface it was checked against, and the agreement or the gap. That trace is the evidence a normal audit produces for a normal journey, and it’s the difference between “I think we’re agent-ready” and “here is the record of the claims, checked, with the two gaps and their dates.”"},
+      {"type": "h2", "text": "Part four — the regression cadence that keeps it true"},
+      {"type": "p", "text": "The process is a one-time cleanup only in the way a cleaning is: the store changes under the check. Apps update, themes redeploy, feeds re-sync, seasonal products rotate in, and every one of those is a fresh chance for the three surfaces to drift apart again — which is why part four is a cadence, not a conclusion:"},
+      {"type": "list", "items": [
+        "A weekly agent query — one product, asked in customer language, across the two tools, with the quoted facts checked against the live page. Ten minutes. It’s the canary that turns “we’re agent-ready” from a past tense into a present one.",
+        "A post-change check — after every theme deploy, app install or config change, and every feed re-sync: the three-surface price and availability check on the top sellers. The change is the event that creates the drift, so the check attaches to the change, not to the calendar.",
+        "A monthly full sample — the thirty-product data pass and the claim trace, compared against the last month’s findings. The comparison is the point: it tells you whether the process is holding or merely running.",
+        "The defect log, kept — every gap found, its surfaces, its fix and its re-test. When the same gap class appears twice, it’s a process defect, not a typo, and the log is the evidence that says so."
+      ]},
+      {"type": "p", "text": "That cadence is the [regression testing](/shopify-regression-testing) scope pointed at the agent surface, and it’s the same captured-states discipline the rest of the [Shopify QA testing](/shopify-qa-testing) practice runs on the human journey — the difference is that the agent surface has no complaints channel. When the human journey breaks, the customer emails. When the agent surface drifts, nobody emails; the store just stops being recommended, and the absence is exactly as quiet as the stale price in my opening story was."},
+      {"type": "image", "src": "/images/blog/shopify-product-page-qa-ai-shopping-agents-cadence.jpg", "alt": "A desk with a laptop, a phone and a printed weekly checklist of checked boxes, warm natural light"},
+      {"type": "h2", "text": "The sixty-minute quick pass"},
+      {"type": "p", "text": "For the store that can’t stop to run the full process, the compressed version — an hour, the highest-yield checks in order:"},
+      {"type": "checklist", "title": "The one-hour agent-readiness pass", "items": [
+        "Five products, top sellers: admin record against live page against feed — price, availability, key spec. Twenty minutes. This is the part that catches the stale-record defect, the one that costs the most.",
+        "One product’s page source: the schema’s name, price, availability against the page. Ten minutes. The copy-paste schema is the common find, and it’s a five-minute check.",
+        "Two agent queries for that product, in customer language, across two tools — what’s shortlisted, and whether the store’s product is in it. Ten minutes.",
+        "The money path from the agent’s landing, on a phone: add to cart, drawer, checkout reachable. Fifteen minutes."
+      ]},
+      {"type": "p", "text": "An hour buys the two defects that matter most — the stale record and the unreachable product — and the habit of checking both. The full four-part process is what [a Shopify QA audit](/shopify-qa-audit) runs at scope, with the findings written up per product and per surface; and if the store wants the whole picture — agent surface, human journey and data record on one verified table — [start with the audit](/audit), the way [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) shows the method run to its end."},
+      {"type": "cta", "title": "Run the agent-readiness audit", "text": "The four parts, run across your Shopify store: the data pass, the machine-readable layer, the claim trace and the cadence — with every gap documented and dated.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "Do AI shopping agents actually read Shopify feeds and schema?", "answer": "They read whatever machine-readable view of your store they have access to — feeds, channel syncs, structured data, and the indexable page content. The exact mix varies by tool, which is why the process checks all the surfaces: you can’t know which one the agent will trust, so all of them have to agree."},
+      {"question": "How is this different from classic Shopify QA?", "answer": "It isn’t, really — it’s the same method with a new surface. Classic QA walks the human journey and checks the claims; agent QA walks the machine’s view of the same store and checks the same claims on the surfaces the machine reads. The defect classes are identical; the blast radius is new, because the agent quotes the defect to strangers."},
+      {"question": "What’s the fastest way to find out if we have the stale-record problem?", "answer": "The twenty-minute part of the quick pass: five top sellers, admin against page against feed, on price and availability. If any of the three disagrees, you have the problem, and the feed or the schema is almost always the surface that drifted — it’s the one nobody looks at, which is why it’s the one that’s wrong."},
+      {"question": "Does this guarantee the store will be recommended by agents?", "answer": "No — be wary of anyone who promises it. What it does is make the store’s data stop being the reason it isn’t: reachable, readable, verified, and standing behind its own claims. Which is the part the store controls, and the part that’s checkable instead of hoped for."},
+      {"question": "How often should the full process run?", "answer": "The cadence in part four is the answer: weekly canary, post-change checks, monthly full sample. The full four-part process itself runs at launch, at major catalog changes, and whenever the defect log shows a gap class recurring — that’s when the process, not just the store, needs the audit."}
+    ],
+    "sources": [
+      {"label": "Shopify.dev — the product object", "url": "https://shopify.dev/docs/api/admin-rest/reference/product"},
+      {"label": "Google Search Central — product structured data", "url": "https://developers.google.com/search/docs/appearance/structured-data"},
+      {"label": "Shopify Help Center — selling products online", "url": "https://help.shopify.com/en/manual/products"}
+    ]
+  },
 ]
