@@ -1029,4 +1029,112 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "web.dev — Optimize Largest Contentful Paint", "url": "https://web.dev/articles/optimize-lcp"}
     ]
   },
+  {
+    "id": 9202,
+    "slug": "product-data-quality-checklist-ai-search",
+    "title": "A Product Data Quality Checklist for AI Search",
+    "excerpt": "The QA checklist I run on catalogs before recommending anything else: completeness, accuracy, consistency, cross-surface truth, and the routine that keeps data clean after imports.",
+    "articleType": "guide",
+    "category": "AI Commerce",
+    "tags": ["product data quality", "AI search", "QA checklist", "catalog audit", "ecommerce QA"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "product data quality checklist",
+    "searchIntent": "informational / problem-solving — a QA checklist for catalog data",
+    "metaTitle": "Product Data Quality Checklist for AI Search",
+    "metaDescription": "A QA checklist for catalog data: completeness, accuracy, consistency, cross-surface truth and the post-import routine. Run it on five products first.",
+    "heroImage": "/images/blog/product-data-quality-checklist-ai-search-hero.jpg",
+    "heroAlt": "A QA specialist at a desk checking product samples against printed data sheets with a red pen, natural light",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-10T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "The store that taught me to treat product data as a testing target found out the hard way, in the usual fashion: nothing crashed. A feed update had quietly rewritten the attribute fields on four hundred products — materials blank, variant names shuffled — and the first sign anyone noticed was a customer complaining that an AI assistant was recommending a fabric the product didn’t have. The dashboard said everything was fine. The store was simply answering wrong. That’s the class of failure this checklist exists for: the data defect that never raises an alert, because nothing broke — it just got less true."},
+      {"type": "p", "text": "If you want the machine-side background first, [how AI shopping tools understand product data](/blogs/how-ai-shopping-tools-understand-product-data) walks the four stages where these defects cause drops, and [structuring product data for AI search](/blogs/structuring-product-data-for-ai-search) is the implementation guide. This is the QA side of the same coin: not how to build the structure, but how to verify it — what to check, in what order, with what pass criteria, and how to turn the result into a routine instead of a one-off cleanup."},
+      {"type": "h2", "text": "What “good” product data means for AI search"},
+      {"type": "p", "text": "Before the checklist, the definition, because “quality” gets used loosely. For this purpose, good product data is [[complete]] — the fields that matter are filled, not just present; [[accurate]] — the values are true of the actual product; [[consistent]] — the same thing is named the same way across the catalog; and [[cross-surface honest]] — the admin record, the live page, the feed and the structured data all agree. Add one quality that machines especially need: [[specificity]] — at least one claim per product that is verifiable and not interchangeable with every competitor’s boilerplate."},
+      {"type": "p", "text": "Notice what’s missing from that list: keywords. There is a reason for that, and it’s the single biggest mindset shift. You are not checking whether the data ranks. You are checking whether the data is true, complete and comparable — because the machine’s job is to extract facts, and a fact you can’t verify is a fact you lose."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/product-data-quality-checklist-ai-search-materials.jpg", "alt": "Hands checking a fabric sample against a printed specification card on a desk"},
+        {"src": "/images/blog/product-data-quality-checklist-ai-search-admin.jpg", "alt": "A laptop with a blurred product admin panel beside a checklist of sticky notes"}
+      ]},
+      {"type": "h2", "text": "The inventory: what to check first, and how much"},
+      {"type": "p", "text": "Don’t check everything on day one — that’s how checklists die of their own length. Sample deliberately, the way I sample in an audit: your top ten sellers (they carry the money path), five recent arrivals (they carry the current process), and five random long-tail products (they carry the neglected truth). Thirty products tells you almost everything a full catalog would, at a tenth of the time. The pattern is remarkably consistent store to store: human-entered products pass; feed-imported and bulk-synced products fail — and nobody noticed, because a blank material field produces no error, it produces silence."},
+      {"type": "p", "text": "One rule governs the whole exercise: every finding must be reproducible. “Some attributes look off” is not a finding. “Product 4471-A, medium size: admin says wool blend, live page says polyester, feed is empty” is a finding — three surfaces, three answers, one screenshot each. That standard is what separates a QA pass from a nervous look through the catalog."},
+      {"type": "h2", "text": "Section 1 — Completeness: are the fields actually filled?"},
+      {"type": "list", "items": [
+        "Titles describe the product in customer words — not an internal code, not a promo line, not a season.",
+        "Every attribute that matters to comparison is filled: material, size range, care, fit, compatibility — present is not enough; filled with a real value.",
+        "Variant options are complete: every size/colour combination that exists is listed, and the ones that don’t are marked unavailable rather than omitted.",
+        "Images: at least one per variant, and alt text on every one — alt text written for a human, because the machine reads it as the visual layer’s only voice."
+      ]},
+      {"type": "p", "text": "The pass criterion is blunt: zero empty fields among the fields a customer or an assistant would actually compare on. Empty fields are not neutral — to a machine they are a loud “absent”, which changes both extraction and comparison against the competitors who did fill them."},
+      {"type": "h2", "text": "Section 2 — Accuracy: are the values true?"},
+      {"type": "p", "text": "Completeness says the field has a value. Accuracy asks whether the value survives contact with the product. In audits this is where I slow down, because wrong values are worse than missing ones: a machine that extracts “waterproof” for a water-resistant product will quote it confidently, and the return arrives in a week."},
+      {"type": "list", "items": [
+        "Pull one sample product physically (or from photos/videos) and check each spec claim against it: material, dimensions, weight, care.",
+        "Check the claims with teeth — the ones with a number in them. Numbers are the most extractable facts and the most damaging when wrong.",
+        "Check the price ladder: compare, sale, and threshold values. A sale price that implies a discount that doesn’t exist is a trust defect with a number attached."
+      ]},
+      {"type": "p", "text": "The pass criterion: every sampled spec matches the physical product, and every numeric claim could survive a customer verifying it at home. If one in twenty fails, assume the whole imported batch does — because the error almost always has a systemic cause: a template, a feed column, a translator."},
+      {"type": "h2", "text": "Section 3 — Consistency: does the catalog speak one language?"},
+      {"type": "p", "text": "This section is about the catalog agreeing with itself. A machine that reads “XL” in one product and “Extra Large” in the next treats them as different things; a customer who bought the XL in one order can’t find the matching second pair. Consistency defects are invisible in any single product — you only see them across the catalog, which is why they need a checklist."},
+      {"type": "list", "items": [
+        "Variant naming: pick one vocabulary (one of: “L”, “Large”, “Large (40–42)”) and verify it across every product. Mixed usage is a fail, even if each page looks fine alone.",
+        "Attribute vocabulary: the same material is never three spellings. Build the small list of canonical terms and grep for the variants.",
+        "Category placement: a product is not in three overlapping categories as a hedge, and it is not in a category that describes the season instead of the product.",
+        "Units and formats: one system of measurement, one date format, one way of writing availability."
+      ]},
+      {"type": "p", "text": "The pass criterion: a stranger who has never seen your catalog can predict the naming of any product from any other. When in doubt, the customer’s word wins over the internal one — the machine matches meaning, and the customer’s word is the meaning."},
+      {"type": "h2", "text": "Section 4 — Cross-surface truth: does the store agree with itself?"},
+      {"type": "p", "text": "This is the section that catches the failure that started this post. The admin record, the live page, the feed and the structured data are four surfaces of the same truth — and they drift. Apps rewrite variants, feeds carry stale prices, themes render prices from the wrong field, schema blocks get copy-pasted between products and never updated."},
+      {"type": "image", "src": "/images/blog/product-data-quality-checklist-ai-search-surfaces.jpg", "alt": "A desk with three products, their label cards and a comparison notebook, inspected with a magnifying glass"},
+      {"type": "list", "items": [
+        "Open the admin record and the live page for the same product: price, stock, size range, spec. Any disagreement is a major finding, not a note.",
+        "Export the feed (or the channel sync) and compare the same fields. The feed is what assistants and external channels read — if it disagrees, the outside world disagrees with you.",
+        "Inspect the structured data in the page source: product name, price, availability, GTIN. The most common find: schema copy-pasted from another product, still carrying its price.",
+        "Check the availability claims against reality: “in stock” on a product that ships in three weeks is an over-promise, and assistants learn to discount stores that over-promise."
+      ]},
+      {"type": "p", "text": "The pass criterion: one truth, four identical renderings. I assign this section the highest severity of all, because it’s the only one that makes the store look dishonest rather than incomplete — and dishonesty is the one defect a machine never forgets."},
+      {"type": "h2", "text": "Section 5 — Specificity: can this product be defended in one sentence?"},
+      {"type": "p", "text": "The last section is the one classic data audits miss, because it looks like a marketing task. It isn’t — it’s extractability. For each sampled product, try to write the one sentence an AI answer would use to defend recommending it: a specific, verifiable reason with a fact attached. “Waterproof to 10,000mm, so it holds up in heavy rain.” “Wool blend that resists odour, so one pair lasts a full work week.” If you can’t write the sentence, the product has nothing for the answer stage to cite — it will lose the comparison even when it wins the product."},
+      {"type": "p", "text": "The pass criterion: every top seller has at least one defensible sentence that exists somewhere the machine can read it — in the title, the description, or an attribute. Bonus points if it’s a sentence a competitor can’t copy, because specificity you share is specificity you don’t have."},
+      {"type": "h2", "text": "Scoring the findings: what to fix first"},
+      {"type": "p", "text": "With findings in hand, resist the urge to fix them in the order the checklist produced them. I rank them the way every audit on this site does: by revenue impact, with the money path first. A price disagreement on a best seller outranks a missing attribute on the long tail, every time — not because the long tail doesn’t matter, but because the best seller is the product an assistant will quote, and a wrong quote there costs more in trust than in returns."},
+      {"type": "list", "items": [
+        "Major — cross-surface disagreement on price, stock or spec, anywhere on the money path. Fix before anything else.",
+        "High — wrong or missing spec on a top seller; inconsistent naming on a compared attribute; schema carrying another product’s data.",
+        "Medium — missing fields and alt text on long-tail products; vocabulary drift; category hedges.",
+        "Low — specificity gaps, formatting nits, anything cosmetic. Fix in batches, not fires."
+      ]},
+      {"type": "p", "text": "And one rule from the audit room: every finding ships with its reproduction — the product, the fields, the surfaces, the screenshot. A fix list without reproductions is a mood, and a mood doesn’t survive the next feed update."},
+      {"type": "h2", "text": "From one-time cleanup to routine"},
+      {"type": "p", "text": "The cleanup is the easy part, because the catalog will re-mess itself the day you finish. Feeds run on schedules, apps run on their own, and every seasonal sync is a fresh chance for the four hundred products to silently drift. So the checklist’s real deliverable is a routine, and the routine is deliberately small:"},
+      {"type": "list", "ordered": true, "items": [
+        "After every import or feed change: run sections 1 and 4 on a random ten products. Twenty minutes, done before lunch.",
+        "Weekly: run section 3 on five new products — the vocabulary check catches drift while it’s cheap.",
+        "Monthly: re-run the full sample (top sellers, arrivals, long tail) and compare against last month’s findings. The comparison is the point — it tells you whether the process is getting better or just busy.",
+        "Whenever an assistant quotes something wrong: that’s a live defect report. Reproduce it, find the surface that lied, and add the case to the checklist."
+      ]},
+      {"type": "image", "src": "/images/blog/product-data-quality-checklist-ai-search-routine.jpg", "alt": "A whiteboard covered in blurred handwritten audit notes beside a desk with product samples"},
+      {"type": "p", "text": "That’s the entire system: a small sample, four surfaces, one truth, and a cadence. It fits in an afternoon to stand up, and it stays in an afternoon to run. The stores that master AI-search visibility are not the ones that hired a bigger data team — they’re the ones where the data stopped drifting, because someone treats it as something that breaks."},
+      {"type": "h2", "text": "When to bring in a QA audit"},
+      {"type": "p", "text": "The checklist is yours to run, and most of it doesn’t need anyone but you. But there are two situations where I’d recommend getting eyes on it that haven’t seen the store: when the findings are systemic (the same defect across hundreds of products points at a process, not a person), and when the cross-surface drift involves the feed or the schema in ways the theme team and the data team both assume are the other team’s job. That’s exactly what [a Shopify QA audit](/shopify-qa-audit) produces — the same checks, run across the whole money path and documented per finding — and it’s the natural first step in the wider [Shopify QA testing](/shopify-qa-testing) scope when the catalog and the checkout both need it. Once the data is verified, the next questions are how to keep [AI-generated descriptions honest](/blogs/qa-ai-generated-product-descriptions) and how to make the whole page [agent-ready](/blogs/shopify-product-page-qa-ai-shopping-agents)."},
+      {"type": "cta", "title": "Get the checklist run as an audit", "text": "The same sections, run across your catalog and your money path — every finding with its reproduction, ranked by what it costs you.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "How many products do I really need to check?", "answer": "Start with thirty: ten top sellers, five recent arrivals, five random long-tail. That sample reveals the systemic causes — the feed, the template, the app — and systemic causes are what matter. The full catalog gets cleaned by fixing the cause, not by checking every row."},
+      {"question": "Is this different from just cleaning the data once?", "answer": "The cleanup is section 1–5. The point of the checklist is the routine around it: post-import checks, a weekly vocabulary sample, a monthly re-run. Catalogs re-mess themselves; the cadence is what keeps them honest."},
+      {"question": "Which section should I start with?", "answer": "Section 4 — cross-surface truth. It’s the only one that makes the store look dishonest rather than incomplete, it’s where the highest-severity findings live, and it’s the one a one-time cleanup never addresses, because the surfaces drift again."},
+      {"question": "Do I need a developer for any of this?", "answer": "Sections 1, 2, 3 and 5 are plain editing — titles, attributes, alt text, one-sentence claims. Section 4 often needs a developer once the cause is a feed mapping or a theme rendering the wrong field. The audit’s job is to tell you which is which before it costs you."},
+      {"question": "Does this guarantee my products will appear in AI answers?", "answer": "No — and be suspicious of anyone who promises it. It guarantees your data stops being the reason you’re dropped. Which, in practice, is the part you can control."}
+    ],
+    "sources": [
+      {"label": "Shopify.dev — the product object", "url": "https://shopify.dev/docs/api/admin-rest/reference/product"},
+      {"label": "Google Search Central — product structured data", "url": "https://developers.google.com/search/docs/appearance/structured-data"},
+      {"label": "Shopify Help Center — selling products online", "url": "https://help.shopify.com/en/manual/products"}
+    ]
+  },
 ]
