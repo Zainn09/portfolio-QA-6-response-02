@@ -16,7 +16,7 @@ import type { BlogArticle } from "@/data/articles";
  */
 export const editorialArticles: BlogArticle[] = [
   {
-    "id": 9101,
+    9101,
     "title": "How AI Understands Product Data",
     "slug": "how-ai-understands-product-data",
     "excerpt": "AI shopping assistants don’t read your store the way customers do. What they actually parse, where catalogs quietly fail, and the ten-minute self-check that fixes most of it.",
@@ -33,7 +33,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A product manager reviewing product data on a laptop in a sunlit studio",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-12T09:00:00Z",
+    "publishedAt": "2026-10-15T09:00:00Z",
     "readingTime": 10,
     "featured": false,
     "body": [
@@ -111,7 +111,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9102,
+    9102,
     "slug": "structuring-product-data-for-ai-search",
     "title": "Structuring Product Data for AI Search",
     "excerpt": "A practical, step-by-step guide to structuring titles, attributes and descriptions so AI search and shopping assistants can find, compare and recommend your products.",
@@ -128,7 +128,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "Hands organizing printed product photo cards next to a laptop on a wooden desk",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-10T09:00:00Z",
+    "publishedAt": "2026-10-20T09:00:00Z",
     "readingTime": 10,
     "featured": false,
     "body": [
@@ -210,7 +210,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9103,
+    9103,
     "title": "How to Write High-Converting PDP Copy",
     "slug": "how-to-write-high-converting-pdp-copy",
     "excerpt": "The product detail page is where the purchase actually happens. A friendly, practical guide to PDP copy that answers questions, handles objections and turns browsers into buyers.",
@@ -227,7 +227,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A copywriter's hands writing notes beside a styled flat lay of a folded sweater",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-08T09:00:00Z",
+    "publishedAt": "2026-10-14T09:00:00Z",
     "readingTime": 10,
     "featured": false,
     "body": [
@@ -311,7 +311,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9104,
+    9104,
     "slug": "pdp-copywriting-for-ai-and-search-engines",
     "title": "PDP Copywriting for AI and Search Engines",
     "excerpt": "Your product copy now has three readers: humans, search engines and AI assistants. How to write PDP text that serves all three without sounding robotic or stuffed.",
@@ -328,7 +328,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A professional typing on a laptop with product photos pinned on the wall behind",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-07T09:00:00Z",
+    "publishedAt": "2026-10-11T09:00:00Z",
     "readingTime": 10,
     "featured": false,
     "body": [
@@ -403,7 +403,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9105,
+    9105,
     "title": "How AI Diamond Shopping Assistants Work",
     "slug": "how-ai-diamond-shopping-assistants-work",
     "excerpt": "AI diamond buying assistants promise to simplify the 4Cs. A plain-language look at how they actually work — what the models do well, where they still need human judgment, and how to verify the data behind the recommendations.",
@@ -420,7 +420,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A close-up of a brilliant-cut diamond held in tweezers above a laptop screen",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-05T09:00:00Z",
+    "publishedAt": "2026-10-16T09:00:00Z",
     "readingTime": 9,
     "featured": false,
     "body": [
@@ -496,7 +496,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9106,
+    9106,
     "title": "How AI Helps You Choose the Right Diamond",
     "slug": "how-ai-helps-choose-the-right-diamond",
     "excerpt": "Shopping for a diamond online means trading off the 4Cs against a budget. How AI assistants turn that trade-off into a guided conversation — and how to judge what they recommend.",
@@ -513,7 +513,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A ring box on a desk next to a laptop showing diamond comparison cards",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-03T09:00:00Z",
+    "publishedAt": "2026-10-12T09:00:00Z",
     "readingTime": 9,
     "featured": false,
     "body": [
@@ -595,7 +595,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9107,
+    9107,
     "title": "Why Quality Assurance Matters in Ecommerce",
     "slug": "why-quality-assurance-matters-in-ecommerce",
     "excerpt": "A broken checkout, a wrong variant, a slow page — each small failure is a silent revenue leak. What ecommerce QA actually covers, and how a structured audit finds the problems before your customers do.",
@@ -612,7 +612,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A tester's laptop showing a browser dev tools console next to a mobile phone mid-checkout",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-01T09:00:00Z",
+    "publishedAt": "2026-10-06T09:00:00Z",
     "readingTime": 9,
     "featured": false,
     "body": [
@@ -684,7 +684,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9108,
+    9108,
     "title": "AI-Powered QA for Product Data and Content",
     "slug": "ai-powered-qa-for-product-data-and-content",
     "excerpt": "Thousands of SKUs, each with a variant, a price, an image, a claim. Human-only QA can’t cover the catalog — and neither can unchecked AI. How the two work together in a QA workflow that actually scales.",
@@ -701,7 +701,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A developer's workspace with a code editor showing validation rules and a product data table",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-09-30T09:00:00Z",
+    "publishedAt": "2026-10-07T09:00:00Z",
     "readingTime": 9,
     "featured": false,
     "body": [
@@ -768,7 +768,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9109,
+    9109,
     "title": "Generative Engine Optimization for Ecommerce Stores",
     "slug": "generative-engine-optimization-for-ecommerce",
     "excerpt": "Your customers are increasingly asking AI assistants what to buy — not searching, asking. Generative engine optimization is how your store gets found inside the answer. What GEO actually is, and a practical seven-day starter for ecommerce.",
@@ -785,7 +785,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A chat-style AI interface on a laptop screen with product recommendation cards",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-10-13T09:00:00Z",
+    "publishedAt": "2026-10-17T09:00:00Z",
     "readingTime": 10,
     "featured": true,
     "body": [
@@ -855,7 +855,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    "id": 9110,
+    9110,
     "title": "Building Trust in AI-Powered Online Shopping",
     "slug": "building-trust-in-ai-powered-online-shopping",
     "excerpt": "AI assistants now sit between the shopper and the store — recommending, summarising, even negotiating. What it takes for a store to be the one the AI recommends, and the trust signals that carry it. A QA-led look at trust in the age of the AI purchase.",
@@ -872,7 +872,7 @@ export const editorialArticles: BlogArticle[] = [
     "heroAlt": "A shopper's phone showing a chat assistant recommending a product, with a secure checkout icon",
     "author": "Zain",
     "authorRole": "Founder & QA Lead",
-    "publishedAt": "2026-09-29T09:00:00Z",
+    "publishedAt": "2026-10-18T09:00:00Z",
     "readingTime": 10,
     "featured": false,
     "body": [
