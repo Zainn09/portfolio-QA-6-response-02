@@ -3,20 +3,21 @@ import type { BlogArticle } from "@/data/articles";
 /**
  * Editorial series — AI × product data × QA (added 2026-10-13, expanded 2026-10-14).
  *
- * Ten hand-written, SEO-optimised posts covering how AI reads product data,
- * PDP copywriting, AI diamond shopping, why QA matters, GEO and trust in
- * AI-powered commerce. Unlike src/data/articles.ts (generated), this file is
+ * Twenty hand-written, SEO-optimised posts covering how AI reads product
+ * data, PDP copywriting, AI diamond shopping, why QA matters, GEO and trust
+ * in AI-powered commerce. Unlike src/data/articles.ts (generated), this file is
  * maintained by hand — it is safe to edit directly.
  *
  * Format notes:
  * - Body text supports [text](/href) for internal links and [[phrase]] for a
  *   QA "flagged" highlight (see .flagged in globals.css).
- * - Dated across the last 15 days (29 Sep – 13 Oct 2026), with the trending
- *   GEO post (9109) published most recently, as the priority of the series.
+ * Dated across the last 15 days (6 – 20 Oct 2026), interleaved with the
+ * second wave (9201 – 9210) below, which differentiates the same topics
+ * from a new angle per post.
  */
 export const editorialArticles: BlogArticle[] = [
   {
-    9101,
+    "id": 9101,
     "title": "How AI Understands Product Data",
     "slug": "how-ai-understands-product-data",
     "excerpt": "AI shopping assistants don’t read your store the way customers do. What they actually parse, where catalogs quietly fail, and the ten-minute self-check that fixes most of it.",
@@ -111,7 +112,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9102,
+    "id": 9102,
     "slug": "structuring-product-data-for-ai-search",
     "title": "Structuring Product Data for AI Search",
     "excerpt": "A practical, step-by-step guide to structuring titles, attributes and descriptions so AI search and shopping assistants can find, compare and recommend your products.",
@@ -210,7 +211,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9103,
+    "id": 9103,
     "title": "How to Write High-Converting PDP Copy",
     "slug": "how-to-write-high-converting-pdp-copy",
     "excerpt": "The product detail page is where the purchase actually happens. A friendly, practical guide to PDP copy that answers questions, handles objections and turns browsers into buyers.",
@@ -311,7 +312,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9104,
+    "id": 9104,
     "slug": "pdp-copywriting-for-ai-and-search-engines",
     "title": "PDP Copywriting for AI and Search Engines",
     "excerpt": "Your product copy now has three readers: humans, search engines and AI assistants. How to write PDP text that serves all three without sounding robotic or stuffed.",
@@ -403,7 +404,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9105,
+    "id": 9105,
     "title": "How AI Diamond Shopping Assistants Work",
     "slug": "how-ai-diamond-shopping-assistants-work",
     "excerpt": "AI diamond buying assistants promise to simplify the 4Cs. A plain-language look at how they actually work — what the models do well, where they still need human judgment, and how to verify the data behind the recommendations.",
@@ -496,7 +497,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9106,
+    "id": 9106,
     "title": "How AI Helps You Choose the Right Diamond",
     "slug": "how-ai-helps-choose-the-right-diamond",
     "excerpt": "Shopping for a diamond online means trading off the 4Cs against a budget. How AI assistants turn that trade-off into a guided conversation — and how to judge what they recommend.",
@@ -595,7 +596,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9107,
+    "id": 9107,
     "title": "Why Quality Assurance Matters in Ecommerce",
     "slug": "why-quality-assurance-matters-in-ecommerce",
     "excerpt": "A broken checkout, a wrong variant, a slow page — each small failure is a silent revenue leak. What ecommerce QA actually covers, and how a structured audit finds the problems before your customers do.",
@@ -684,7 +685,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9108,
+    "id": 9108,
     "title": "AI-Powered QA for Product Data and Content",
     "slug": "ai-powered-qa-for-product-data-and-content",
     "excerpt": "Thousands of SKUs, each with a variant, a price, an image, a claim. Human-only QA can’t cover the catalog — and neither can unchecked AI. How the two work together in a QA workflow that actually scales.",
@@ -768,7 +769,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9109,
+    "id": 9109,
     "title": "Generative Engine Optimization for Ecommerce Stores",
     "slug": "generative-engine-optimization-for-ecommerce",
     "excerpt": "Your customers are increasingly asking AI assistants what to buy — not searching, asking. Generative engine optimization is how your store gets found inside the answer. What GEO actually is, and a practical seven-day starter for ecommerce.",
@@ -855,7 +856,7 @@ export const editorialArticles: BlogArticle[] = [
     ]
   },
   {
-    9110,
+    "id": 9110,
     "title": "Building Trust in AI-Powered Online Shopping",
     "slug": "building-trust-in-ai-powered-online-shopping",
     "excerpt": "AI assistants now sit between the shopper and the store — recommending, summarising, even negotiating. What it takes for a store to be the one the AI recommends, and the trust signals that carry it. A QA-led look at trust in the age of the AI purchase.",
@@ -937,7 +938,7 @@ export const editorialArticles: BlogArticle[] = [
     "sources": [
       {"label": "Baymard Institute — trust signals and conversion", "url": "https://baymard.com/lists/online-store-trust-signals"}
     ]
-  }
+  },
   {
     "id": 9201,
     "slug": "how-ai-shopping-tools-understand-product-data",
