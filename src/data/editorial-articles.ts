@@ -2293,4 +2293,103 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Shopify Help Center — product titles and descriptions", "url": "https://help.shopify.com/en/manual/products"}
     ]
   },
+
+  {
+    "id": 9301,
+    "slug": "what-is-quality-assurance-in-software-testing",
+    "title": "What Is Quality Assurance in Software Testing?",
+    "excerpt": "A plain-language definition of software quality assurance: how QA works, how it differs from testing, what a QA engineer actually does, and a practical e-commerce example to make it concrete.",
+    "articleType": "guide",
+    "category": "Quality Engineering",
+    "tags": ["quality assurance", "software testing", "QA engineer", "software quality", "testing basics"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "what is quality assurance in software testing",
+    "searchIntent": "informational — beginner definition",
+    "metaTitle": "What Is Quality Assurance in Software Testing?",
+    "metaDescription": "Learn what software quality assurance means, how QA works, the responsibilities of a QA engineer, and how quality practices support reliable software.",
+    "heroImage": "",
+    "heroAlt": "",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-15T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "I get asked this question more than any other in my work, usually in the first ten minutes of a call, and it’s a good question: “You do QA — but what is QA, actually, versus just testing?” The caller usually has a hunch that the two are the same, done at slightly different times, and the hunch is close enough to be dangerous, because it’s the hunch that leads teams to treat QA as a final stage instead of a practice. So this is the definition post: what software quality assurance is, in plain language, what a QA engineer does with their hands, where it sits in the life of a piece of software, and a worked e-commerce example — because an abstract definition of quality is a definition you can’t use."},
+      {"type": "p", "text": "The framing I start from is the one the profession itself uses: [ISTQB, the international body that certifies software testers, defines quality assurance around providing confidence](https://www.istqb.org/) that the software will fulfil its quality requirements. Notice what that definition is and isn’t. It isn’t “finding bugs.” It’s building confidence — for the team, for the product owner, for the customer — that the thing being delivered does what it’s supposed to do. That single reframe is most of the post, and the rest is showing it in the wild."},
+      {"type": "html", "html": "<div style=\"margin:2.5rem 0;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-surface);padding:2.25rem 1.75rem;\"><p style=\"font-family:var(--font-mono);font-size:0.625rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 1.25rem;\">entry — how I define it on a first call</p><p style=\"font-family:var(--font-mono);font-size:0.8125rem;color:var(--text-secondary);margin:0 0 0.5rem;\">quality assurance /ˈkwɒl.ə.ti ˈɒʃ.ʊər.əns/</p><p style=\"font-size:clamp(1.6rem,4.2vw,2.6rem);font-weight:800;line-height:1.12;letter-spacing:-0.02em;color:var(--text-primary);margin:0 0 1rem;\">n. <span style=\"color:var(--accent);\">the practice of earning confidence</span> that the software will do what it’s supposed to do.</p><p style=\"font-family:var(--font-mono);font-size:0.5625rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);margin:0;\">not a final stage · not a bug counter · a practice with a schedule</p></div>"},
+      {"type": "h2", "text": "What is software quality assurance, in plain terms?"},
+      {"type": "p", "text": "Strip the formal language away and QA is a set of activities that answer one question before it becomes someone else’s problem: “will this software meet the quality requirements it was built against, and do we have evidence it will?” The answer has two parts. The first is the work — reviews, test design, test execution, defect management, environment and data checks — done in a way that’s repeatable and documented. The second is the evidence — the records that let a manager, a client, or a future developer see what was checked, what failed, what was fixed, and what’s still open. A QA practice without evidence is an opinion; evidence without the work behind it is theatre. The definition needs both."},
+      {"type": "p", "text": "There’s a second part of the plain definition that matters because it’s where people’s mental models break: QA is a process, and the process has its own quality. You can run excellent tests and still have a bad QA process — tests chosen by whoever had time, executed on whatever environment was free, results reported in a chat message that died in the scroll. The process is what makes the confidence reproducible: next release, next developer, next tester, the same questions get asked, and the same standard applies. That’s the difference between “we tested it” and “we can show it was tested to a standard.”"},
+      {"type": "h2", "text": "How QA differs from software testing"},
+      {"type": "p", "text": "Testing is an activity: you run the software against expectations and observe the behaviour. It has a start (the test case), a middle (the execution), and an end (pass or fail, with evidence). It’s the most visible part of QA, which is why the two get conflated. But testing is one instrument in a larger kit, and the difference shows up the moment a project goes wrong:"},
+      {"type": "list", "items": [
+        "Testing evaluates the product — this build, this feature, right now. QA evaluates the process that produced the build — the requirements it was built from, the environment it was built in, the criteria it was checked against, the decisions that shipped it. When a defect escapes and a test suite should have caught it, testing tells you the test missed it; QA asks why the test wasn’t designed — usually a requirements gap, which no test can find, because tests check what’s specified, and the gap is what wasn’t."
+      ]},
+      {"type": "p", "text": "A concrete way I explain the split: if you could clone the testing and delete everything else, you’d have a very good inspection step. Inspection is valuable — but it’s the last line, and the last line is the most expensive one to rely on. QA is what happens before the last line: the review that catches the requirements gap, the test design that targets the risky path, the regression suite that protects what already works. The [QA vs QC post](/blogs/qa-vs-qc-difference) draws this line in more detail, because quality control is the inspection side, and the confusion between the three — QA, QC, testing — is where most of the terminology pain comes from."},
+      {"type": "h2", "text": "What does a QA engineer actually do, all day?"},
+      {"type": "p", "text": "The job, as I run it and as I’d describe it to a candidate or a client, has five recurring motions. They repeat every week on every project, which is exactly the point — QA is a rhythm, not a rescue:"},
+      {"type": "list", "items": [
+        "Read — the requirements, the design, the change set. QA starts with the document, not the build. A large share of the highest-value findings never come from clicking: they come from reading the acceptance criteria and noticing the case the developer never built because nobody wrote it down.",
+        "Design — the test strategy for the change: which paths carry risk, what the entry and exit criteria are, which environments and data are needed. This is the planning where the effort budget is spent, and where the risk-based prioritisation happens — the same logic as the [QA organisation post](/blogs/how-to-organize-qa-in-software-teams).",
+        "Execute — run the tests: functional walks, edge cases, the error paths, the integration points. On an e-commerce store, this is the money path walked state by state, on a desktop and a phone, with real selections in the cart — the captured-states method the [Shopify QA testing](/shopify-qa-testing) practice runs.",
+        "Report — every finding written the way the [bug report post](/blogs/how-to-report-bugs-to-developers) describes: reproduction, evidence, impact, severity. The report is a deliverable, not a complaint, and its quality determines whether the fix happens this sprint or never.",
+        "Verify — re-run the reproduction on the fix, on every surface the defect could have touched. A fix that hasn’t been re-tested is a hope, and the verification step is what turns the hope into a closed defect with evidence."
+      ]},
+      {"type": "p", "text": "The motions also include the less glamorous but essential work: keeping the test environment honest, maintaining the regression suite, tracking the metrics the [QA visibility post](/blogs/how-to-demonstrate-qa-value) covers, and sitting in the release decision with the evidence in front of the room. None of it is exotic. That’s the nature of the work — the value is in doing the unglamorous motions on schedule, every release, without drama."},
+      {"type": "h2", "text": "Where QA fits in the software development lifecycle"},
+      {"type": "p", "text": "The short answer: everywhere, with different jobs at each stage. The detailed walk — requirements, design, development, integration, release, maintenance — is its own post ([where QA fits in the SDLC](/blogs/where-qa-fits-in-software-development-lifecycle)), but the shape matters for the definition, because it’s the shape that separates a QA practice from a testing team parked at the end:"},
+      {"type": "list", "items": [
+        "Requirements and planning — reviewing acceptance criteria, flagging the ambiguous ones, defining what “done” means for quality before the build starts.",
+        "Design and prototype — reviewing the design for testability and for the cases the build will make impossible to check later.",
+        "Development — participating in code reviews, checking component and unit-level evidence as it lands, keeping the environment usable.",
+        "Integration and system testing — the main execution window: functional, regression, integration, performance where the change touches it.",
+        "Release and handover — release readiness, smoke testing, the handover checklist, the documentation and known-limitations review.",
+        "Production and maintenance — monitoring what escaped, feeding the escapes back into the regression suite, improving the process for the next cycle."
+      ]},
+      {"type": "p", "text": "The word that threads the list is [[left]]: the earlier a quality problem is found, the cheaper it is to fix and the less it costs the schedule. That principle — that QA’s leverage declines the further right you push it — is the reason the [importance of QA at every stage](/blogs/qa-throughout-software-development-lifecycle) is a separate post, and the reason teams that only test at the end pay for the same defects in rework, in rushed releases, and in production tickets."},
+      {"type": "h2", "text": "Common testing types and techniques, briefly"},
+      {"type": "p", "text": "The definition only becomes practical when it names the instruments. The working set, with the job each one does:"},
+      {"type": "list", "items": [
+        "Functional testing — does each feature do what the requirements say, on the happy path and the edge cases. The bread and butter, and the part clients picture.",
+        "Regression testing — does the change break what already worked. The suite that protects the existing behaviour, run on every change, and the reason the [regression discipline](/shopify-regression-testing) exists as its own practice.",
+        "Integration testing — do the pieces work together: the service and the database, the app and the payment provider, the theme and the plugin.",
+        "Non-functional testing — performance, security, accessibility, compatibility. The qualities the feature list doesn’t mention but the users feel.",
+        "Exploratory testing — time-boxed, skill-driven checking where the test design is the tester’s judgment in real time. The technique that finds the defect no checklist anticipated, and one of the skills the [QA skills post](/blogs/how-to-improve-qa-testing-skills) builds deliberately."
+      ]},
+      {"type": "p", "text": "A note on automation, because it belongs in the definition: automation is a multiplier on the tests you can afford to run, not a replacement for the judgment about which tests to write. The [tools post](/blogs/software-qa-testing-tools) covers the practical stack; the definition-level point is that an automated regression suite is what makes the “left” in shift-left testing affordable at all."},
+      {"type": "h2", "text": "A practical example: QA on an e-commerce project"},
+      {"type": "p", "text": "The abstract definition is easy to nod along to, so here’s the concrete one — a pattern I run on the store audits I lead, and the one that best shows the difference between testing and QA in a single engagement. The project: a Shopify store mid-revamp, new theme, a feed sync into channels, a checkout change, and a launch date with a client on the other side of it."},
+      {"type": "list", "ordered": true, "items": [
+        "Before a line of theme code: I review the acceptance criteria with the team. The gap I find in this pass is the one no test would ever have found — the free-shipping threshold is specified on the banner but not in the cart logic, so the two will disagree the day they ship. The fix is a sentence in the spec, and it costs minutes instead of a launch-week defect.",
+        "As the build lands: component-level checks on the variant picker, the cart drawer, the price rendering — the same three-surface honesty (admin, page, feed) that the [data quality checklist](/blogs/product-data-quality-checklist-ai-search) applies to product data, applied to behaviour.",
+        "Integration window: the money path walked end to end, on desktop and a 390px phone, with real selections — add to cart, discount code, quantity change, checkout on every payment route, the thank-you page, the order email. Every state captured, every claim the store makes checked against what the store does.",
+        "Release decision: the evidence in the room — what passed, what failed and was fixed and re-tested, what’s open with its severity and its risk. The client signs a document, not a feeling. That’s the [handover](/blogs/qa-before-client-handover) doing its job.",
+        "After launch: a week of monitoring, the first real orders checked against the captures, and the regression suite updated with the edge cases the live traffic surfaced that the test design hadn’t."
+      ]},
+      {"type": "p", "text": "Walk that example and you can see the definition working: the confidence wasn’t built by the last test run — it was built by the spec review, the integration walk, the captured evidence, and the documented decision. The testing was the loudest part. The QA was the whole rhythm, and the rhythm is the job."},
+      {"type": "h2", "text": "How to start learning QA"},
+      {"type": "p", "text": "If the question behind this post is “how do I get into this” — because it usually is — the path that works, and the one the [skills post](/blogs/how-to-improve-qa-testing-skills) expands into a plan:"},
+      {"type": "list", "items": [
+        "Learn to think in risks, not checklists. The question that separates a tester from a QA engineer is “where can this go wrong, and what would it cost?” — practice it on real products, starting with the ones you buy from.",
+        "Write defect reports until they’re boring. The [reporting post](/blogs/how-to-report-bugs-to-developers) is the template; the skill is the repetition, because clear reporting is what makes the findings trusted.",
+        "Learn the instruments in order: functional testing, then test design, then API and SQL basics, then automation. The [tools post](/blogs/software-qa-testing-tools) maps the stack; the order matters more than the brand of tool.",
+        "Build evidence habits early — captures, reproductions, measured before/after — because the habit, not the tool, is what you carry into every team."
+      ]},
+      {"type": "p", "text": "And the honest note: the definition is the easy part. QA is a practice, and practices are built from doing — every release, every report, every re-test — which is why this post is the first in a cluster, and why the next step is picking one of the other posts and doing the work it describes. If you want the definition walked through a real store instead of read about it, [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) is the method run to the end, and [the audit](/audit) is where I put it on your project."},
+      {"type": "cta", "title": "See QA as a practice, not a stage", "text": "A QA assessment walks your project’s quality process the way this post describes — the requirements, the evidence, the release decision — and hands you the gap list with the fixes ranked.", "href": "/audit", "label": "Request a QA assessment"}
+    ],
+    "faq": [
+      {"question": "Is QA the same as testing?", "answer": "Testing is an activity inside QA — the execution part. QA is the practice around it: the reviews before the build, the test design, the evidence, the release decision, and the process that makes all of it repeatable. You can have great testing and a weak QA process, which is exactly the configuration that lets defects escape and nobody knows why."},
+      {"question": "Who is responsible for quality — QA or the developers?", "answer": "Both, and the question is the one the [accountability post](/blogs/qa-development-credit-and-accountability) untangles. Developers build quality in; QA verifies it and protects the process. The teams that ship reliably treat quality as a shared outcome with shared evidence, not a department with a blame budget."},
+      {"question": "Do I need QA on a small project?", "answer": "The smaller the team, the more the QA motions have to be lightweight, not absent. On a small project the practice is a spec review, a risk-based test pass, captured evidence, and an honest release decision — an afternoon of the right motions beats a week of the wrong ones."},
+      {"question": "What’s the difference between QA and QC?", "answer": "QA is process-oriented — preventing defects by making the process reliable. QC is product-oriented — evaluating the built product against criteria. The [QA vs QC post](/blogs/qa-vs-qc-difference) covers the split with examples, because the two are confused more often than the split is worth the confusion."},
+      {"question": "How do I know if a QA practice is actually working?", "answer": "By the metrics that show the process, not just the output: escaped defects over time, rework rates, release stability, coverage of the risky paths. The [QA visibility post](/blogs/how-to-demonstrate-qa-value) covers how to report them so the practice gets judged on what it prevents, not on how many bugs it found."}
+    ],
+    "sources": [
+      {"label": "ISTQB — the international body for software testing certification", "url": "https://www.istqb.org/"},
+      {"label": "Google Search Central — SEO starter guide (helpful, original content)", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"}
+    ]
+  },
 ]
