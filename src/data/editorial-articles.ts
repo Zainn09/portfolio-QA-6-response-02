@@ -1137,4 +1137,107 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Shopify Help Center — selling products online", "url": "https://help.shopify.com/en/manual/products"}
     ]
   },
+  {
+    "id": 9203,
+    "slug": "how-to-write-product-page-copy",
+    "title": "How to Write Product Page Copy That Helps Customers Buy",
+    "excerpt": "A customer-first way to write product pages: map the questions a first-time buyer actually asks, answer them in the order they occur, and turn hesitation into a stated fact.",
+    "articleType": "guide",
+    "category": "CRO",
+    "tags": ["product page copy", "PDP writing", "conversion", "customer questions", "objection handling"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "how to write product page copy",
+    "searchIntent": "informational / problem-solving — a customer-first writing method",
+    "metaTitle": "How to Write Product Page Copy That Helps Customers Buy",
+    "metaDescription": "Map the questions a first-time buyer actually asks, answer them in the order they occur, and turn hesitation into stated facts. A customer-first PDP method.",
+    "heroImage": "/images/blog/how-to-write-product-page-copy-hero.jpg",
+    "heroAlt": "A copywriter comparing a physical leather product with its online listing on a laptop, question notes in a notebook",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-13T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "A store owner once showed me her product page and asked the question I get most often in copy work: “It says everything, right? What’s missing?” The page had a hero, a features list, a story section, a reviews block, a related-products rail. It said a lot. So I did what I do in every audit — I played the customer. First-time buyer, one thumb, slightly sceptical. My first question was a simple one: will it fit what I already have? The page did not answer it. The answer existed somewhere in an accordion, two scrolls down, phrased as “standard dimensions.” The page had lots of words. It just wasn’t answering."},
+      {"type": "p", "text": "That gap is where this method starts. The companion posts cover the other sides of product-page writing — [high-converting PDP copy](/blogs/how-to-write-high-converting-pdp-copy) for the tactics, and [PDP copywriting for AI and search engines](/blogs/pdp-copywriting-for-ai-and-search-engines) for the machine side. This one is the customer side: how to build a page around the questions a first-time buyer actually asks, in the order they occur, so the page reads like an answer instead of a brochure."},
+      {"type": "h2", "text": "A customer-first way to think about product copy"},
+      {"type": "p", "text": "Most product copy is written backwards: from what the product is, to what the customer needs. Start from the product — its materials, its features, its story — and the page becomes a description. Start from the customer’s moment of decision, and the page becomes an answer. The difference is the order of operations: before you write a word, you build the [[question inventory]] — the list of questions a first-time buyer asks between “interesting” and “add to cart.”"},
+      {"type": "p", "text": "Here’s the part that changes everything: the customer isn’t asking your questions. She isn’t asking about your brand philosophy or your manufacturing process or your award. She is asking whether this specific thing will work in her specific life — and whether you can be trusted when you say it will. Every sentence on the page either answers one of those two meta-questions or it’s decoration. That’s the test I run on every line before it ships."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/how-to-write-product-page-copy-questions.jpg", "alt": "A hand writing a list of questions on a notepad beside a physical product"},
+        {"src": "/images/blog/how-to-write-product-page-copy-listing.jpg", "alt": "A laptop and a phone both showing a blurred product page, next to the physical product"}
+      ]},
+      {"type": "h2", "text": "The questions customers actually ask before buying"},
+      {"type": "p", "text": "Across every product I’ve audited, the question chain follows a stubbornly predictable order. Not every product triggers every question — but the order holds, and the page should too:"},
+      {"type": "list", "items": [
+        "Is this even right for my use? — The use-case question. “Will it fit a 55-inch TV?” “Is this good for standing all day?” If the page leads with the brand, the customer has to do this mapping herself.",
+        "What is it made of, and what does that mean for me? — Material and construction, translated into consequence. Not “premium alloy” but “won’t warp in a hot car.”",
+        "How does it fit / match / connect? — Size, compatibility, dimensions, what it works with. The most common silent killer on product pages, because the answer is usually present and unreadable.",
+        "What would I regret? — The hesitation questions: colour in real light, weight, the thing that looks small in photos. This is where most pages go silent and the customer goes to a competitor’s page that answered.",
+        "What proof do I have? — Reviews, specifics, guarantees, the return window. Proof has to be near the doubt, not in a footer.",
+        "What happens if it goes wrong? — Returns, warranty, support. Answered early, this question stops being a risk and becomes a reason.",
+        "Is it worth the price? — Not a plea for value. A factual basis: what’s included, what it lasts, what the alternative costs in use."
+      ]},
+      {"type": "p", "text": "Write these seven out for your product, in this order, and you have the page’s skeleton. Notice what’s missing from the list: your story, your process, your adjectives. They have a place — later, smaller, and only if they answer one of these questions (and “what makes us different” counts, when it’s specific)."},
+      {"type": "h2", "text": "Structure the page in question order"},
+      {"type": "p", "text": "The skeleton maps to layout in a way that feels almost too obvious to say: the first screenful answers questions one and two, because that’s what the customer asks first. The fold is not a design boundary for you — it’s a trust boundary for her. If the use-case and the material don’t clear the fold, you’ve made the customer work to confirm the product is right, and work is where hesitation starts."},
+      {"type": "list", "items": [
+        "Above the fold: what it is, who it’s for, the one spec that matters most. A customer should be able to say “this is the right one” without scrolling.",
+        "The gallery: the answer to the visual doubts — scale, colour in real light, the detail the description promises. Every image should answer a question a screenshot would create.",
+        "The description block: the translation layer. Every feature stated as a consequence. “Memory-foam insole” becomes “supports a full shift, not just the morning.”",
+        "The specs and compatibility: the searchable, comparable facts — dimensions, weights, what it works with — in a table a customer can scan in ten seconds.",
+        "The proof block: reviews with the specific ones surfaced, the guarantee, the return window. Placed where the doubt questions were asked, not where the design team decided."
+      ]},
+      {"type": "p", "text": "One layout rule from the audit room: whatever you put in an accordion, you are predicting the customer won’t read. Accordion is for the long tail — care instructions, packaging, the fine print. Anything that answers a top-five question belongs in the open."},
+      {"type": "h2", "text": "Writing for hesitation: state the weakness with context"},
+      {"type": "p", "text": "Here’s the counterintuitive move, and the one that separates pages that feel honest from pages that feel like ads: answer the hesitation question before it’s asked, including the answer you’d least like to give. If the product is heavy, say it — and say what it means: “it’s a serious jacket, 1.2kg; you’ll feel it, and so will the wind.” If the colour runs dark, say it, with the fix: “photographs lighter than in person; between sizes, size up.”"},
+      {"type": "p", "text": "Why this works is worth understanding, because it’s not a trick. A page that states its own weakness with context reads as [[calibrated]] — the customer’s trust model updates in your favour on every other claim, because you were willing to be accurate where it cost you. A page that flatters everything reads as uncalibrated, and the customer applies a discount to every claim, including the good ones. The returns follow the copy: the product the page over-promised is the product that comes back."},
+      {"type": "image", "src": "/images/blog/how-to-write-product-page-copy-materials.jpg", "alt": "A product beside its material specification card, one line highlighted with a marker pen"},
+      {"type": "h2", "text": "The details that build confidence"},
+      {"type": "p", "text": "Confidence on a product page is not an emotion you inspire; it’s a byproduct of specifics. The customer doesn’t need more words — she needs the right kind of words, and the right kind is verifiable. Three categories do almost all the work:"},
+      {"type": "list", "items": [
+        "Material specifics, stated as consequence — “oiled leather, so it darkens with use instead of wearing through.” The material is a fact; the consequence is the answer.",
+        "Compatibility and dimensions, stated in the customer’s units — not just millimetres, the answer to the question she’s actually asking. If she’s measuring her shelf, give her the shelf number.",
+        "Care and lifespan, stated as a routine — “wipe with a dry cloth; the coating is replaceable.” A care section that reads like a routine says this product is expected to be kept, and kept products feel like decisions, not gambles."
+      ]},
+      {"type": "p", "text": "There’s a QA reason this matters beyond the customer: these specifics are exactly the facts machines extract. A page full of verifiable specifics is a page that can be quoted — by a human skimming on a phone and by an assistant building an answer. The [product data quality checklist](/blogs/product-data-quality-checklist-ai-search) covers the data side of the same truth; the copy side is just saying the same fact out loud where the customer can read it."},
+      {"type": "h2", "text": "Where each answer goes"},
+      {"type": "p", "text": "Answers are only good where the question happens. The placement rules I apply in page reviews:"},
+      {"type": "list", "items": [
+        "The use-case answer: the first line, or the first image’s caption. Not the hero’s subhead if the subhead is doing brand work — brand work moves down.",
+        "The material answer: adjacent to the price, because that’s where “is it worth it” starts. Proof beside the number it defends.",
+        "The fit and compatibility answer: next to the variant picker, where the customer is committing. A dimension that has to be scrolled for is a dimension that gets guessed.",
+        "The regret answers: in the gallery, as images and short captions. Visual doubts die with visual answers.",
+        "The what-if-it-fails answer: in the buy box area or directly under it, in one line. “30-day returns, we cover the label.” One line. The policy page is for the lawyers; this line is for the decision."
+      ]},
+      {"type": "p", "text": "Then the rule that holds the whole page together: one question per block. When a paragraph tries to answer two questions, it answers neither well. This is the same rule the good recommendation modules follow — one decision per module — and it’s why pages written this way feel calm. They’re not doing five jobs. They’re answering one question per block, in the order the customer asks them."},
+      {"type": "h2", "text": "A pre-publish check you can run in ten minutes"},
+      {"type": "p", "text": "Before any product page ships — or gets rewritten — run this pass. It’s short enough to be real and specific enough to catch the gaps that actually cost sales:"},
+      {"type": "checklist", "title": "The customer-questions pass", "items": [
+        "Read the first screenful. Can a stranger say, in one sentence, who this is for and the one reason it fits their life?",
+        "Ask the compatibility question out loud. Is the answer on the page above the fold, or in a scroll, or in an accordion?",
+        "Find the page’s weakest claim — the one you’d least like to defend. Does it have a fact attached, or is it an adjective?",
+        "Read the material section. Is every feature stated as a consequence, or as a feature?",
+        "Locate the return and warranty answer. How far is it from the buy button, in scrolls?",
+        "Read the whole description in one breath, out loud. Any sentence that exists to sound good rather than answer something gets cut."
+      ]},
+      {"type": "p", "text": "Do that on your ten highest-traffic products and you’ll find the same pattern I do in audits: the pages with the most words are usually the ones that answer the fewest questions. The fix is rarely writing more. It’s writing the answers, first, where the questions happen."},
+      {"type": "image", "src": "/images/blog/how-to-write-product-page-copy-drafts.jpg", "alt": "Two printed product descriptions side by side on a desk, one with marked-up edits, pen in the foreground"},
+      {"type": "h2", "text": "When the copy is good, test whether the page keeps up"},
+      {"type": "p", "text": "A product page is only as persuasive as its weakest behaviour, and copy can’t cover for a broken variant picker, a drawer that loses the selection, or a spec table that overflows at phone width. The words above turn intent into a confident decision — and that decision has to survive the button. That’s the territory of the [Shopify QA testing](/shopify-qa-testing) scope: the same page, walked state by state on real devices, with the copy treated as a claim the page has to keep. If you want the full picture — copy, data and behaviour checked together — [the audit](/audit) is where I put all three on one table, and [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) shows what that table looks like when it’s full."},
+      {"type": "cta", "title": "Put a second pair of eyes on your pages", "text": "An audit reads your product pages the way a first-time buyer does — questions first, answers second — and documents every gap between the two.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "How long should product page copy be?", "answer": "As long as the question chain needs. For most products that’s a first screenful of answers, a translation layer of consequences, a spec table, and proof — which is shorter than most pages today, because it cuts the sentences that answer no question. Length is a symptom; answering is the goal."},
+      {"question": "Do I rewrite the whole page?", "answer": "Usually no. The method is a re-ordering and a filling-in: move the use-case answer to the top, translate features into consequences, add the compatibility answer next to the variant picker, and place the return line under the buy box. The rewrite is the deletion — the sentences that exist to sound good."},
+      {"question": "What if my product has no obvious weakness?", "answer": "Then state the honest trade-off instead: what it prioritises, and what that means. “Built for warmth, so it’s not the layer you run in” is a calibration a customer can trust. A page with zero trade-offs reads as a page that hasn’t looked closely."},
+      {"question": "Does this work for simple products with few questions?", "answer": "More so — simple products fail from thin copy, not dense copy. The question chain is shorter (use, fit, what happens if it fails), so the page is shorter too, and the specificity does all the work. One defensible sentence per product, placed where the question happens."},
+      {"question": "How is this different from SEO copywriting?", "answer": "They share the same source — the customer’s words and questions — but optimise for different readers. This method serves the human on the page, in question order. The machine-side version, [product page SEO copywriting](/blogs/product-page-seo-copywriting), makes sure the same answers are the ones search and AI systems can find and quote."}
+    ],
+    "sources": [
+      {"label": "Baymard Institute — usability research", "url": "https://baymard.com/research"},
+      {"label": "Shopify Help Center — selling products online", "url": "https://help.shopify.com/en/manual/products"}
+    ]
+  },
 ]
