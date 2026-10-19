@@ -1425,4 +1425,100 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Shopify.dev — the product object", "url": "https://shopify.dev/docs/api/admin-rest/reference/product"}
     ]
   },
+  {
+    "id": 9206,
+    "slug": "ai-diamond-recommendations-data-ux-trust",
+    "title": "Designing Better AI Diamond Recommendations: Data, UX, and Trust",
+    "excerpt": "The design and QA view of high-stakes AI recommendations: translate preferences into constraints, compare on consistent attributes, state uncertainty, and test the edge cases buyers actually hit.",
+    "articleType": "insight",
+    "category": "AI Commerce",
+    "tags": ["AI recommendations", "UX design", "trust", "diamonds", "QA"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "AI diamond recommendations design",
+    "searchIntent": "informational — design and QA principles for high-stakes AI recommendations",
+    "metaTitle": "Designing AI Diamond Recommendations: Data, UX, Trust",
+    "metaDescription": "Design and QA principles for high-stakes AI recommendations: consistent comparison attributes, stated uncertainty, edge-case testing — using diamonds as the stress test.",
+    "heroImage": "/images/blog/ai-diamond-recommendations-data-ux-trust-hero.jpg",
+    "heroAlt": "A designer reviewing a recommendation screen mockup on a laptop with a printed user-question list beside it",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-08T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "The moment that stuck with me wasn’t a wrong recommendation — it was a confident one. In a walkthrough of a concept assistant, a stone ranked first on a shortlist with a reason that read beautifully: “excellent value, near-colourless, eye-clean.” Two fields in the record later, the clarity grade and the certificate didn’t agree, and the photo had been taken in warmer light than the stone’s colour grade implied. Nothing about the interface looked broken. The design hadn’t failed; the data had — and the interface, by being smooth, had hidden the difference. That’s the whole argument of this post: in high-stakes recommendations, the UX job is not to make the answer feel certain. It’s to make the answer’s limits visible."},
+      {"type": "p", "text": "One honest note before we go further: I haven’t built a diamond recommendation system, and this isn’t a client story. Diamonds are my stress test — the category where recommendation design, data quality and buyer trust all reach maximum contrast at once — and what I’ve learned from them transfers to every recommendation module a store runs. The companion post, [inside an AI diamond shopping assistant](/blogs/inside-ai-diamond-shopping-assistants), covers the machinery; this one covers the design decisions around it."},
+      {"type": "h2", "text": "The three jobs of a recommendation experience"},
+      {"type": "p", "text": "Strip away the interface and every good recommendation system — diamond or otherwise — does three jobs in sequence. First it [[clarifies]]: it turns a vague preference into a stated requirement. Second it [[compares]]: it sets the candidates against each other on attributes that line up. Third it [[explains]]: it states why the winner is the winner, and what the winner costs you in the things you didn’t prioritise. Most recommendation failures I see are failures of one specific job, wearing the costume of a different one. A “bad recommendation” is usually a comparison that never got the right attributes, or an explanation that hid a gap the data had."},
+      {"type": "p", "text": "The design work is in the seams between the jobs — where a requirement silently drops out of the comparison, where a comparison attribute exists for three candidates and not the fourth, where the explanation reaches for an adjective because the record has no fact to cite. Those seams are where trust is actually built or lost, and they’re also where QA lives, because every one of them is reproducible."},
+      {"type": "h2", "text": "Job one: translating preferences into constraints"},
+      {"type": "p", "text": "Buyers don’t arrive with constraints; they arrive with priorities and a budget, and in a category like diamond shopping they arrive with the phrase “something beautiful.” The first design decision is what the assistant does with that phrase. The weak version treats it as a filter and guesses. The strong version does one thing: asks one more question — “between a slightly larger stone and a cleaner one, which do you care about more?” — and converts the answer into a priority ranking the comparison can actually use."},
+      {"type": "list", "items": [
+        "Collect the budget and the style first — the two constraints that do the most cutting, before any attribute talk.",
+        "Convert every soft preference into a ranking, not a filter: “clarity over carat” is a comparison weight; “eye-clean” is a hard floor.",
+        "State the translation back to the buyer in one line — “so: under $8,000, round, clarity at least VS1, size where it fits” — because the buyer’s first trust test is whether the system understood.",
+        "Refuse to invent the missing constraint. A budget the buyer didn’t give is not a budget; asking again is cheaper than recommending wrong."
+      ]},
+      {"type": "p", "text": "There’s a QA test for this job that I’d run on any recommendation surface: give the system a preference it can’t map — “I want it to look expensive” — and see what happens. The good system asks; the bad system filters, and the filter it invents is the recommendation’s first hidden assumption. In the diamond case the hidden assumption has a five-figure price tag; in the ordinary case it’s still the buyer’s money, just at a smaller number."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/ai-diamond-recommendations-data-ux-trust-mockup.jpg", "alt": "A laptop screen showing a blurred recommendation interface with two product cards, next to a printed comparison table"},
+        {"src": "/images/blog/ai-diamond-recommendations-data-ux-trust-notes.jpg", "alt": "A designer’s notebook with blurred sketches of a comparison layout beside a coffee cup"}
+      ]},
+      {"type": "h2", "text": "Job two: a comparison surface that compares fairly"},
+      {"type": "p", "text": "The comparison is where the design either does the buyer’s job for her or makes her do it alone with a spreadsheet. Four properties separate the two, and each is a design decision, not a model capability:"},
+      {"type": "list", "items": [
+        "Attributes that line up across every candidate. If clarity is shown for three stones and not the fourth, the comparison is a guess with a table. Missing values must be shown as missing — a dash, a “not listed” — never as an empty cell that reads as zero and never as a silently omitted column.",
+        "The same conditions for every item. In diamond terms: photography in the same documented light, because a stone photographed warm reads as a warmer colour than its grade, and the photo becomes a false attribute. In ordinary terms: the same crop, the same scale, the same context — a product photographed on a white background next to one shot in a styled room is a comparison the eye resolves by guessing.",
+        "Trade-offs stated in the buyer’s priority order, not the store’s. “This buys you 0.1 carat by stepping from VVS2 to VS1” is a comparison; “our best value pick” is a verdict with no working shown.",
+        "A way to re-weight. One slider or one question — “care more about size?” — that re-runs the comparison. The buyer’s priorities are the design input; the interface that can’t change them is the one that decided for her."
+      ]},
+      {"type": "p", "text": "The last one is the least built and the most trusted, because it’s where control stays with the human. A recommendation the buyer can re-weight is a tool; a recommendation she can’t inspect is an opinion. That’s the single design move I’d defend hardest in this post, and it costs almost nothing: the comparison is already computed, the weights already exist — the interface just has to let the buyer turn a dial."},
+      {"type": "h2", "text": "Job three: explaining the recommendation — with its limits"},
+      {"type": "p", "text": "The explanation is where the data’s gaps become the interface’s promises, which is why it’s the job I test hardest. The standard is the one the diamond category forces: every claim in the recommendation must cite a field in the record. “Eye-clean at VS1, certificate number GIA-…, lab-verified” is an explanation. “A stunning stone with brilliant fire” is decoration, and the buyer — especially in a high-stakes purchase — has learned to discount it, which means the decoration actively taxes the credible claims beside it."},
+      {"type": "p", "text": "And the part that separates a system a buyer can rely on from one she has to audit: [[stated uncertainty]]. Where the record is thin — a clarity grade on a borderline, a photo taken in questionable light, a certificate the system couldn’t verify — the interface says so, in one honest line, instead of smoothing it. “The certificate for this stone wasn’t available to us” is a sentence that costs a click and buys the next purchase. In a category where the claims are document-backed, credibility is only as good as the weakest citation, and the buyer knows it even when she can’t name why."},
+      {"type": "h2", "text": "Testing the edge cases buyers actually hit"},
+      {"type": "p", "text": "This is where the QA half of the post starts, because a recommendation system is only as good as its behaviour at the edges — and the edges are where the real buyers are. The question bank I’d build for a diamond-style system, in the order I’d test it:"},
+      {"type": "list", "items": [
+        "The borderline grade: a stone one step below the buyer’s floor on the attribute they prioritised least. Does the system exclude it, include it with a flag, or quietly include it and lose the buyer’s trust later?",
+        "The budget edge: a candidate two percent over budget. Does the system state the overshoot, or round it away? Rounding a five-figure overshoot is a recommendation with a hidden cost.",
+        "The one-stone shortlist: when only one candidate survives the constraints, does the system say so — and suggest relaxing which constraint — or does it present one option as a comparison?",
+        "The contradiction: the record where the photo and the certificate disagree on colour. This is the money test. The system that surfaces the contradiction is trustworthy; the one that averages it away is the one whose confident answer from my opening paragraph you now understand.",
+        "The re-weight loop: change the priorities mid-conversation. Does the comparison re-run honestly, or does the first recommendation anchor everything after it?",
+        "The handoff: land on the product page the recommendation quoted. Does the page carry the same record — same certificate, same readings, same photo — or does the recommendation die at the boundary?"
+      ]},
+      {"type": "p", "text": "Run that bank and you’ll find the pattern from every audit I do: the failures are data defects wearing UX costumes. The system didn’t hallucinate; it inherited a blank, a contradiction, or a silent omission, and the interface’s smoothness turned the defect into a confident answer. Which is why the fix list for a recommendation system is always half data work — the [product data quality checklist](/blogs/product-data-quality-checklist-ai-search) is the upstream half of this post’s test plan."},
+      {"type": "h2", "text": "Trust signals for high-stakes recommendations"},
+      {"type": "p", "text": "Some trust signals are generic (reviews, badges, the return policy in the footer). For a high-stakes recommendation, the signals that carry weight are specific to the moment of the recommendation itself:"},
+      {"type": "list", "items": [
+        "The source is visible at the claim: certificate number beside the reading, the lab named, the data point you can check without leaving the screen.",
+        "An exit that costs nothing: “talk to a person” is a first-class option at the recommendation, not a buried contact form. A system that offers the human out loud is telling you what it thinks of its own limits — which is the most credible sentence it can say.",
+        "The terms that match the stakes: for a one-of-one item, the return and replacement terms belong on the recommendation card, because that’s where the risk decision happens.",
+        "Consistency across the boundary: the page, the assistant and the record agree, because the buyer’s trust check is exactly that comparison — and she runs it whether she knows she’s running it or not."
+      ]},
+      {"type": "image", "src": "/images/blog/ai-diamond-recommendations-data-ux-trust-handoff.jpg", "alt": "A phone and a laptop side by side, both showing a blurred product view, with a notebook of verification notes between them"},
+      {"type": "p", "text": "Notice that every signal on that list is a design choice about what to show, and none of them is a model capability. That’s the point the diamond stress test keeps making: trust in a recommendation is engineered in the interface and the data, not generated in the weights. The model proposes; the design — and the audit behind it — disposes."},
+      {"type": "h2", "text": "What the ordinary store can steal from the hardest case"},
+      {"type": "p", "text": "You don’t need diamonds to use any of this. The transfer list, for the recommendation modules most stores already run — “you may also like,” the cart add-on, the post-purchase replenishment:"},
+      {"type": "list", "items": [
+        "Every recommendation states its reason in one line, and the reason is a fact from the record, not an adjective. The one-question rule from the module design, extended: if it can’t say why, it doesn’t ship.",
+        "Comparisons show missing values as missing. The dash is a trust signal; the silent omission is a defect.",
+        "Uncertainty is stated where it exists — “based on reviews,” “in stock at our warehouse,” “ships in 2–3 days, not instant.” The honest qualifier costs a click and buys the repeat.",
+        "The handoff is tested. The product page the module points to must stand behind what the module said — same price, same availability, same claim. That check is ten minutes of QA and it’s the difference between a module that sells and one that quietly trains the buyer to discount everything else on the page."
+      ]},
+      {"type": "p", "text": "The diamond case is just these rules at maximum contrast, where the contrast is visible. Run the same four checks on your ordinary modules and you’ll find the same silent omissions and adjective reasons hiding in plain sight — and the same fix, which is the one this whole series keeps coming back to: treat the recommendation’s claims as claims, and verify them the way you verify anything that costs the customer money. That’s the [Shopify QA testing](/shopify-qa-testing) scope, the [audit](/audit) is where it starts, and [the trust piece in this series](/blogs/ai-shopping-agents-ecommerce-trust) takes the agent side of the boundary next."},
+      {"type": "cta", "title": "Audit the claims behind your recommendations", "text": "A data audit checks what your recommendation modules say against what your records keep — reason by reason, surface by surface.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "Is this post based on a real diamond system you tested?", "answer": "No — stated again deliberately. The diamond walkthrough is illustrative, built from the general recommendation pipeline and the known data demands of diamond commerce. The design principles, though, are the same ones I apply to ordinary recommendation modules, where I do test them."},
+      {"question": "What’s the single highest-leverage design decision here?", "answer": "Letting the buyer re-weight the comparison. It costs almost nothing to build, it keeps control with the human, and it converts the recommendation from a verdict into a tool. In my experience it’s the least built and the most trusted."},
+      {"question": "How do you test a recommendation system without a live buyer?", "answer": "With a question bank from real buyer language and the edge-case list above — borderline grades, budget edges, one-stone shortlists, record contradictions, re-weight loops, and the handoff. Each case has a right behaviour and a wrong one, which is what makes it testable instead of subjective."},
+      {"question": "Do ordinary “you may also like” modules need certificate-grade rigor?", "answer": "Not the certificates — the discipline. Same record behind the claim, missing values shown as missing, uncertainty stated, and a handoff that stands behind the module. The stakes are smaller, so the defects are smaller; the pattern is identical, and the fix list is the same."},
+      {"question": "Where do data fixes and design fixes split?", "answer": "At the record. If the recommendation can’t say why because the field is blank or contradictory, it’s a data fix — run the quality checklist. If the field exists and the interface hides it, rounds it, or dresses it in adjectives, it’s a design fix. The audit tells you which is which, which is the whole point of doing it."}
+    ],
+    "sources": [
+      {"label": "GIA — the 4Cs of diamond quality", "url": "https://www.gia.edu/education/diamonds/4cs-of-diamond-quality"},
+      {"label": "Baymard Institute — usability research", "url": "https://baymard.com/research"}
+    ]
+  },
 ]
