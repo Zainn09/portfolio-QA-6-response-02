@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
+import { useEditor, EditorContent, type Editor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import CharacterCount from "@tiptap/extension-character-count";
+import { FULL_IMAGE_PCT, imagePctForWidth, imageWidthForPct } from "@/lib/blog-image-size";
 
 interface BlogPost {
   id?: number;
@@ -36,11 +43,113 @@ function generateSlug(title: string) {
     .trim();
 }
 
+/**
+ * Clipboard/dropped image → resized data URL.
+ * Downscaled to 1400px on the long edge and re-encoded (JPEG 0.82, or PNG for
+ * small originals so logos keep their transparency), so a pasted screenshot
+ * lands in the post at a sane size instead of a multi-megabyte original.
+ */
+async function fileToResizedDataUrl(file: File): Promise<string> {
+  interface Drawable {
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
+    width: number;
+    height: number;
+    close: () => void;
+  }
+  let source: Drawable;
+  if (typeof createImageBitmap === "function") {
+    const bitmap = await createImageBitmap(file);
+    source = {
+      draw: (ctx, w, h) => ctx.drawImage(bitmap, 0, 0, w, h),
+      width: bitmap.width,
+      height: bitmap.height,
+      close: () => bitmap.close(),
+    };
+  } else {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const i = new window.Image();
+        i.onload = () => resolve(i);
+        i.onerror = () => reject(new Error("decode failed"));
+        i.src = url;
+      });
+      source = {
+        draw: (ctx, w, h) => ctx.drawImage(img, 0, 0, w, h),
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        close: () => {},
+      };
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  try {
+    const MAX = 1400;
+    const scale = Math.min(1, MAX / Math.max(source.width, source.height));
+    const w = Math.max(1, Math.round(source.width * scale));
+    const h = Math.max(1, Math.round(source.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("canvas unavailable");
+    source.draw(ctx, w, h);
+    const keepPng = file.type === "image/png" && file.size < 300 * 1024;
+    return canvas.toDataURL(keepPng ? "image/png" : "image/jpeg", 0.82);
+  } finally {
+    source.close();
+  }
+}
+
+function ToolbarButton({
+  active,
+  onClick,
+  label,
+  children,
+}: {
+  active?: boolean;
+  onClick: () => void;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      aria-pressed={active}
+      onClick={onClick}
+      style={{
+        fontFamily: "var(--font-mono)",
+        fontSize: "0.625rem",
+        fontWeight: 700,
+        letterSpacing: "0.04em",
+        padding: "0.4375rem 0.625rem",
+        borderRadius: "var(--radius-sm)",
+        border: "1px solid " + (active ? "var(--accent)" : "var(--border)"),
+        backgroundColor: active ? "var(--accent-muted)" : "transparent",
+        color: active ? "var(--text-primary)" : "var(--text-secondary)",
+        cursor: "pointer",
+        lineHeight: 1,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "0.25rem",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
   const isNew = !post?.id;
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<"content" | "seo">("content");
   const [tagsInput, setTagsInput] = useState(post?.tags?.join(", ") || "");
+  const [showSource, setShowSource] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
+  const imageBusyRef = useRef(false);
 
   const [form, setForm] = useState<BlogPost>({
     title: post?.title || "",
@@ -59,25 +168,155 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
     seoCanonical: post?.seoCanonical || "",
   });
 
-  useEffect(() => {
-    if (isNew && form.title && !form.slug) {
-      setForm(f => ({ ...f, slug: generateSlug(f.title) }));
+  const insertPastedImage = async (editor: Editor, file: File) => {
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 12 * 1024 * 1024) {
+      toast.error("That image is too large (max 12 MB).");
+      return;
     }
-  }, [form.title, isNew, form.slug]);
+    if (imageBusyRef.current) return;
+    imageBusyRef.current = true;
+    setImageBusy(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file);
+      const kb = Math.round((dataUrl.length * 3) / 4 / 1024);
+      editor.chain().focus().setImage({ src: dataUrl, alt: file.name || "image" }).run();
+      if (kb > 1500) {
+        toast(`Image embedded at ~${kb} KB — the post is getting heavy.`, { icon: "⚠️" });
+      } else {
+        toast.success("Image added");
+      }
+    } catch {
+      toast.error("Couldn't read that image.");
+    } finally {
+      imageBusyRef.current = false;
+      setImageBusy(false);
+    }
+  };
+
+  const [columnWidth, setColumnWidth] = useState(0);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      // allowBase64: pasted/dropped images are stored as data URLs. Without
+      // this, reopening a post re-parses its HTML and silently drops every
+      // image (the default parse rule only matches non-data: src values).
+      Image.configure({ allowBase64: true }),
+      Link.configure({ openOnClick: false, autolink: true }),
+      Placeholder.configure({
+        placeholder: "Write your story — paste screenshots or photos straight into the text.",
+      }),
+      CharacterCount,
+    ],
+    content: form.content || "",
+    editorProps: {
+      attributes: { class: "blog-editor-prose" },
+      // Shopify-style image paste: a clipboard image becomes an inline image
+      // node at the cursor; everything else pastes normally.
+      handlePaste: (view, event) => {
+        const items = event.clipboardData?.items;
+        if (!items || !editor) return false;
+        for (const item of Array.from(items)) {
+          if (item.type.startsWith("image/")) {
+            const file = item.getAsFile();
+            if (file) {
+              event.preventDefault();
+              void insertPastedImage(editor, file);
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+      handleDrop: (view, event) => {
+        const files = event.dataTransfer?.files;
+        if (!files || !editor) return false;
+        const file = Array.from(files).find((f) => f.type.startsWith("image/"));
+        if (file) {
+          event.preventDefault();
+          void insertPastedImage(editor, file);
+          return true;
+        }
+        return false;
+      },
+    },
+    onUpdate: ({ editor: e }) => {
+      setForm((f) => ({ ...f, content: e.getHTML() }));
+    },
+  });
+
+  // ── Image resize ─────────────────────────────────────────────────────────
+  // Selecting an image node shows width controls in the toolbar. The chosen
+  // width is stored on the image as a fixed pixel value (HTML width
+  // attribute); post CSS caps it with max-width: 100% so it stays
+  // responsive. "Full" clears the attribute for fluid full-column width.
+  const measureColumnWidth = (): number => {
+    if (!editor) return 0;
+    const prose = editor.view.dom as HTMLElement;
+    if (!prose.isConnected) return 0;
+    const cs = window.getComputedStyle(prose);
+    return Math.round(prose.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  };
+
+  useEffect(() => {
+    if (!editor) return;
+    const measure = () => setColumnWidth(measureColumnWidth());
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  const imageSelected = editor?.isActive("image") ?? false;
+  const rawImageWidth = editor?.getAttributes("image")?.width;
+  // tiptap stores the parsed width as a string after a raw-HTML round trip
+  const imageWidth =
+    typeof rawImageWidth === "number"
+      ? rawImageWidth
+      : typeof rawImageWidth === "string" && /^\d+$/.test(rawImageWidth)
+        ? Number(rawImageWidth)
+        : null;
+  const imagePct = imagePctForWidth(imageWidth, columnWidth);
+
+  const applyImagePct = (pct: number) => {
+    if (!editor || !editor.isActive("image")) return;
+    const col = columnWidth > 0 ? columnWidth : measureColumnWidth();
+    const width = imageWidthForPct(pct, col);
+    if (width == null) return;
+    editor.chain().focus().updateAttributes("image", { width }).run();
+  };
+
+  const resetImageWidth = () => {
+    if (!editor || !editor.isActive("image")) return;
+    editor.chain().focus().updateAttributes("image", { width: null }).run();
+  };
 
   const handleChange = (field: keyof BlogPost, value: string) => {
-    setForm(f => ({ ...f, [field]: value }));
+    setForm((f) => ({ ...f, [field]: value }));
+  };
+
+  /** Switching back from raw-HTML mode reloads the editor with the edited markup. */
+  const switchToRich = () => {
+    if (editor) editor.commands.setContent(form.content || "", { emitUpdate: false });
+    setShowSource(false);
   };
 
   const handleSave = async (asDraft = false) => {
-    if (!form.title.trim()) { toast.error("Title is required"); return; }
-    if (!form.slug.trim()) { toast.error("Slug is required"); return; }
+    if (!form.title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+    if (!form.slug.trim()) {
+      toast.error("Slug is required");
+      return;
+    }
 
     setSaving(true);
     try {
       const payload = {
         ...form,
-        tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean),
+        tags: tagsInput.split(",").map((t) => t.trim()).filter(Boolean),
         status: asDraft ? "draft" : form.status === "published" ? "published" : "draft",
         publishedAt: form.publishedAt || (asDraft ? null : new Date().toISOString()),
       };
@@ -121,10 +360,13 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
     marginBottom: "0.375rem",
   };
 
+  const words = editor?.storage.characterCount?.words() ?? 0;
+  const contentKb = Math.round(new Blob([form.content || ""]).size / 1024);
+
   return (
-    <div style={{ paddingTop: "var(--nav-height)", minHeight: "100vh", backgroundColor: "var(--bg-secondary)" }}>
+    <div style={{ paddingTop: 0, minHeight: "100vh", backgroundColor: "var(--bg-secondary)" }}>
       {/* Editor header */}
-      <div style={{ backgroundColor: "var(--bg-surface)", borderBottom: "1px solid var(--border)", padding: "1rem 0", position: "sticky", top: "var(--nav-height)", zIndex: 50 }}>
+      <div style={{ backgroundColor: "var(--bg-surface)", borderBottom: "1px solid var(--border)", padding: "1rem 0", position: "sticky", top: 0, zIndex: 50 }}>
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
           <div>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
@@ -147,7 +389,10 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
               Save Draft
             </button>
             <button
-              onClick={() => { handleChange("status", "published"); handleSave(false); }}
+              onClick={() => {
+                handleChange("status", "published");
+                handleSave(false);
+              }}
               disabled={saving}
               style={{ backgroundColor: "var(--accent)", color: "#000", fontWeight: 700, fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", padding: "0.625rem 1rem", borderRadius: "var(--radius-sm)", border: "none", cursor: "pointer" }}
             >
@@ -163,7 +408,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
           <div>
             {/* Tabs */}
             <div style={{ display: "flex", gap: "0", borderBottom: "1px solid var(--border)", marginBottom: "1.5rem" }}>
-              {(["content", "seo"] as const).map(tab => (
+              {(["content", "seo"] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -194,7 +439,16 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                   <input
                     type="text"
                     value={form.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
+                    onChange={(e) => {
+                      const title = e.target.value;
+                      // New posts: keep the slug in step with the title until
+                      // the user edits the slug (or hits Generate) themselves.
+                      setForm((f) => ({
+                        ...f,
+                        title,
+                        ...(isNew && !f.slug ? { slug: generateSlug(title) } : {}),
+                      }));
+                    }}
                     placeholder="Post title..."
                     style={{ ...inputStyle, fontSize: "1.25rem", fontWeight: 600 }}
                   />
@@ -233,17 +487,122 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Content (HTML)</label>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "1rem", marginBottom: "0.375rem" }}>
+                    <label style={{ ...labelStyle, marginBottom: 0 }}>Content</label>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", color: "var(--text-tertiary)" }}>
+                      {words} words · {contentKb} KB
+                      {imageBusy ? " · embedding image…" : ""}
+                    </span>
+                  </div>
                   <p style={{ fontSize: "0.75rem", color: "var(--text-tertiary)", marginBottom: "0.5rem" }}>
-                    Enter your content as HTML. Supports headings, paragraphs, lists, code blocks, and more.
+                    Paste screenshots or photos from your clipboard straight into the text (or drag them in) — they are resized and saved with the post. Click an image to select it, then set its width with the presets or the slider (images never exceed the column width).
                   </p>
-                  <textarea
-                    value={form.content || ""}
-                    onChange={(e) => handleChange("content", e.target.value)}
-                    placeholder="<p>Your blog content here...</p>"
-                    rows={20}
-                    style={{ ...inputStyle, resize: "vertical", fontFamily: "var(--font-mono)", fontSize: "0.875rem" }}
-                  />
+
+                  {showSource ? (
+                    <>
+                      <textarea
+                        value={form.content || ""}
+                        onChange={(e) => handleChange("content", e.target.value)}
+                        placeholder="<p>Your blog content here...</p>"
+                        rows={20}
+                        style={{ ...inputStyle, resize: "vertical", fontFamily: "var(--font-mono)", fontSize: "0.875rem" }}
+                      />
+                      <div style={{ marginTop: "0.5rem" }}>
+                        <button type="button" onClick={switchToRich} style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", border: "1px solid var(--accent)", padding: "0.5rem 1rem", borderRadius: "var(--radius-sm)", background: "none", cursor: "pointer" }}>
+                          ← Back to visual editor
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Toolbar */}
+                      <div
+                        role="toolbar"
+                        aria-label="Text formatting"
+                        style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem", padding: "0.5rem", border: "1px solid var(--border-strong)", borderBottom: "none", borderRadius: "var(--radius-sm) var(--radius-sm) 0 0", backgroundColor: "var(--bg-surface)", alignItems: "center" }}
+                      >
+                        <ToolbarButton label="Undo" onClick={() => editor?.chain().focus().undo().run()}>↺</ToolbarButton>
+                        <ToolbarButton label="Redo" onClick={() => editor?.chain().focus().redo().run()}>↻</ToolbarButton>
+                        <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                        <ToolbarButton label="Heading 2" active={editor?.isActive("heading", { level: 2 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}>H2</ToolbarButton>
+                        <ToolbarButton label="Heading 3" active={editor?.isActive("heading", { level: 3 })} onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}>H3</ToolbarButton>
+                        <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                        <ToolbarButton label="Bold" active={editor?.isActive("bold")} onClick={() => editor?.chain().focus().toggleBold().run()}><b>B</b></ToolbarButton>
+                        <ToolbarButton label="Italic" active={editor?.isActive("italic")} onClick={() => editor?.chain().focus().toggleItalic().run()}><i>I</i></ToolbarButton>
+                        <ToolbarButton label="Strikethrough" active={editor?.isActive("strike")} onClick={() => editor?.chain().focus().toggleStrike().run()}><s>S</s></ToolbarButton>
+                        <ToolbarButton label="Inline code" active={editor?.isActive("code")} onClick={() => editor?.chain().focus().toggleCode().run()}>{"</>"}</ToolbarButton>
+                        <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                        <ToolbarButton label="Bullet list" active={editor?.isActive("bulletList")} onClick={() => editor?.chain().focus().toggleBulletList().run()}>• List</ToolbarButton>
+                        <ToolbarButton label="Numbered list" active={editor?.isActive("orderedList")} onClick={() => editor?.chain().focus().toggleOrderedList().run()}>1. List</ToolbarButton>
+                        <ToolbarButton label="Quote" active={editor?.isActive("blockquote")} onClick={() => editor?.chain().focus().toggleBlockquote().run()}>❝</ToolbarButton>
+                        <ToolbarButton label="Code block" active={editor?.isActive("codeBlock")} onClick={() => editor?.chain().focus().toggleCodeBlock().run()}>Code</ToolbarButton>
+                        <ToolbarButton label="Divider" onClick={() => editor?.chain().focus().setHorizontalRule().run()}>—</ToolbarButton>
+                        <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                        <ToolbarButton
+                          label="Add or edit link"
+                          active={editor?.isActive("link")}
+                          onClick={() => {
+                            if (editor?.isActive("link")) {
+                              editor.chain().focus().extendMarkRange("link").unsetLink().run();
+                              return;
+                            }
+                            const href = window.prompt("Link URL", "https://");
+                            if (href && href !== "https://") editor?.chain().focus().extendMarkRange("link").setLink({ href }).run();
+                          }}
+                        >
+                          Link
+                        </ToolbarButton>
+                        <ToolbarButton
+                          label="Insert image from URL"
+                          onClick={() => {
+                            const src = window.prompt("Image URL", "https://");
+                            if (src) editor?.chain().focus().setImage({ src, alt: "" }).run();
+                          }}
+                        >
+                          Image
+                        </ToolbarButton>
+                        {imageSelected && (
+                          <>
+                            <span style={{ width: 1, height: 18, backgroundColor: "var(--border)", margin: "0 0.25rem" }} />
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                              Resize
+                            </span>
+                            {[25, 50, 75].map((pct) => (
+                              <ToolbarButton key={pct} label={`Set image width to ${pct}% of the column`} active={imagePct === pct} onClick={() => applyImagePct(pct)}>
+                                {pct}%
+                              </ToolbarButton>
+                            ))}
+                            <ToolbarButton label="Reset image to full column width" active={imageWidth === null} onClick={resetImageWidth}>
+                              Full
+                            </ToolbarButton>
+                            <input
+                              type="range"
+                              min={10}
+                              max={FULL_IMAGE_PCT}
+                              step={1}
+                              value={imagePct}
+                              onChange={(e) => applyImagePct(Number(e.target.value))}
+                              aria-label="Image width, percentage of column"
+                              style={{ width: 96, accentColor: "var(--accent)", cursor: "pointer", margin: "0 0.25rem" }}
+                            />
+                            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", color: "var(--text-secondary)", minWidth: "2.25rem", textAlign: "right" }} aria-live="polite">
+                              {imagePct}%
+                            </span>
+                          </>
+                        )}
+                        {editor?.getAttributes("image").src && (
+                          <ToolbarButton label="Remove selected image" onClick={() => editor?.chain().focus().deleteSelection().run()}>Remove image</ToolbarButton>
+                        )}
+                        <span style={{ flex: 1 }} />
+                        <ToolbarButton label="View raw HTML" onClick={() => setShowSource(true)}>&lt;/&gt;</ToolbarButton>
+                      </div>
+
+                      {/* Editor surface */}
+                      <div style={{ border: "1px solid var(--border-strong)", borderRadius: "0 0 var(--radius-sm) var(--radius-sm)", backgroundColor: "var(--bg-surface)" }}>
+                        <EditorContent editor={editor} />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}
@@ -257,7 +616,7 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
                 </div>
                 <div>
                   <label style={labelStyle}>SEO Description</label>
-                  <textarea value={form.seoDescription || ""} onChange={(e) => handleChange("seoDescription", e.target.value)} placeholder="Meta description for search engines" rows={3} style={{ ...inputStyle, resize: "vertical" }} />
+                  <textarea value={form.seoDescription || ""} onChange={(e) => handleChange("seoDescription", e.target.value)} placeholder="Meta description for search engines" rows={3} style={inputStyle} />
                   <p style={{ fontSize: "0.75rem", color: "var(--text-tertiary)", marginTop: "0.25rem" }}>Recommended: 150–160 characters. Currently: {(form.seoDescription || "").length}</p>
                 </div>
                 <div>
@@ -327,11 +686,28 @@ export function BlogEditor({ post, onSave, onCancel }: BlogEditorProps) {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
+        .blog-editor-prose { min-height: 480px; padding: 1.25rem 1.5rem; outline: none; font-family: var(--font-sans); font-size: 1rem; line-height: 1.8; color: var(--text-primary); }
+        .blog-editor-prose > * + * { margin-top: 0.875rem; }
+        .blog-editor-prose h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+        .blog-editor-prose h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+        .blog-editor-prose h3 { font-size: 1.1875rem; font-weight: 700; }
+        .blog-editor-prose p { margin: 0; }
+        .blog-editor-prose ul, .blog-editor-prose ol { padding-left: 1.5rem; }
+        .blog-editor-prose ul { list-style: disc; }
+        .blog-editor-prose ol { list-style: decimal; }
+        .blog-editor-prose li { margin: 0.25rem 0; }
+        .blog-editor-prose blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--text-secondary); font-style: italic; }
+        .blog-editor-prose code { font-family: var(--font-mono); font-size: 0.875em; background: var(--accent-muted); padding: 0.1em 0.35em; border-radius: 4px; }
+        .blog-editor-prose pre { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; overflow-x: auto; }
+        .blog-editor-prose pre code { background: none; padding: 0; }
+        .blog-editor-prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); display: block; }
+        .blog-editor-prose .ProseMirror-selectednode { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .blog-editor-prose a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+        .blog-editor-prose hr { border: none; border-top: 1px solid var(--border-strong); margin: 1.5rem 0; }
+        .blog-editor-prose p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--text-tertiary); float: left; height: 0; pointer-events: none; }
         @media (max-width: 900px) {
-          .editor-grid {
-            grid-template-columns: 1fr !important;
-          }
+          .editor-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

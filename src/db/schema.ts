@@ -106,6 +106,7 @@ export const auditRequests = pgTable("audit_requests", {
   reviewScope: text("review_scope"),
   message: text("message"),
   status: varchar("status", { length: 50 }).default("new"),
+  notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -119,5 +120,40 @@ export const contactMessages = pgTable("contact_messages", {
   website: text("website"),
   projectType: varchar("project_type", { length: 100 }),
   message: text("message"),
+  status: varchar("status", { length: 50 }).default("new"), // new | in_progress | completed | archived
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ─── DevTools: administrative audit trail ─────────────────────────────────────
+export const adminActivity = pgTable("admin_activity", {
+  id: serial("id").primaryKey(),
+  actorEmail: varchar("actor_email", { length: 255 }),
+  action: varchar("action", { length: 100 }).notNull(), // e.g. "submission.status", "project.delete", "query.run", "export.csv", "login"
+  target: varchar("target", { length: 255 }),
+  detail: jsonb("detail"),
+  ip: varchar("ip", { length: 64 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ─── DevTools: API request logs (sanitized — no headers, no bodies) ──────────
+export const apiRequests = pgTable("api_requests", {
+  id: serial("id").primaryKey(),
+  method: varchar("method", { length: 10 }).notNull(),
+  path: varchar("path", { length: 255 }).notNull(),
+  status: integer("status").notNull(),
+  durationMs: integer("duration_ms"),
+  error: text("error"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ─── DevTools: application errors ─────────────────────────────────────────────
+export const appErrors = pgTable("app_errors", {
+  id: serial("id").primaryKey(),
+  source: varchar("source", { length: 100 }).notNull(),
+  severity: varchar("severity", { length: 20 }).default("error"), // error | warn
+  message: text("message").notNull(),
+  stack: text("stack"),
+  context: jsonb("context"),
   createdAt: timestamp("created_at").defaultNow(),
 });
