@@ -938,4 +938,95 @@ export const editorialArticles: BlogArticle[] = [
       {"label": "Baymard Institute — trust signals and conversion", "url": "https://baymard.com/lists/online-store-trust-signals"}
     ]
   }
-];
+  {
+    "id": 9201,
+    "slug": "how-ai-shopping-tools-understand-product-data",
+    "title": "How AI Shopping Tools Understand Product Data",
+    "excerpt": "From question to recommendation in four steps — retrieval, extraction, comparison, answer. What each step does to your products, and where the drops happen.",
+    "articleType": "insight",
+    "category": "AI Commerce",
+    "tags": ["AI shopping tools", "product data", "AI assistants", "semantic search", "ecommerce QA"],
+    "projectSlug": "",
+    "projectTitle": "",
+    "primaryKeyword": "how AI shopping tools understand product data",
+    "searchIntent": "informational — explain how shopping tools process product data",
+    "metaTitle": "How AI Shopping Tools Understand Product Data",
+    "metaDescription": "From question to recommendation in four steps: retrieval, extraction, comparison, answer. Where products drop out — and the checks that show you why.",
+    "heroImage": "/images/blog/how-ai-shopping-tools-understand-product-data-hero.jpg",
+    "heroAlt": "A merchandiser reviewing fabric swatches and handwritten product notes beside a laptop in a sunlit studio",
+    "author": "Zain",
+    "authorRole": "Founder & QA Lead",
+    "publishedAt": "2026-10-08T09:00:00Z",
+    "readingTime": 9,
+    "featured": false,
+    "body": [
+      {"type": "p", "text": "I’ll never forget the first time I saw a store owner watch an AI assistant answer her own product question with a competitor’s name. She typed the exact thing a customer would ask — a use case, a budget, a constraint — and the assistant came back with a confident recommendation that had no place for anything she sold. Her first instinct wasn’t to question the tool. It was to assume her products were the problem. That instinct is understandable, and it’s the trap: when your product is missing from an AI answer, it’s hard to tell whether the tool missed it or whether your data made it impossible. In my work auditing ecommerce stores, I’ve found it’s almost always the data. So this is the machine-side explanation of what happens between her question and that disappointing answer."},
+      {"type": "p", "text": "The companion piece, [how AI reads product data](/blogs/how-ai-understands-product-data), covers what these systems parse. This one goes the other direction: it follows what the tool does with that data, step by step, from the moment a shopper asks a question to the moment a recommendation is written. Once you can see the four stages, the missing products in AI answers stop being a mystery — they become a diagnosis."},
+      {"type": "h2", "text": "First, what an “AI shopping tool” actually is"},
+      {"type": "p", "text": "The phrase covers three families of systems, and it helps to know which is which. The first is [[answer engines]]: the AI overviews and answer boxes that sit inside search results and quote pages. The second is [[chat assistants]]: the conversational layers inside marketplaces, big brands, and some independent stores, where a shopper narrows down out loud. The third is [[shopping agents]]: systems that don’t just answer but act — searching, comparing, holding shortlists, sometimes even starting the purchase on the shopper’s behalf."},
+      {"type": "p", "text": "They differ in how much they do, but the core job is identical: turn a natural-language question into a short list of products the system can defend. And none of them “reads” your store the way a person does. They work from a machine-readable view of it — an index of your products built from your structured fields, your feed, and the text on your pages — plus a pass over your content to pull out anything else worth citing. If a fact about your product doesn’t survive that view, no amount of clever copywriting on the page will recover it. This is why [Google’s guidance on product structured data](https://developers.google.com/search/docs/appearance/structured-data) keeps coming up in this conversation: it’s the contract between your store and the machines that read it."},
+      {"type": "imagePair", "items": [
+        {"src": "/images/blog/how-ai-shopping-tools-understand-product-data-samples.jpg", "alt": "Macro shot of labelled fabric and material swatches laid out beside an open laptop"},
+        {"src": "/images/blog/how-ai-shopping-tools-understand-product-data-assistant.jpg", "alt": "A tablet showing an AI chat recommendation next to the physical product it describes"}
+      ]},
+      {"type": "h2", "text": "The four-stage job: from question to recommendation"},
+      {"type": "p", "text": "Every shopping tool, whatever the interface, runs some version of the same pipeline: retrieve candidates, extract facts, compare them, and compose an answer. The drops — the products that vanish from the result — happen at one of these four stages. Here’s each one, and what it takes from your catalog."},
+      {"type": "h3", "text": "Step 1 — Retrieval: building the shortlist"},
+      {"type": "p", "text": "The tool takes the shopper’s question, converts it into a meaning representation, and pulls a candidate pool from the index. Retrieval is where vague data kills products first. A title that reads like an internal code, a missing category, an empty material field — none of it is visible to a human skimming the page, but to the retriever each one makes your product less findable. If the candidate pool never includes you, nothing downstream can save you: the tool cannot recommend what it cannot find."},
+      {"type": "p", "text": "This stage is also where intent mismatch hides. “Shoes for standing all day” is a problem statement, not a category. A product whose title and copy only use category words — “men’s casual shoe” — matches the category but not the situation, and it loses to a rival whose copy actually talks about long shifts. The retriever is matching meaning to meaning, so the situational language has to exist in your words, not just in your head."},
+      {"type": "h3", "text": "Step 2 — Extraction: turning pages into facts"},
+      {"type": "p", "text": "For each candidate, the tool extracts the facts it can cite: price, availability, size range, material, the claims that would justify a recommendation. Structured fields — titles, variants, attributes, schema — are the fast lane. Raw description text is the slow lane, where the model has to parse sentences and figure out what’s a fact and what’s decoration. Parsing fails quietly, and the failure looks exactly like absence."},
+      {"type": "p", "text": "There are two failure modes that matter. The first is missing facts: an empty attribute is not “probably filled in” to a machine, it’s simply absent. The second is contradictory facts. I’ve walked this exact pattern in audits — the live page shows a sale price while the feed and the structured data still carry the full price. The tool resolves the contradiction by trusting whichever source it prefers, and often it discards the record entirely rather than recommend on uncertain facts. One wrong row, four surfaces, zero alerts. [My piece on AI-powered QA for product data](/blogs/ai-powered-qa-for-product-data-and-content) goes deeper on that class of defect."},
+      {"type": "image", "src": "/images/blog/how-ai-shopping-tools-understand-product-data-attributes.jpg", "alt": "A printed product attribute sheet on a desk, key fields circled in red pen beside a keyboard"},
+      {"type": "h3", "text": "Step 3 — Comparison: scoring candidates against each other"},
+      {"type": "p", "text": "Now the tool compares what it extracted. This is the stage most people underestimate, because it’s not about your product in isolation — it’s about your product next to your competitors’. An attribute you fill in that competitors leave blank becomes an advantage. An attribute you leave blank that competitors fill in becomes a disqualifier, even if the physical products are identical. Thin data doesn’t score zero in this stage; it scores last."},
+      {"type": "p", "text": "This is why the fixes that feel most boring — fill the material field, standardise variant names, add the care instructions — are also the highest-leverage. Every completed attribute is a point in the comparison round that you can no longer lose by default. And it’s why comparison-stage failures are the most invisible: your page looks complete, your customers are happy, and the machine is simply ranking you below the store with the same product and a more complete record."},
+      {"type": "h3", "text": "Step 4 — The answer: a recommendation the tool can defend"},
+      {"type": "p", "text": "The final stage is composition: the tool writes a short answer that names one or a few products, states a reason, and usually links back to them. The constraint that shapes everything is defensibility. A product makes the answer only if the tool can state a reason for it that is backed by facts it actually extracted. “Good for long shifts — memory-foam insole, wide width available, $84” is a defensible sentence. “Great quality and very comfortable” is not — and the tool knows it."},
+      {"type": "p", "text": "The corollary is a useful way to audit your own copy: the sentence most likely to be quoted in an AI answer is the one that states a specific, verifiable reason. Write that sentence once per product — the one your product can actually claim — and you’ve given the composer a line it can use. Everything else is context."},
+      {"type": "h2", "text": "Where the process breaks, stage by stage"},
+      {"type": "p", "text": "Pulling the failure modes out of the audits I run, here’s where each stage typically drops products:"},
+      {"type": "list", "items": [
+        "Retrieval — SKU-style titles, missing categories, empty attributes, and copy that never mentions the situations customers actually shop for.",
+        "Extraction — empty fields read as absence, prices or stock that disagree across the page, the feed and the structured data, and images without alt text, which removes the visual layer entirely.",
+        "Comparison — variant vocabulary that doesn’t line up with the rest of the market (“XL” next to “Extra Large”), and missing reviews or trust signals while competitors carry theirs.",
+        "Answer — claims with no extractable fact behind them, and key facts that only render after JavaScript runs, so the index never saw them at all."
+      ]},
+      {"type": "p", "text": "Notice that each stage fails for its own reasons, and a fix at one stage does not fix the others. That’s why “optimise for AI” as a single to-do item is a trap — it’s really a four-part diagnosis. The good news is that every failure on that list has a cheap reproduction, which brings us to the concrete version."},
+      {"type": "h2", "text": "A worked example, end to end"},
+      {"type": "p", "text": "Let’s walk one real-shaped query through the pipeline: “Which work shoes under $90 are good for standing all day?”"},
+      {"type": "p", "text": "Retrieval: the tool builds a shortlist from products whose titles and copy mention standing, support, work use, or the situations around them. A store that only ever writes “men’s casual shoe” isn’t in that shortlist, no matter how good the shoe is."},
+      {"type": "p", "text": "Extraction: from the shortlist, the tool pulls price, availability, support claims, insole details, width options. The product that comes back as “memory-foam insole, wide width available, $84, in stock” is fully extractable. The product described as “comfortable and durable” is extractable as almost nothing."},
+      {"type": "p", "text": "Comparison: among the remaining candidates, the tool weighs exactly what the question implied — comfort over long periods, fit, price under the budget, availability. Products with explicit long-shift language, reviews, and clear delivery estimates score higher, because the question invited those comparisons."},
+      {"type": "p", "text": "Answer: the tool names a product and states the reason in one breath — “good for long shifts, memory-foam insole, wide width, $84.” If your product is missing any of those extracted facts, it cannot be named in that breath. The recommendation you see is the recommendation that survived all four filters."},
+      {"type": "image", "src": "/images/blog/how-ai-shopping-tools-understand-product-data-compare.jpg", "alt": "A physical product and its product page on a laptop, side by side on a desk, with a pen and notes"},
+      {"type": "h2", "text": "Five things you can test this week"},
+      {"type": "p", "text": "None of this requires new tooling. The checks below map one-to-one onto the four stages, so when one fails you know exactly which stage is dropping your products:"},
+      {"type": "checklist", "title": "Run it on your five best sellers", "items": [
+        "Ask three different AI assistants for your product in a customer’s words — use case, budget, constraint. Never shortlisted? That’s a retrieval problem.",
+        "Open your top five products in the admin: do the titles read in customer words, are the key attributes filled, and do variant names line up across products?",
+        "Compare the live page, the admin record, and your feed for price, stock and spec. Any disagreement is an extraction landmine.",
+        "Write the one sentence per product only you can claim — a specific, verifiable reason to choose it. Can’t write it? That’s an answer-stage gap.",
+        "View the page source, or disable JavaScript: do price, availability and the key specs exist in the raw HTML, or only after scripts run?"
+      ]},
+      {"type": "p", "text": "Do those five and you’ll have a shortlist of stage-specific fixes instead of a vague “we need to optimise for AI” project. The ten minutes is deliberate — short enough to actually do, specific enough to act on."},
+      {"type": "h2", "text": "Why this is a QA problem, not a marketing one"},
+      {"type": "p", "text": "Step back and look at the shape of it: four stages, each with its own failure modes, each reproducible with a cheap check. That’s the shape of a testing problem. The same discipline that finds a broken checkout step finds a product that is being silently dropped from AI recommendations — you just point it at the catalog instead of the cart, and the output is the same: a documented, reproducible finding with a fix."},
+      {"type": "p", "text": "That’s the territory [Shopify QA testing](/shopify-qa-testing) covers — the catalog included, not just the journey — and a full [Shopify QA audit](/shopify-qa-audit) is how you get the version of this diagnosis written up per product, per stage, before your customers find the gap themselves. If you want to see what a finished audit looks like, [the Fandiem case study](/work/fandiem-sweepstakes-qa-audit) walks the findings the way a client actually receives them. And once the data side is solid, the next question is how to keep it solid — [the product data quality checklist](/blogs/product-data-quality-checklist-ai-search) is the maintenance side of this exact work."},
+      {"type": "cta", "title": "Find out which stage is dropping your products", "text": "A short audit walks your top products through all four stages — retrieval, extraction, comparison, answer — and hands you a fix list per product.", "href": "/audit", "label": "Request a store audit"}
+    ],
+    "faq": [
+      {"question": "Are AI shopping tools the same thing as AI search overviews?", "answer": "Related, not identical. Overviews are answer engines that quote pages; shopping assistants and agents do the same retrieval–extraction–comparison–answer pipeline but inside a conversation, and agents can act on the result. The data requirements are the same at every stage."},
+      {"question": "Why do I get a different answer from the same tool on different days?", "answer": "Retrieval is not perfectly deterministic: model versions update, indexes refresh, and tie-breaks shift. A product that sits near the edge of the candidate pool can come and go. Products with strong, complete data sit safely inside the pool and stop depending on the edge."},
+      {"question": "Do I need structured data (schema markup) for this to work?", "answer": "It is the fastest channel for facts, so it materially improves extraction — but it labels facts you already have. Clean product data first, markup second: schema over messy data just makes the mess visible to machines."},
+      {"question": "How quickly do fixes show up in AI recommendations?", "answer": "It depends on how often each tool refreshes its index — in practice, days to weeks rather than months. Faster than classic SEO, but there is no notification when your fix lands, which is why the five checks above matter more than any dashboard."},
+      {"question": "Is this harder with a large catalog or a small one?", "answer": "Paradoxically, small catalogs are easier to fix completely: a few dozen products can be hand-checked in an afternoon. Large catalogs need the same checks automated — which is exactly where QA tooling and audits earn their keep."},
+      {"question": "Does any of this replace classic SEO?", "answer": "No. The same structured, specific, indexable content feeds both the classic index and the machine-readable view. This pipeline just adds two consumers — the comparison stage and the answer stage — that classic SEO never had to satisfy."}
+    ],
+    "sources": [
+      {"label": "Google Search Central — product structured data", "url": "https://developers.google.com/search/docs/appearance/structured-data"},
+      {"label": "Shopify.dev — the product object", "url": "https://shopify.dev/docs/api/admin-rest/reference/product"},
+      {"label": "web.dev — Optimize Largest Contentful Paint", "url": "https://web.dev/articles/optimize-lcp"}
+    ]
+  },
+]
