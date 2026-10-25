@@ -193,14 +193,19 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        {/* Above-the-fold media is preloaded so the showreel poster is
+            already decoded at first paint — no pop-in flash on open. */}
+        <link rel="preload" as="image" href="/images/showreel-poster.jpg" fetchPriority="high" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
                   var theme = localStorage.getItem('qa-theme');
-                  if (!theme) {
-                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  if (theme !== 'light' && theme !== 'dark') {
+                    // Site default is light, regardless of the system scheme.
+                    // A saved choice in localStorage always wins.
+                    theme = 'light';
                   }
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch(e) {}
