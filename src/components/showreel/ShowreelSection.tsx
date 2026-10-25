@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Reveal } from "@/components/motion/Reveal";
 
 const VIDEO_MP4 = "/videos/above-the-fold.mp4";
 const VIDEO_WEBM = "/videos/above-the-fold.webm";
@@ -88,7 +87,7 @@ export function ShowreelSection() {
           className="showreel-grid"
         >
           {/* Copy */}
-          <Reveal>
+          <div>
             <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
               Watch It Break
             </p>
@@ -173,10 +172,10 @@ export function ShowreelSection() {
                 </span>
               ))}
             </div>
-          </Reveal>
+          </div>
 
           {/* Video frame */}
-          <Reveal delay={120}>
+          <div>
             <div
               style={{
                 border: "1px solid var(--border-strong)",
@@ -421,7 +420,7 @@ export function ShowreelSection() {
                 )}
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </div>
 
