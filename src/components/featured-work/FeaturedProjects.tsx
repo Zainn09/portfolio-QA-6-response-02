@@ -414,43 +414,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                           }}
                         />
 
-                        {/* Issue markers — mount on activation so they pop in */}
-                        {isActive &&
-                          p.issues.slice(0, 2).map((issue, j) => (
-                            <div
-                              key={issue.id}
-                              title={issue.title}
-                              aria-label={`Issue ${issue.id}: ${issue.title}`}
-                              style={{
-                                position: "absolute",
-                                ...(j === 0 ? { top: "12%", right: "30%" } : { bottom: "35%", left: "55%" }),
-                                width: "22px",
-                                height: "22px",
-                                borderRadius: "50%",
-                                backgroundColor:
-                                  issue.severity === "critical"
-                                    ? "var(--critical)"
-                                    : issue.severity === "major"
-                                    ? "var(--major)"
-                                    : "var(--minor)",
-                                color: "white",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "0.5625rem",
-                                fontWeight: 700,
-                                cursor: "default",
-                                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                                animation: "marker-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
-                                animationDelay: `${j * 150 + 250}ms`,
-                                opacity: 0,
-                              }}
-                            >
-                              {String(j + 1).padStart(2, "0")}
-                            </div>
-                          ))}
-
                         {/* Industry tag */}
                         <div
                           style={{
