@@ -16,6 +16,20 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  async redirects() {
+    return [
+      // Near-duplicate consolidation: the "-2" variant of the AI shopping
+      // assistants post (2025-10) shared its meta title/description and
+      // ~70% of its body with the canonical post (2025-05). Its two unique
+      // case sections were ported into the canonical post, then the variant
+      // was removed from the data set.
+      {
+        source: "/blogs/how-ai-shopping-assistants-are-rewiring-product-discovery-for-e-commerce-brands-2",
+        destination: "/blogs/how-ai-shopping-assistants-are-rewiring-product-discovery-for-e-commerce-brands",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
