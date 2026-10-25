@@ -117,50 +117,20 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
             gap: "2rem",
           }}
         >
-          {/* Logo — VOID//FLUX emblem + brand lockup */}
+          {/* Logo — VOID//FLUX vector emblem */}
           <Link
             href="/"
             aria-label="Abdul Rehman — QA Specialist, home"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.625rem",
-              flexShrink: 0,
-            }}
+            style={{ flexShrink: 0, display: "block" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo/void-flux.png"
+              src="/logo/void-flux.svg"
               alt=""
-              width={38}
-              height={38}
-              style={{ width: "38px", height: "38px", display: "block" }}
+              width={40}
+              height={40}
+              style={{ width: "40px", height: "40px", display: "block" }}
             />
-            <span style={{ display: "flex", flexDirection: "column", gap: "0.1875rem" }}>
-              <span
-                style={{
-                  fontSize: "0.9375rem",
-                  fontWeight: 700,
-                  letterSpacing: "-0.03em",
-                  color: "var(--text-primary)",
-                  lineHeight: 1,
-                }}
-              >
-                Abdul Rehman
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "0.5625rem",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "var(--text-tertiary)",
-                  lineHeight: 1,
-                }}
-              >
-                QA Specialist
-              </span>
-            </span>
           </Link>
 
           {/* Desktop links */}

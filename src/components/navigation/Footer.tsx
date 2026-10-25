@@ -67,17 +67,9 @@ export function Footer() {
         >
           {/* Brand */}
           <div>
-            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem", textDecoration: "none" }}>
+            <Link href="/" aria-label="Abdul Rehman — QA Specialist, home" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo/void-flux.png" alt="" width={44} height={44} style={{ width: "44px", height: "44px", display: "block" }} />
-              <span style={{ display: "flex", flexDirection: "column", gap: "0.1875rem" }}>
-                <span style={{ fontSize: "1.0625rem", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text-primary)" }}>
-                  Abdul Rehman
-                </span>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-                  QA Specialist
-                </span>
-              </span>
+              <img src="/logo/void-flux.svg" alt="" width={52} height={52} style={{ width: "52px", height: "52px", display: "block" }} />
             </Link>
             <p style={{ fontSize: "0.875rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "220px" }}>
               Quality Assurance for Shopify & Shopify Plus.

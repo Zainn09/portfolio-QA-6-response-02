@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="gA" gradientUnits="userSpaceOnUse" x1="256" y1="36" x2="476" y2="256">
+      <stop offset="0" stop-color="#3DF2FF"/>
+      <stop offset="0.55" stop-color="#5E7BFF"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="gB" gradientUnits="userSpaceOnUse" x1="256" y1="36" x2="476" y2="256">
+      <stop offset="0" stop-color="#161627"/>
+      <stop offset="1" stop-color="#3A2378"/>
+    </linearGradient>
+    <g id="bB"><path d="M 256 36 C 300 100, 388 196, 476 256 L 352 256 C 316 224, 288 196, 256 160 Z" fill="url(#gB)"/></g>
+    <g id="bA">
+      <path d="M 256 36 C 300 100, 388 196, 476 256 L 352 256 C 316 224, 288 196, 256 160 Z" fill="url(#gA)"/>
+      <path d="M 256 36 C 300 100, 388 196, 476 256" fill="none" stroke="#F5F7FF" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 352 256 C 316 224, 288 196, 256 160" fill="none" stroke="#F5F7FF" stroke-opacity="0.28" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <use href="#bB"/>
+  <use href="#bA" transform="rotate(90 256 256)"/>
+  <use href="#bB" transform="rotate(180 256 256)"/>
+  <use href="#bA" transform="rotate(270 256 256)"/>
+</svg>

@@ -187,7 +187,8 @@ export default function RootLayout({
         {/* Brand fonts load progressively: exact type when online,
             graceful system-font fallback when offline. */}
         <meta name="theme-color" content="#F5F3ED" />
-        {/* VOID//FLUX brand mark — favicon + iOS home-screen icon */}
+        {/* VOID//FLUX brand mark — vector emblem, favicon + iOS home-screen icon */}
+        <link rel="icon" type="image/svg+xml" href="/logo/void-flux.svg" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
