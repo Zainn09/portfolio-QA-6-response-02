@@ -117,39 +117,49 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
             gap: "2rem",
           }}
         >
-          {/* Logo */}
+          {/* Logo — VOID//FLUX emblem + brand lockup */}
           <Link
             href="/"
-            aria-label="QA Specialist — Home"
+            aria-label="Abdul Rehman — QA Specialist, home"
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: "0.125rem",
+              alignItems: "center",
+              gap: "0.625rem",
               flexShrink: 0,
             }}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.6875rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--text-tertiary)",
-                lineHeight: 1,
-              }}
-            >
-              QA
-            </span>
-            <span
-              style={{
-                fontSize: "0.9375rem",
-                fontWeight: 700,
-                letterSpacing: "-0.03em",
-                color: "var(--text-primary)",
-                lineHeight: 1,
-              }}
-            >
-              SPECIALIST
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo/void-flux.png"
+              alt=""
+              width={38}
+              height={38}
+              style={{ width: "38px", height: "38px", display: "block" }}
+            />
+            <span style={{ display: "flex", flexDirection: "column", gap: "0.1875rem" }}>
+              <span
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.03em",
+                  color: "var(--text-primary)",
+                  lineHeight: 1,
+                }}
+              >
+                Abdul Rehman
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.5625rem",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "var(--text-tertiary)",
+                  lineHeight: 1,
+                }}
+              >
+                QA Specialist
+              </span>
             </span>
           </Link>
 

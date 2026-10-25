@@ -67,12 +67,16 @@ export function Footer() {
         >
           {/* Brand */}
           <div>
-            <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
-              <span style={{ display: "block", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-                QA
-              </span>
-              <span style={{ display: "block", fontSize: "1.125rem", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text-primary)" }}>
-                SPECIALIST
+            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem", textDecoration: "none" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo/void-flux.png" alt="" width={44} height={44} style={{ width: "44px", height: "44px", display: "block" }} />
+              <span style={{ display: "flex", flexDirection: "column", gap: "0.1875rem" }}>
+                <span style={{ fontSize: "1.0625rem", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text-primary)" }}>
+                  Abdul Rehman
+                </span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                  QA Specialist
+                </span>
               </span>
             </Link>
             <p style={{ fontSize: "0.875rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "220px" }}>
