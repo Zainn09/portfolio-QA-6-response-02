@@ -69,7 +69,7 @@ export function Footer() {
           <div>
             <Link href="/" aria-label="Abdul Rehman — QA Specialist, home" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo/void-flux.svg" alt="" width={52} height={52} style={{ width: "52px", height: "52px", display: "block" }} />
+              <img src="/logo/void-flux-ar.svg" alt="" width={52} height={52} style={{ width: "52px", height: "52px", display: "block" }} />
             </Link>
             <p style={{ fontSize: "0.875rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "220px" }}>
               Quality Assurance for Shopify & Shopify Plus.

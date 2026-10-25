@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="gMain" gradientUnits="userSpaceOnUse" x1="96" y1="400" x2="368" y2="400">
+      <stop offset="0" stop-color="#3DF2FF"/>
+      <stop offset="0.5" stop-color="#5E7BFF"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="gBowl" gradientUnits="userSpaceOnUse" x1="300" y1="250" x2="450" y2="410">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#3DF2FF"/>
+    </linearGradient>
+    <mask id="void"><rect x="0" y="0" width="512" height="512" fill="white"/><path d="M 390 256 L 424 292 L 390 328 L 356 292 Z" fill="black"/></mask>
+  </defs>
+  <path d="M 96 400 L 224 116 L 240 116 L 368 400" fill="none" stroke="url(#gMain)" stroke-width="46" stroke-linecap="round" stroke-linejoin="miter"/>
+  <path d="M 264 178 C 340 122, 432 152, 432 234 C 432 300, 362 306, 322 302 L 436 400" mask="url(#void)" fill="none" stroke="url(#gBowl)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 112 398 L 224 130" fill="none" stroke="#F5F7FF" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 218 219 L 231 232 L 218 245 L 205 232 Z" fill="#3DF2FF" fill-opacity="0.9"/>
+  <path d="M 150 300 L 322 300" fill="none" stroke="#F5F7FF" stroke-opacity="0.85" stroke-width="10" stroke-linecap="round"/>
+  <path d="M 452 386 L 480 411" fill="none" stroke="#3DF2FF" stroke-opacity="0.95" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 468 371 L 496 396" fill="none" stroke="#3DF2FF" stroke-opacity="0.6" stroke-width="9" stroke-linecap="round"/>
+</svg>

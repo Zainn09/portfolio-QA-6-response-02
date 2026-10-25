@@ -125,7 +125,7 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo/void-flux.svg"
+              src="/logo/void-flux-ar.svg"
               alt=""
               width={40}
               height={40}
