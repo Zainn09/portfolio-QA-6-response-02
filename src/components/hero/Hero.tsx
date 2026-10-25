@@ -51,7 +51,6 @@ export function Hero() {
                 alignItems: "center",
                 gap: "0.75rem",
                 marginBottom: "1.25rem",
-                animation: "fade-up 0.6s ease forwards",
               }}
             >
               <div
@@ -69,7 +68,6 @@ export function Hero() {
             <h1
               style={{
                 marginBottom: "1.25rem",
-                animation: "fade-up 0.6s 0.1s ease both",
                 color: "var(--text-primary)",
               }}
             >
@@ -92,7 +90,6 @@ export function Hero() {
                 fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
                 color: "var(--text-secondary)",
                 marginBottom: "0.75rem",
-                animation: "fade-up 0.6s 0.2s ease both",
                 maxWidth: "500px",
               }}
             >
@@ -104,7 +101,6 @@ export function Hero() {
                 fontSize: "0.9375rem",
                 color: "var(--text-tertiary)",
                 marginBottom: "2rem",
-                animation: "fade-up 0.6s 0.25s ease both",
                 fontFamily: "var(--font-mono)",
                 letterSpacing: "0.02em",
               }}
@@ -117,7 +113,6 @@ export function Hero() {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: "1rem",
-                animation: "fade-up 0.6s 0.35s ease both",
               }}
             >
               <Link
@@ -225,7 +220,6 @@ export function Hero() {
                 paddingTop: "1.5rem",
                 borderTop: "1px solid var(--border)",
                 flexWrap: "wrap",
-                animation: "fade-up 0.6s 0.4s ease both",
               }}
             >
               {[
@@ -262,12 +256,7 @@ export function Hero() {
           </div>
 
           {/* Right: Inspection Animation */}
-          <div
-            style={{
-              animation: "fade-in 0.8s 0.3s ease both",
-            }}
-            className="hero-animation"
-          >
+          <div className="hero-animation">
             <InspectionAnimation />
           </div>
         </div>
