@@ -42,9 +42,24 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
   const trackRef = useRef<HTMLElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const prevIdx = useRef(0);
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  const markLoaded = useCallback((i: number) => {
+    setLoaded((prev) => (prev[i] ? prev : { ...prev, [i]: true }));
+  }, []);
+
+  // Cached images finish before onLoad listeners attach — detect them on
+  // mount so their slides are never held back (or popped in) by a missing
+  // load event.
+  useEffect(() => {
+    imgRefs.current.forEach((el, i) => {
+      if (el && el.complete && el.naturalWidth > 0) markLoaded(i);
+    });
+  }, [markLoaded]);
 
   // Mobile = classic tap-through carousel (no pinning, no overlap risk)
   useEffect(() => {
@@ -404,6 +419,52 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                   onTouchEnd={onTouchEnd}
                   style={{ touchAction: "pan-y" }}
                 >
+                  {/* Branded placeholder while the active capture is not
+                      loaded — the frame never shows a bare background, and
+                      the capture fades in instead of popping. */}
+                  {!loaded[activeIndex] && (
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        zIndex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.875rem",
+                        backgroundColor: "var(--bg-surface)",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/logo/void-flux-ar.svg" alt="" width={44} height={44} style={{ width: "44px", height: "44px", opacity: 0.55 }} />
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.5625rem",
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          color: "var(--text-tertiary)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.375rem",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: "6px",
+                            height: "6px",
+                            borderRadius: "50%",
+                            backgroundColor: "var(--accent)",
+                            animation: "pulse-dot 2s ease-in-out infinite",
+                          }}
+                        />
+                        Capture {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                        {String(projects.length).padStart(2, "0")} — loading
+                      </span>
+                    </div>
+                  )}
                   {projects.map((p, i) => {
                     const isActive = i === activeIndex;
                     return (
@@ -411,6 +472,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                         key={p.id}
                         aria-hidden={!isActive}
                         data-active={isActive}
+                        data-loaded={Boolean(loaded[i])}
                         className="featured-visual-slide"
                       >
                         {/* Real store capture from the audit.
@@ -420,10 +482,15 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                             when the section first becomes visible. */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
+                          ref={(el) => {
+                            imgRefs.current[i] = el;
+                          }}
                           src={p.heroImage}
                           alt={`${p.title} — store capture from the QA audit`}
                           loading="eager"
                           decoding="async"
+                          onLoad={() => markLoaded(i)}
+                          onError={() => markLoaded(i)}
                           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
                         />
                         <div
@@ -775,7 +842,11 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
               visibility 0s linear 500ms;
             pointer-events: none;
           }
-          .featured-visual-slide[data-active="true"] {
+          /* A slide is visible only when it is active AND its capture has
+             finished loading — so the image can never pop into a frame the
+             user is already looking at. Its first appearance is always the
+             500ms fade, and the branded placeholder covers everything before. */
+          .featured-visual-slide[data-active="true"][data-loaded="true"] {
             opacity: 1;
             transform: none;
             visibility: visible;
