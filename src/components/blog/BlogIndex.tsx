@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { ArticleStub } from "@/data/articles";
 import { ARTICLE_CATEGORIES } from "@/data/articles";
+import { categorySlug } from "@/components/blog/categories";
 
 export const PAGE_SIZE = 12;
 
@@ -141,6 +142,10 @@ export function FeaturedCard({ a }: { a: ArticleStub }) {
 
 export function CategoryChips({ active, q }: { active?: string; q?: string }) {
   const mkHref = (c?: string) => {
+    // Category-only views link to the clean /blogs/category/<slug> path —
+    // the single crawlable URL style for a category (?category= canonicals
+    // there, so indexed legacy URLs resolve to the same hub).
+    if (c && !q) return `/blogs/category/${categorySlug(c)}`;
     const p = new URLSearchParams();
     if (c) p.set("category", c);
     if (q) p.set("q", q);
