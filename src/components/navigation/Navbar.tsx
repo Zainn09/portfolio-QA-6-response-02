@@ -117,7 +117,7 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
             gap: "2rem",
           }}
         >
-          {/* Logo — VOID//FLUX vector emblem */}
+          {/* Logo — AR monogram + "QA SPECIALIST" wordmark lockup */}
           <Link
             href="/"
             aria-label="Abdul Rehman — QA Specialist, home"
@@ -125,11 +125,11 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo/void-flux-ar.svg"
+              src="/logo/void-flux-ar-lockup.svg"
               alt=""
-              width={40}
+              width={97}
               height={40}
-              style={{ width: "40px", height: "40px", display: "block" }}
+              style={{ width: "97px", height: "40px", display: "block" }}
             />
           </Link>
 
