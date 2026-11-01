@@ -4,14 +4,18 @@ import Link from "next/link";
 import { getAllArticles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
 import { categoryFromSlug, categorySlug, CLUSTER_COPY } from "@/components/blog/categories";
 import { IndexCard, Pagination, PAGE_SIZE } from "@/components/blog/BlogIndex";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { SITE_URL, absoluteUrl } from "@/lib/site";
+import { getPublishedDbPosts, dbPostToArticle } from "@/lib/blog-html";
 
 interface Props {
   params: Promise<{ category: string }>;
 }
 
-export function generateStaticParams() {
-  return ARTICLE_CATEGORIES.map((c) => ({ category: categorySlug(c) }));
-}
+// The hub also lists posts written in the /admin editor (Postgres), so it
+// renders per request. Category names themselves stay the fixed set —
+// unknown categories still 404.
+export const dynamic = "force-dynamic";
 
 export const dynamicParams = false;
 
@@ -37,14 +41,53 @@ export default async function CategoryPage({ params }: Props) {
   const name = categoryFromSlug(category);
   if (!name) notFound();
 
-  const list = getAllArticles().filter((a) => a.category === name);
+  let list = getAllArticles().filter((a) => a.category === name);
+  // Merge the posts written in the /admin editor for this topic (git wins on
+  // slug collisions).
+  const dbArticles = (await getPublishedDbPosts()).map(dbPostToArticle);
+  const dbHits = dbArticles.filter(
+    (x) => x.category.toLowerCase() === name.toLowerCase() && !list.some((z) => z.slug === x.slug),
+  );
+  list = [...list, ...dbHits].sort((x, y) => Date.parse(y.publishedAt) - Date.parse(x.publishedAt));
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const pageItems = list.slice(0, PAGE_SIZE);
   const others = ARTICLE_CATEGORIES.filter((c) => c !== name);
   const copy = CLUSTER_COPY[name]?.deck ?? `All ${name} articles.`;
 
+  // Topic-cluster hub: CollectionPage + BreadcrumbList. The ItemList exposes
+  // every article in the cluster, not just the ones on page one.
+  const hubLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${name} — Shopify QA articles`,
+    description: copy,
+    url: absoluteUrl(`/blogs/category/${category}`),
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: list.length,
+      itemListElement: list.map((a, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: a.title,
+        url: absoluteUrl(`/blogs/${a.slug}`),
+      })),
+    },
+  };
+
+  const breadcrumbsLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: absoluteUrl("/blogs") },
+      { "@type": "ListItem", position: 3, name, item: absoluteUrl(`/blogs/category/${category}`) },
+    ],
+  };
+
   return (
     <div className="container" style={{ paddingTop: "calc(var(--nav-height) + 3rem)", paddingBottom: "5rem" }}>
+      <JsonLd data={[hubLd, breadcrumbsLd]} />
       <header style={{ marginBottom: "2.5rem" }}>
         <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, marginBottom: "0.75rem" }}>
           Topic cluster · {list.length} articles

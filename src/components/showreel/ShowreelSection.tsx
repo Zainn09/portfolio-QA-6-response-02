@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Reveal } from "@/components/motion/Reveal";
 
 const VIDEO_MP4 = "/videos/above-the-fold.mp4";
 const VIDEO_WEBM = "/videos/above-the-fold.webm";
@@ -17,6 +16,7 @@ export function ShowreelSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
   const [playing, setPlaying] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
   const [muted, setMuted] = useState(true);
 
   // If the video file is missing, the element ends up with NO_SOURCE —
@@ -88,7 +88,7 @@ export function ShowreelSection() {
           className="showreel-grid"
         >
           {/* Copy */}
-          <Reveal>
+          <div>
             <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>
               Watch It Break
             </p>
@@ -173,10 +173,10 @@ export function ShowreelSection() {
                 </span>
               ))}
             </div>
-          </Reveal>
+          </div>
 
           {/* Video frame */}
-          <Reveal delay={120}>
+          <div>
             <div
               style={{
                 border: "1px solid var(--border-strong)",
@@ -284,6 +284,7 @@ export function ShowreelSection() {
                 }}
               >
                 {!failed ? (
+                  <>
                   <video
                     ref={videoRef}
                     poster={POSTER}
@@ -293,6 +294,7 @@ export function ShowreelSection() {
                     playsInline
                     preload="metadata"
                     onError={() => setFailed(true)}
+                    onCanPlay={() => setVideoReady(true)}
                     onPlay={() => setPlaying(true)}
                     onPause={() => setPlaying(false)}
                     style={{
@@ -305,6 +307,23 @@ export function ShowreelSection() {
                     <source src={VIDEO_MP4} type="video/mp4" onError={() => setFailed(true)} />
                     <source src={VIDEO_WEBM} type="video/webm" onError={() => setFailed(true)} />
                   </video>
+                  {/* Poster overlay: holds the first paint until the video can
+                      actually draw a frame, then dissolves away — kills the
+                      poster→frame flash on cold loads and hard reloads. */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      backgroundImage: `url(${POSTER})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      opacity: videoReady ? 0 : 1,
+                      transition: "opacity 400ms ease",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  </>
                 ) : (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -312,7 +331,7 @@ export function ShowreelSection() {
                       src={POSTER}
                       alt="QA engineer auditing a Shopify store"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                      loading="lazy"
+                      loading="eager"
                     />
                     {/* Animated scanline keeps the fallback feeling alive */}
                     <div
@@ -345,7 +364,7 @@ export function ShowreelSection() {
                         color: "#fff",
                       }}
                     >
-                      Drop the audit video at /videos/above-the-fold.mp4 to play it here
+                      {/* Drop the audit video at /videos/above-the-fold.mp4 to play it here */}
                     </div>
                   </>
                 )}
@@ -421,7 +440,7 @@ export function ShowreelSection() {
                 )}
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </div>
 

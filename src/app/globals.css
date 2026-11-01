@@ -826,6 +826,17 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 }
 
 /* ── Blog article system ─────────────────────────────────────── */
+/* QA "flagged" highlight — marks key phrases the way an auditor
+   flags evidence: brand-accent highlighter sweep + accent rule. */
+.flagged {
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 0 0.12em 0.06em;
+  background-image: linear-gradient(to top, var(--accent-muted) 0%, var(--accent-muted) 42%, transparent 42%);
+  border-bottom: 2px solid var(--accent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
 .article-card:hover { border-color: var(--accent) !important; }
 .article-toc { display: none; }
 @media (min-width: 1024px) {
@@ -855,6 +866,14 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 .legacy-post-content ul, .legacy-post-content ol { margin: 0 0 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .legacy-post-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
 .legacy-post-content a { color: var(--text-primary); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.legacy-post-content p { margin: 0 0 1.25rem; }
+.legacy-post-content blockquote { margin: 2rem 0; padding-left: 1.25rem; border-left: 3px solid var(--accent); font-size: 1.1875rem; font-weight: 600; color: var(--text-primary); line-height: 1.6; }
+.legacy-post-content pre { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; overflow-x: auto; margin: 0 0 1.5rem; }
+.legacy-post-content code { font-family: var(--font-mono); font-size: 0.875em; }
+.legacy-post-content pre code { background: none; padding: 0; }
+.legacy-post-content hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+.legacy-post-content figure { margin: 2rem 0; }
+.legacy-post-content figcaption { margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); text-align: center; }
 .blog-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
 @media (min-width: 640px)  { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -864,3 +883,126 @@ div, span, p, h1, h2, h3, h4, ul, ol, li, a, button, input, select, textarea {
 .toc-link[data-active="true"] { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
 .pn-card { transition: border-color 180ms ease, background-color 180ms ease; }
 .pn-card:hover { background-color: var(--accent-muted) !important; }
+
+/* ─── Service pages ──────────────────────────────────────────────────────── */
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.service-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.service-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  padding: 1.5rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+.service-card:hover { border-color: var(--accent); }
+.service-card a { text-decoration: none; }
+
+.service-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  max-width: 56rem;
+}
+
+.service-cta-primary,
+.service-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.9375rem 1.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+.service-cta-primary {
+  background-color: var(--accent);
+  color: #000;
+  border: 1px solid var(--accent);
+}
+.service-cta-primary:hover { background-color: var(--accent-hover); border-color: var(--accent-hover); }
+.service-cta-secondary {
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  background-color: transparent;
+}
+.service-cta-secondary:hover { border-color: var(--accent); }
+
+/* FAQ accordions: native <details>, so keyboard + screen-reader support is free */
+.service-cta-primary:focus-visible,
+.service-cta-secondary:focus-visible,
+.service-card a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: "+";
+  float: right;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 700;
+  margin-left: 1rem;
+}
+details[open] summary::after { content: "−"; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* Tables cannot shrink below their content, so they scroll inside this wrapper
+   instead of forcing the whole page sideways on a phone. */
+.service-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface);
+  -webkit-overflow-scrolling: touch;
+}
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 34rem;
+  font-size: 0.9375rem;
+}
+.service-table th,
+.service-table td {
+  text-align: left;
+  padding: 0.875rem 1.125rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.service-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background-color: var(--bg-secondary);
+  white-space: nowrap;
+}
+.service-table tbody th {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.service-table td { color: var(--text-secondary); }
+.service-table tbody tr:last-child th,
+.service-table tbody tr:last-child td { border-bottom: none; }
+
+@media (max-width: 900px) {
+  .service-grid,
+  .service-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .service-grid,
+  .service-grid.cols-2 { grid-template-columns: 1fr; }
+}

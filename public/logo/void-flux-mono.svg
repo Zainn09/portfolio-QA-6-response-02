@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <g id="b"><path d="M 256 36 C 300 100, 388 196, 476 256 L 352 256 C 316 224, 288 196, 256 160 Z" fill="#F5F7FF" fill-opacity="0.92"/></g>
+  <use href="#b"/>
+  <use href="#b" transform="rotate(90 256 256)"/>
+  <use href="#b" transform="rotate(180 256 256)"/>
+  <use href="#b" transform="rotate(270 256 256)"/>
+</svg>

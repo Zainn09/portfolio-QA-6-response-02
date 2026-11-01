@@ -1531,13 +1531,113 @@ def fill_blocks(blocks, c):
 
 ARTICLES = []
 aid = 1000
-base_date = None
-_date_counter = iter(range(0, 3000))
-def next_date(i):
-    import datetime
-    n = next(_date_counter)
-    d = datetime.date(2026, 1, 6) + datetime.timedelta(days=int(n * 0.85))
-    return d.isoformat() + "T09:00:00Z"
+# Publish dates — set by the owner (2026-10-13). The five most recent projects
+# (Fandiem, K-CAPS, Revived Smiles, Dr. Stengler, Rock Angel Creations) are dated
+# within the last four months, spread with gaps; every other project is dated in
+# 2025, clustered per project. This map is the owner-controlled source of truth
+# for publish dates: each slug lists one date per article the build loop creates
+# (3, or 5 for featured). Note: featured flags in projects.ts have drifted since
+# src/data/articles.ts was last generated, so a full regeneration re-derives the
+# article SET (some projects gain/lose two articles) — dates still come from here.
+PROJECT_DATES = {
+    'fandiem-sweepstakes-qa-audit': ['2026-07-02T09:00:00Z', '2026-07-21T09:00:00Z', '2026-08-06T09:00:00Z', '2026-09-11T09:00:00Z', '2026-10-09T09:00:00Z'],
+    'k-caps-b2b-qa-audit': ['2026-06-23T09:00:00Z', '2026-07-22T09:00:00Z', '2026-08-03T09:00:00Z'],
+    'her-shop-bridal-qa-audit': ['2025-11-17T09:00:00Z', '2025-11-23T09:00:00Z', '2025-11-28T09:00:00Z'],
+    'the-bread-essentials-qa-audit': ['2025-05-06T09:00:00Z', '2025-05-13T09:00:00Z', '2025-05-18T09:00:00Z', '2025-05-19T09:00:00Z', '2025-05-20T09:00:00Z'],
+    'london-flower-academy-qa-audit': ['2025-04-28T09:00:00Z', '2025-05-04T09:00:00Z', '2025-05-10T09:00:00Z'],
+    'electrocity-bikes-qa-audit': ['2025-10-16T09:00:00Z', '2025-10-17T09:00:00Z', '2025-10-19T09:00:00Z'],
+    'revived-smiles-qa-audit': ['2026-06-19T09:00:00Z', '2026-07-21T09:00:00Z', '2026-08-15T09:00:00Z', '2026-09-16T09:00:00Z', '2026-09-21T09:00:00Z'],
+    'dr-stengler-qa-audit': ['2026-06-15T09:00:00Z', '2026-07-31T09:00:00Z', '2026-09-15T09:00:00Z'],
+    'the-scaff-shop-qa-audit': ['2025-04-07T09:00:00Z', '2025-04-12T09:00:00Z', '2025-04-17T09:00:00Z', '2025-04-27T09:00:00Z', '2025-05-07T09:00:00Z'],
+    'maison-khloe-qa-audit': ['2025-06-20T09:00:00Z', '2025-06-24T09:00:00Z', '2025-06-28T09:00:00Z'],
+    'summit-sheets-bedding-qa-audit': ['2025-06-27T09:00:00Z', '2025-07-03T09:00:00Z', '2025-07-09T09:00:00Z'],
+    'peak-scents-qa-audit': ['2025-09-02T09:00:00Z', '2025-09-09T09:00:00Z', '2025-09-14T09:00:00Z'],
+    'green-beauty-expert-qa-audit': ['2025-10-19T09:00:00Z', '2025-10-23T09:00:00Z', '2025-10-27T09:00:00Z'],
+    'globy-glen-skin-qa-audit': ['2025-08-13T09:00:00Z', '2025-08-17T09:00:00Z', '2025-08-21T09:00:00Z'],
+    'funky-flickr-boyz-gear-qa-audit': ['2025-05-09T09:00:00Z', '2025-05-15T09:00:00Z', '2025-05-22T09:00:00Z'],
+    'my-rug-world-qa-audit': ['2025-06-10T09:00:00Z', '2025-06-11T09:00:00Z', '2025-06-18T09:00:00Z'],
+    'gorgeous-alpacas-qa-audit': ['2025-03-21T09:00:00Z', '2025-03-27T09:00:00Z', '2025-03-31T09:00:00Z'],
+    'something-pretty-floral-qa-audit': ['2025-05-05T09:00:00Z', '2025-05-06T09:00:00Z', '2025-05-11T09:00:00Z'],
+    'monsoon-flowers-qa-audit': ['2025-11-30T09:00:00Z', '2025-12-07T09:00:00Z', '2025-12-08T09:00:00Z'],
+    'moor-body-care-qa-audit': ['2025-11-30T09:00:00Z', '2025-12-04T09:00:00Z', '2025-12-10T09:00:00Z'],
+    'moore-beauty-qa-audit': ['2025-02-09T09:00:00Z', '2025-02-13T09:00:00Z', '2025-02-18T09:00:00Z'],
+    'kuurth-qa-audit': ['2025-08-24T09:00:00Z', '2025-08-26T09:00:00Z', '2025-08-31T09:00:00Z'],
+    'biofield-resonator-qa-audit': ['2025-01-17T09:00:00Z', '2025-01-21T09:00:00Z', '2025-01-28T09:00:00Z'],
+    'xtinctio-qa-audit': ['2025-01-18T09:00:00Z', '2025-01-22T09:00:00Z', '2025-01-24T09:00:00Z'],
+    'wendy-mccallum-art-qa-audit': ['2025-07-15T09:00:00Z', '2025-07-17T09:00:00Z', '2025-07-24T09:00:00Z'],
+    'e-and-e-essentials-qa-audit': ['2025-05-03T09:00:00Z', '2025-05-04T09:00:00Z', '2025-05-10T09:00:00Z'],
+    'anthom-design-house-qa-audit': ['2025-09-07T09:00:00Z', '2025-09-08T09:00:00Z', '2025-09-11T09:00:00Z'],
+    'gabrielle-jewelry-qa-audit': ['2025-01-25T09:00:00Z', '2025-01-27T09:00:00Z', '2025-01-30T09:00:00Z', '2025-02-06T09:00:00Z', '2025-02-19T09:00:00Z'],
+    'black-arrow-gallery-qa-audit': ['2025-03-25T09:00:00Z', '2025-03-30T09:00:00Z', '2025-04-06T09:00:00Z'],
+    'cowbells-qa-audit': ['2025-03-20T09:00:00Z', '2025-03-27T09:00:00Z', '2025-04-01T09:00:00Z'],
+    'nine-am-roast-qa-audit': ['2025-07-08T09:00:00Z', '2025-07-12T09:00:00Z', '2025-07-19T09:00:00Z'],
+    'lilly-jace-kids-qa-audit': ['2025-03-20T09:00:00Z', '2025-03-27T09:00:00Z', '2025-04-02T09:00:00Z'],
+    'rad-childrens-furniture-qa-audit': ['2025-02-19T09:00:00Z', '2025-02-25T09:00:00Z', '2025-03-02T09:00:00Z'],
+    'lalys-candles-qa-audit': ['2025-10-10T09:00:00Z', '2025-10-15T09:00:00Z', '2025-10-21T09:00:00Z'],
+    'adonis-jewellery-qa-audit': ['2025-01-09T09:00:00Z', '2025-01-15T09:00:00Z', '2025-01-19T09:00:00Z'],
+    'smovey-usa-qa-audit': ['2025-04-13T09:00:00Z', '2025-04-18T09:00:00Z', '2025-04-25T09:00:00Z'],
+    'tinnie-tots-qa-audit': ['2025-08-28T09:00:00Z', '2025-09-04T09:00:00Z', '2025-09-05T09:00:00Z'],
+    'la-petite-wardrobe-qa-audit': ['2025-10-06T09:00:00Z', '2025-10-12T09:00:00Z', '2025-10-17T09:00:00Z'],
+    'koala-picks-qa-audit': ['2025-07-24T09:00:00Z', '2025-07-31T09:00:00Z', '2025-08-01T09:00:00Z'],
+    'glisser-beauty-qa-audit': ['2025-08-22T09:00:00Z', '2025-08-28T09:00:00Z', '2025-09-02T09:00:00Z'],
+    'artdiscount-qa-audit': ['2025-06-21T09:00:00Z', '2025-06-24T09:00:00Z', '2025-06-30T09:00:00Z'],
+    'cryptic-mushrooms-qa-audit': ['2025-09-20T09:00:00Z', '2025-09-25T09:00:00Z', '2025-09-28T09:00:00Z'],
+    'divchi-qa-audit': ['2025-08-30T09:00:00Z', '2025-09-03T09:00:00Z', '2025-09-07T09:00:00Z'],
+    'chicopick-qa-audit': ['2025-01-28T09:00:00Z', '2025-02-03T09:00:00Z', '2025-02-09T09:00:00Z'],
+    'hugh-mcelvanna-menswear-qa-audit': ['2025-05-27T09:00:00Z', '2025-06-03T09:00:00Z', '2025-06-09T09:00:00Z'],
+    'j-fredric-qa-audit': ['2025-04-26T09:00:00Z', '2025-04-28T09:00:00Z', '2025-05-01T09:00:00Z'],
+    'bloomsbury-flowers-qa-audit': ['2025-05-31T09:00:00Z', '2025-06-07T09:00:00Z', '2025-06-14T09:00:00Z'],
+    'nordikka-collective-qa-audit': ['2025-11-07T09:00:00Z', '2025-11-10T09:00:00Z', '2025-11-16T09:00:00Z'],
+    'my-travel-passport-qa-audit': ['2025-10-10T09:00:00Z', '2025-10-13T09:00:00Z', '2025-10-19T09:00:00Z', '2025-10-25T09:00:00Z', '2025-11-01T09:00:00Z'],
+    'peter-james-jewelry-qa-audit': ['2025-04-02T09:00:00Z', '2025-04-07T09:00:00Z', '2025-04-14T09:00:00Z'],
+    'judyp-apparel-qa-audit': ['2025-07-07T09:00:00Z', '2025-07-12T09:00:00Z', '2025-07-17T09:00:00Z'],
+    'lady-flora-qa-audit': ['2025-11-27T09:00:00Z', '2025-11-30T09:00:00Z', '2025-12-02T09:00:00Z'],
+    'nano-lamination-qa-audit': ['2025-05-03T09:00:00Z', '2025-05-08T09:00:00Z', '2025-05-13T09:00:00Z'],
+    'canvasback-pets-qa-audit': ['2025-06-21T09:00:00Z', '2025-06-23T09:00:00Z', '2025-06-25T09:00:00Z'],
+    'luxe-atelier-qa-audit': ['2025-05-02T09:00:00Z', '2025-05-09T09:00:00Z', '2025-05-15T09:00:00Z'],
+    'eastern-inspiration-qa-audit': ['2025-01-15T09:00:00Z', '2025-01-16T09:00:00Z', '2025-01-19T09:00:00Z'],
+    'pet-prestige-uk-qa-audit': ['2025-10-17T09:00:00Z', '2025-10-18T09:00:00Z', '2025-10-21T09:00:00Z'],
+    'midland-textiles-qa-audit': ['2025-08-23T09:00:00Z', '2025-08-27T09:00:00Z', '2025-08-30T09:00:00Z'],
+    'ba-squared-fitness-qa-audit': ['2025-10-11T09:00:00Z', '2025-10-15T09:00:00Z', '2025-10-17T09:00:00Z'],
+    'belo-jewelry-qa-audit': ['2025-05-05T09:00:00Z', '2025-05-08T09:00:00Z', '2025-05-11T09:00:00Z'],
+    'rocket-krunch-qa-audit': ['2025-11-05T09:00:00Z', '2025-11-12T09:00:00Z', '2025-11-14T09:00:00Z'],
+    'total-beauty-experience-qa-audit': ['2025-06-18T09:00:00Z', '2025-06-21T09:00:00Z', '2025-06-25T09:00:00Z'],
+    'john-white-shoes-qa-audit': ['2025-01-12T09:00:00Z', '2025-01-17T09:00:00Z', '2025-01-22T09:00:00Z', '2025-01-29T09:00:00Z', '2025-02-04T09:00:00Z'],
+    'love-renaissance-qa-audit': ['2025-06-24T09:00:00Z', '2025-06-29T09:00:00Z', '2025-07-05T09:00:00Z'],
+    'hughies-dog-accessories-qa-audit': ['2025-04-16T09:00:00Z', '2025-04-17T09:00:00Z', '2025-04-21T09:00:00Z'],
+    'vezorla-qa-audit': ['2025-10-01T09:00:00Z', '2025-10-04T09:00:00Z', '2025-10-10T09:00:00Z'],
+    'op-fashion-fabrics-qa-audit': ['2025-01-17T09:00:00Z', '2025-01-18T09:00:00Z', '2025-01-22T09:00:00Z'],
+    'gym-emotion-qa-audit': ['2025-02-08T09:00:00Z', '2025-02-13T09:00:00Z', '2025-02-20T09:00:00Z'],
+    'elysian-blooms-qa-audit': ['2025-10-14T09:00:00Z', '2025-10-16T09:00:00Z', '2025-10-22T09:00:00Z'],
+    'biofield-expert-qa-audit': ['2025-06-29T09:00:00Z', '2025-07-01T09:00:00Z', '2025-07-07T09:00:00Z'],
+    'sol-eyewear-qa-audit': ['2025-10-19T09:00:00Z', '2025-10-20T09:00:00Z', '2025-10-24T09:00:00Z'],
+    'ameliora-qa-audit': ['2025-02-02T09:00:00Z', '2025-02-09T09:00:00Z', '2025-02-12T09:00:00Z'],
+    'coffee-at-work-qa-audit': ['2025-01-14T09:00:00Z', '2025-01-19T09:00:00Z', '2025-01-26T09:00:00Z'],
+    'audrey-k-boutique-qa-audit': ['2025-08-27T09:00:00Z', '2025-08-30T09:00:00Z', '2025-09-04T09:00:00Z'],
+    'second-chance-online-qa-audit': ['2025-10-09T09:00:00Z', '2025-10-11T09:00:00Z', '2025-10-18T09:00:00Z'],
+    'second-chance-clothing-home-decor-qa-audit': ['2025-04-30T09:00:00Z', '2025-05-02T09:00:00Z', '2025-05-06T09:00:00Z'],
+    'vtc-watches-qa-audit': ['2025-11-02T09:00:00Z', '2025-11-03T09:00:00Z', '2025-11-10T09:00:00Z', '2025-11-15T09:00:00Z', '2025-11-23T09:00:00Z'],
+    'liz-jordan-hill-qa-audit': ['2025-02-26T09:00:00Z', '2025-03-03T09:00:00Z', '2025-03-08T09:00:00Z'],
+    'expressive-audio-qa-audit': ['2025-08-03T09:00:00Z', '2025-08-07T09:00:00Z', '2025-08-10T09:00:00Z'],
+    'limitless-brain-lab-qa-audit': ['2025-05-17T09:00:00Z', '2025-05-19T09:00:00Z', '2025-05-22T09:00:00Z'],
+    'enerex-qa-audit': ['2025-05-08T09:00:00Z', '2025-05-15T09:00:00Z', '2025-05-21T09:00:00Z'],
+    'balletpro-qa-audit': ['2025-09-23T09:00:00Z', '2025-09-24T09:00:00Z', '2025-09-30T09:00:00Z'],
+    'cuddles-dog-bakery-qa-audit': ['2025-08-31T09:00:00Z', '2025-09-05T09:00:00Z', '2025-09-08T09:00:00Z', '2025-09-18T09:00:00Z', '2025-09-30T09:00:00Z'],
+    'myzo-chocolate-qa-audit': ['2025-01-20T09:00:00Z', '2025-01-26T09:00:00Z', '2025-01-29T09:00:00Z'],
+    'bidet-toilets-qa-audit': ['2025-01-12T09:00:00Z', '2025-01-16T09:00:00Z', '2025-01-19T09:00:00Z'],
+    'faraway-finds-qa-audit': ['2025-01-21T09:00:00Z', '2025-01-23T09:00:00Z', '2025-01-30T09:00:00Z'],
+    'mrca-qa-audit': ['2025-02-06T09:00:00Z', '2025-02-12T09:00:00Z', '2025-02-16T09:00:00Z', '2025-03-02T09:00:00Z', '2025-03-14T09:00:00Z'],
+    'wells-industries-qa-audit': ['2025-06-09T09:00:00Z', '2025-06-11T09:00:00Z', '2025-06-16T09:00:00Z'],
+    'wisconic-qa-audit': ['2025-09-07T09:00:00Z', '2025-09-14T09:00:00Z', '2025-09-18T09:00:00Z'],
+    'morris-manufacturing-qa-audit': ['2025-06-10T09:00:00Z', '2025-06-11T09:00:00Z', '2025-06-18T09:00:00Z'],
+    'tmi-products-qa-audit': ['2025-02-06T09:00:00Z', '2025-02-07T09:00:00Z', '2025-02-08T09:00:00Z'],
+    'american-hose-gasket-qa-audit': ['2025-11-13T09:00:00Z', '2025-11-18T09:00:00Z', '2025-11-19T09:00:00Z'],
+    'rock-angel-creations-qa-audit': ['2026-06-15T09:00:00Z', '2026-07-25T09:00:00Z', '2026-09-02T09:00:00Z'],
+}
+_pub_iters = {slug: iter(dates) for slug, dates in PROJECT_DATES.items()}
+
+def next_date(slug):
+    return next(_pub_iters[slug])
 
 def inject_links(text, p):
     return text
@@ -1599,7 +1699,7 @@ def build_article(bp, p, ptype, cat, date_i, extra_variant=0):
         "heroImage": hero,
         "heroAlt": f"{p['title']} — {'storefront capture from the ' + ptype + ' article' if ptype!='case-study' else 'revamp evidence, hero capture'}",
         "author": "Zain", "authorRole": "Founder & QA Lead",
-        "publishedAt": next_date(date_i),
+        "publishedAt": next_date(p["slug"]),
         "readingTime": rt,
         "featured": False,
         "body": blocks,

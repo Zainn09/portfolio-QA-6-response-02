@@ -10,13 +10,20 @@ import { ContactSection } from "@/components/contact/ContactSection";
 import { getFeaturedProjects } from "@/data/projects";
 import { Toaster } from "react-hot-toast";
 import { ScrollToTopOnLoad } from "@/components/scroll/ScrollToTopOnLoad";
+import { SITE_HOME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
   description:
-    "Premium Quality Assurance for Shopify and Shopify Plus stores. Ich finde what your store gets wrong before your customers do. 100+ stores tested.",
-  alternates: {
-    canonical: "/",
+    "Premium QA for Shopify and Shopify Plus stores. I find what your store gets wrong before your customers do — 100+ stores tested, 20 Shopify Plus projects.",
+  // No `alternates.canonical` here on purpose — the canonical for this page is
+  // rendered explicitly in the markup below. See the comment on <link> there.
+  openGraph: {
+    title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
+    description:
+      "Premium QA for Shopify and Shopify Plus stores. 100+ stores tested, 20 Shopify Plus projects.",
+    url: "/",
+    type: "website",
   },
 };
 
@@ -25,6 +32,32 @@ export default function HomePage() {
 
   return (
     <>
+      {/*
+        Explicit homepage canonical.
+
+        This is rendered here rather than set through `metadata.alternates`
+        because Next.js normalises a root-path URL down to the bare origin
+        (resolve-url.js: `pathname === '/' ? result.origin : result.href`), so
+        metadata can only ever emit `https://…vercel.app` — without the slash —
+        while sitemap.xml publishes the homepage as `https://…vercel.app/`.
+        React 19 hoists this <link> into <head> during server rendering, giving
+        one canonical that matches the sitemap exactly.
+
+        If the canonical is ever moved back into `metadata`, delete this — two
+        <link rel="canonical"> tags with different values cancel each other out.
+      */}
+      <link rel="canonical" href={SITE_HOME} />
+      {/*
+        Preload the ten "10 Stores" captures while the HTML streams. On a
+        reload the browser briefly restores the previous scroll position
+        (before ScrollToTopOnLoad snaps to the top), so without this the
+        pinned section paints with an empty frame and the captures pop in
+        — the first-reload flash. Preloading means the images are already
+        in the cache by the time the frame is ever visible.
+      */}
+      {featuredProjects.map((p) => (
+        <link key={`preload-${p.id}`} rel="preload" as="image" href={p.heroImage} />
+      ))}
       <ScrollToTopOnLoad />
       <Toaster
         position="bottom-right"

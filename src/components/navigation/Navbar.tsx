@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
-import { MegaMenu } from "./MegaMenu";
+import { QaLockup } from "@/components/logo/QaLockup";
+import { MegaMenu, type MegaMenuData } from "./MegaMenu";
 
 const navLinks = [
   { href: "/work", label: "Work", menu: "work" },
+  { href: "/ecommerce-qa-testing", label: "Services", menu: "services" },
   { href: "/#expertise", label: "Expertise", menu: "expertise" },
   { href: "/about", label: "About", menu: "about" },
   { href: "/#process", label: "Process", menu: "process" },
@@ -17,7 +19,7 @@ const navLinks = [
   { href: "/contact", label: "Contact", menu: null },
 ];
 
-export function Navbar() {
+export function Navbar({ megaData }: { megaData: MegaMenuData }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -64,10 +66,14 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  useEffect(() => {
+  // Reset open menu state when the route changes (render-time adjustment,
+  // so the effect-free pattern avoids cascading re-renders on navigation).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMenuOpen(false);
     setOpenMenu(null);
-  }, [pathname]);
+  }
 
   useEffect(() => clearMegaTimers, []);
 
@@ -112,40 +118,16 @@ export function Navbar() {
             gap: "2rem",
           }}
         >
-          {/* Logo */}
+          {/* Logo — AR monogram + "QA SPECIALIST" wordmark lockup */}
           <Link
             href="/"
-            aria-label="QA Specialist — Home"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.125rem",
-              flexShrink: 0,
-            }}
+            aria-label="Abdul Rehman — QA Specialist, home"
+            style={{ flexShrink: 0, display: "block" }}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.6875rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--text-tertiary)",
-                lineHeight: 1,
-              }}
-            >
-              QA
-            </span>
-            <span
-              style={{
-                fontSize: "0.9375rem",
-                fontWeight: 700,
-                letterSpacing: "-0.03em",
-                color: "var(--text-primary)",
-                lineHeight: 1,
-              }}
-            >
-              SPECIALIST
-            </span>
+            {/* Inline SVG so the chrome lettering tracks the active theme
+                (currentColor -> var(--text-primary)) instead of a fixed
+                near-white that vanishes on the light background. */}
+            <QaLockup width={97} height={40} />
           </Link>
 
           {/* Desktop links */}
@@ -262,6 +244,7 @@ export function Navbar() {
         </div>
         <MegaMenu
           open={openMenu}
+          data={megaData}
           onEnterPanel={cancelClose}
           onLeavePanel={scheduleClose}
           onNavigate={closeMega}

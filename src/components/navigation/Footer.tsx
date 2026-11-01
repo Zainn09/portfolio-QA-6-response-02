@@ -1,10 +1,24 @@
 import Link from "next/link";
+import { QaLockup } from "@/components/logo/QaLockup";
 
 const footerLinks = {
   work: [
     { href: "/work", label: "All Work" },
     { href: "/work?platform=Shopify+Plus", label: "Shopify Plus" },
     { href: "/work?platform=Shopify", label: "Shopify" },
+  ],
+  /**
+   * Five services, not all ten. The footer is a signpost, not a directory —
+   * these are the broadest and highest-intent services, and the remaining five
+   * (mobile, accessibility, cross-browser, performance, regression) are one
+   * click away from the hub pages these link to.
+   */
+  services: [
+    { href: "/ecommerce-qa-testing", label: "Ecommerce QA" },
+    { href: "/shopify-qa-testing", label: "Shopify QA Testing" },
+    { href: "/shopify-plus-qa", label: "Shopify Plus QA" },
+    { href: "/shopify-checkout-testing", label: "Checkout Testing" },
+    { href: "/shopify-qa-audit", label: "Shopify QA Audit" },
   ],
   pages: [
     { href: "/about", label: "About" },
@@ -15,6 +29,9 @@ const footerLinks = {
   legal: [
     { href: "/privacy", label: "Privacy" },
     { href: "/terms", label: "Terms" },
+    // A file, not a page — rendered as a plain anchor so the browser fetches
+    // the XML rather than the client router trying to navigate to it.
+    { href: "/sitemap.xml", label: "Sitemap", file: true },
   ],
 };
 
@@ -51,13 +68,8 @@ export function Footer() {
         >
           {/* Brand */}
           <div>
-            <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
-              <span style={{ display: "block", fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-                QA
-              </span>
-              <span style={{ display: "block", fontSize: "1.125rem", fontWeight: 700, letterSpacing: "-0.03em", color: "var(--text-primary)" }}>
-                SPECIALIST
-              </span>
+            <Link href="/" aria-label="Abdul Rehman — QA Specialist, home" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
+              <QaLockup width={126} height={52} />
             </Link>
             <p style={{ fontSize: "0.875rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "220px" }}>
               Quality Assurance for Shopify & Shopify Plus.
@@ -85,6 +97,20 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Services */}
+          <div>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>
+              Services
+            </p>
+            <ul role="list" style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+              {footerLinks.services.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="footer-link">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Pages */}
           <div>
             <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "1rem" }}>
@@ -105,18 +131,24 @@ export function Footer() {
               Legal
             </p>
             <ul role="list" style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
-              {footerLinks.legal.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="footer-link">{l.label}</Link>
-                </li>
-              ))}
+              {footerLinks.legal.map((l) =>
+                "file" in l && l.file ? (
+                  <li key={l.href}>
+                    <a href={l.href} className="footer-link">{l.label}</a>
+                  </li>
+                ) : (
+                  <li key={l.href}>
+                    <Link href={l.href} className="footer-link">{l.label}</Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
 
         <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-            © 2026 QA Portfolio. All rights reserved.
+            © 2026 ABDULREHMAN. All rights reserved.
           </p>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", fontStyle: "italic" }}>
             &quot;Everything works until someone tests it.&quot;

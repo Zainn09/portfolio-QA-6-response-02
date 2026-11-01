@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import { MotionConfig } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
@@ -42,9 +42,24 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
   const trackRef = useRef<HTMLElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const prevIdx = useRef(0);
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  const markLoaded = useCallback((i: number) => {
+    setLoaded((prev) => (prev[i] ? prev : { ...prev, [i]: true }));
+  }, []);
+
+  // Cached images finish before onLoad listeners attach — detect them on
+  // mount so their slides are never held back (or popped in) by a missing
+  // load event.
+  useEffect(() => {
+    imgRefs.current.forEach((el, i) => {
+      if (el && el.complete && el.naturalWidth > 0) markLoaded(i);
+    });
+  }, [markLoaded]);
 
   // Mobile = classic tap-through carousel (no pinning, no overlap risk)
   useEffect(() => {
@@ -54,6 +69,23 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
   }, []);
+
+  // Resolve the active project from the (restored) scroll position BEFORE
+  // first paint. On a reload the browser restores the previous position
+  // briefly; without this the section paints on slide 0 and then
+  // crossfades to the right slide — a visible flash of the wrong capture.
+  useLayoutEffect(() => {
+    if (isMobile) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const total = track.offsetHeight - window.innerHeight;
+    const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+    setProgress(p);
+    const idx = Math.min(projects.length - 1, Math.floor(p * projects.length));
+    prevIdx.current = idx;
+    setActiveIndex(idx);
+  }, [isMobile, projects.length]);
 
   // Desktop scroll driver: track progress maps across all 10 projects
   useEffect(() => {
@@ -387,6 +419,58 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                   onTouchEnd={onTouchEnd}
                   style={{ touchAction: "pan-y" }}
                 >
+                  {/* Branded placeholder while the active capture is not
+                      loaded — the frame never shows a bare background, and
+                      the capture fades in instead of popping. */}
+                  {!loaded[activeIndex] && (
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.875rem",
+                        backgroundColor: "var(--bg-surface)",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="featured-loading-mark"
+                        src="/logo/void-flux-ar.svg"
+                        alt=""
+                        width={44}
+                        height={44}
+                        style={{ width: "44px", height: "44px", opacity: 0.55, animation: "loading-breathe 2.2s ease-in-out infinite alternate" }}
+                      />
+                      <span
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.5625rem",
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          color: "var(--text-tertiary)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.375rem",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: "6px",
+                            height: "6px",
+                            borderRadius: "50%",
+                            backgroundColor: "var(--accent)",
+                            animation: "pulse-dot 2s ease-in-out infinite",
+                          }}
+                        />
+                        Capture {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                        {String(projects.length).padStart(2, "0")} — loading
+                      </span>
+                    </div>
+                  )}
                   {projects.map((p, i) => {
                     const isActive = i === activeIndex;
                     return (
@@ -394,15 +478,25 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                         key={p.id}
                         aria-hidden={!isActive}
                         data-active={isActive}
+                        data-loaded={Boolean(loaded[i])}
                         className="featured-visual-slide"
                       >
-                        {/* Real store capture from the audit */}
+                        {/* Real store capture from the audit.
+                            All ten are eager on purpose: they are preloaded
+                            in the page's <head>, so "eager" is a cache hit —
+                            lazy would defer exactly the frame that pops in
+                            when the section first becomes visible. */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
+                          ref={(el) => {
+                            imgRefs.current[i] = el;
+                          }}
                           src={p.heroImage}
                           alt={`${p.title} — store capture from the QA audit`}
-                          loading={i === 0 ? "eager" : "lazy"}
+                          loading="eager"
                           decoding="async"
+                          onLoad={() => markLoaded(i)}
+                          onError={() => markLoaded(i)}
                           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
                         />
                         <div
@@ -414,62 +508,9 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                           }}
                         />
 
-                        {/* Issue markers — mount on activation so they pop in */}
-                        {isActive &&
-                          p.issues.slice(0, 2).map((issue, j) => (
-                            <div
-                              key={issue.id}
-                              title={issue.title}
-                              aria-label={`Issue ${issue.id}: ${issue.title}`}
-                              style={{
-                                position: "absolute",
-                                ...(j === 0 ? { top: "12%", right: "30%" } : { bottom: "35%", left: "55%" }),
-                                width: "22px",
-                                height: "22px",
-                                borderRadius: "50%",
-                                backgroundColor:
-                                  issue.severity === "critical"
-                                    ? "var(--critical)"
-                                    : issue.severity === "major"
-                                    ? "var(--major)"
-                                    : "var(--minor)",
-                                color: "white",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontFamily: "var(--font-mono)",
-                                fontSize: "0.5625rem",
-                                fontWeight: 700,
-                                cursor: "default",
-                                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                                animation: "marker-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
-                                animationDelay: `${j * 150 + 250}ms`,
-                                opacity: 0,
-                              }}
-                            >
-                              {String(j + 1).padStart(2, "0")}
-                            </div>
-                          ))}
-
-                        {/* Industry tag */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "0.75rem",
-                            left: "0.75rem",
-                            backgroundColor: "var(--bg-primary)",
-                            border: "1px solid var(--border)",
-                            padding: "0.25rem 0.625rem",
-                            borderRadius: "var(--radius-sm)",
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "0.5625rem",
-                            letterSpacing: "0.1em",
-                            textTransform: "uppercase",
-                            color: "var(--text-secondary)",
-                          }}
-                        >
-                          {p.industry}
-                        </div>
+                        {/* Cyan scan sweep — glides along the wipe's leading
+                            edge as the capture reveals (see .featured-scanline) */}
+                        <div className="featured-scanline" aria-hidden="true" />
                       </div>
                     );
                   })}
@@ -783,23 +824,83 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transform: scale(1.02);
+            transform: scale(1.03);
             visibility: hidden;
             transition:
-              opacity 500ms ease,
-              transform 600ms ease,
-              visibility 0s linear 500ms;
+              opacity 450ms ease,
+              transform 550ms ease,
+              visibility 0s linear 450ms;
             pointer-events: none;
           }
-          .featured-visual-slide[data-active="true"] {
+          /* A slide is visible only when it is active AND its capture has
+             finished loading — so the image can never pop into a frame the
+             user is already looking at. Its first appearance is the
+             "capture scan": a left-to-right clip wipe with a slow settle,
+             a cyan scan bar gliding along the leading edge — the QA-scan
+             identity applied to the reveal itself. The placeholder sits
+             underneath and gets painted over by the wipe. */
+          .featured-visual-slide[data-active="true"][data-loaded="true"] {
             opacity: 1;
             transform: none;
             visibility: visible;
-            transition:
-              opacity 500ms ease,
-              transform 600ms ease,
-              visibility 0s;
             pointer-events: auto;
+            animation: capture-wipe 950ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+          }
+          .featured-scanline {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(
+              90deg,
+              rgba(61, 242, 255, 0) 40%,
+              rgba(61, 242, 255, 0.28) 47%,
+              rgba(61, 242, 255, 0.95) 50%,
+              rgba(61, 242, 255, 0.28) 53%,
+              rgba(61, 242, 255, 0) 60%
+            );
+            background-size: 220% 100%;
+            background-repeat: no-repeat;
+            mix-blend-mode: screen;
+          }
+          .featured-visual-slide[data-active="true"][data-loaded="true"] .featured-scanline {
+            animation: scan-sweep 950ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+          }
+          @keyframes capture-wipe {
+            0% {
+              clip-path: inset(0 100% 0 0);
+              transform: scale(1.05);
+            }
+            100% {
+              clip-path: inset(0 0% 0 0);
+              transform: scale(1);
+            }
+          }
+          @keyframes scan-sweep {
+            0% {
+              background-position: 100% 0;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            80% {
+              opacity: 1;
+            }
+            100% {
+              background-position: 0% 0;
+              opacity: 0;
+            }
+          }
+          @keyframes loading-breathe {
+            from {
+              transform: scale(1);
+              opacity: 0.45;
+            }
+            to {
+              transform: scale(1.07);
+              opacity: 0.65;
+            }
           }
           /* Details stack: height = tallest panel, so the column never jumps */
           .featured-details-stack {
@@ -829,8 +930,15 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
           @media (prefers-reduced-motion: reduce) {
             .featured-visual-slide,
             .featured-details-slide {
-              transition: none;
+              transition: opacity 300ms ease;
               transform: none;
+              animation: none;
+            }
+            .featured-scanline {
+              display: none;
+            }
+            .featured-loading-mark {
+              animation: none !important;
             }
           }
           @media (max-width: 900px) {

@@ -23,8 +23,8 @@ export const staticBlogPosts: StaticBlogPost[] = [
       "AI won't replace a QA specialist — but it makes a good one dramatically faster. Here's exactly where AI helps in my Shopify audits, and where human judgment still wins.",
     category: "AI × QA",
     tags: ["AI Testing", "Shopify QA", "Workflow", "2026 Trends"],
-    author: "QA Specialist",
-    publishedAt: "2026-09-02T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-11-21T09:00:00Z",
     readMinutes: 7,
     trending: true,
     series: "AI × QA Series",
@@ -61,8 +61,8 @@ export const staticBlogPosts: StaticBlogPost[] = [
       "An experiment: I gave a leading AI test agent a real Shopify Plus checkout and compared its report against my manual audit. The AI found 6 issues. I found 19. Here's the gap.",
     category: "AI × QA",
     tags: ["AI Testing", "Checkout", "Experiments", "Shopify Plus"],
-    author: "QA Specialist",
-    publishedAt: "2026-08-24T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-09-15T09:00:00Z",
     readMinutes: 8,
     trending: true,
     series: "AI × QA Series",
@@ -96,8 +96,8 @@ export const staticBlogPosts: StaticBlogPost[] = [
       "The exact AI-assisted stack I use on Shopify audits this year: which tools earn their place, the prompts that produce usable test plans, and the guardrails that keep AI honest.",
     category: "AI × QA",
     tags: ["AI Testing", "Tools", "Prompts", "Workflow"],
-    author: "QA Specialist",
-    publishedAt: "2026-08-12T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-07-07T09:00:00Z",
     readMinutes: 9,
     trending: true,
     series: "AI × QA Series",
@@ -135,8 +135,8 @@ export const staticBlogPosts: StaticBlogPost[] = [
       "Checkout is where revenue is won or silently lost. The complete 25-point checklist I run on every Shopify and Shopify Plus store — from discount math to 3D-Secure.",
     category: "Checkout",
     tags: ["Checkout", "Checklist", "Shopify Plus", "Payments"],
-    author: "QA Specialist",
-    publishedAt: "2026-07-28T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-06-20T09:00:00Z",
     readMinutes: 10,
     content: `
 <p>Checkout bugs are uniquely cruel: the customer did everything right, and the store still said no. Over 100+ audits, I've distilled checkout testing into a 25-point checklist. Here it is — the same list I run on every store, from startup to Shopify Plus.</p>
@@ -186,13 +186,13 @@ export const staticBlogPosts: StaticBlogPost[] = [
   },
   {
     slug: "eaa-accessibility-shopify-2026",
-    title: "Accessibility Is the Law Now: EAA-Proofing Your Shopify Store in 2026",
+    title: "European Accessibility Act on Shopify: What to Fix Before You\u2019re Fined",
     excerpt:
       "The European Accessibility Act is in force, and Shopify stores selling into the EU are in scope. What the law requires, the 7 failures I find most, and how to fix them.",
     category: "Accessibility",
     tags: ["Accessibility", "EAA", "WCAG", "Compliance"],
-    author: "QA Specialist",
-    publishedAt: "2026-07-10T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-04-13T09:00:00Z",
     readMinutes: 8,
     content: `
 <p>Since June 2025, the European Accessibility Act requires e-commerce stores serving EU customers to be accessible — and enforcement in 2026 is no longer theoretical. If you sell into the EU on Shopify, accessibility moved from "nice to have" to "legal requirement." Here's what that means in practice.</p>
@@ -213,12 +213,27 @@ export const staticBlogPosts: StaticBlogPost[] = [
 <p><strong>Step 2: fix templates, not pages.</strong> Most failures repeat from shared templates — one product-template fix can resolve hundreds of instances. Prioritise by template reach.</p>
 <p><strong>Step 3: audit your apps.</strong> Reviews, upsells, search, and loyalty widgets are the worst accessibility offenders on most stores. If a vendor can't provide a VPAT or fix timeline, shortlist alternatives.</p>
 <p><strong>Step 4: document everything.</strong> The EAA rewards demonstrable effort: an audit trail of findings, fixes, and re-tests is both a compliance asset and a QA asset.</p>
+<h2>EAA checklist for Shopify stores</h2>
+<p>Run these ten checks before anyone else does. Each one is testable in a single session, and each maps to a WCAG 2.1 AA success criterion.</p>
+<ul>
+<li><strong>1. Keyboard-only checkout.</strong> Complete a full purchase, product to thank-you page, using only the keyboard. Any dead end is a finding.</li>
+<li><strong>2. Real form labels.</strong> Every input on search, filters, account and checkout has a programmatically associated label. A placeholder is not a label.</li>
+<li><strong>3. Contrast at 4.5:1.</strong> Body text, CTAs and secondary states measured, not eyeballed. Brand colours that look premium at 2.8:1 still fail.</li>
+<li><strong>4. Errors that announce.</strong> Validation messages are text, associated with the field, and never conveyed by colour alone.</li>
+<li><strong>5. Focus order and return.</strong> Logical tab order on the product page and checkout; closing a modal returns focus to the trigger, not the top of the page.</li>
+<li><strong>6. Navigation without hover.</strong> Every menu opens, navigates and closes by keyboard. Hover-only mega-menus fail.</li>
+<li><strong>7. Variants with words.</strong> Colour and size swatches expose a text alternative in the DOM, not just an aria-hidden glyph.</li>
+<li><strong>8. Controls that are controls.</strong> Buttons are buttons, links are links, with correct roles and accessible names.</li>
+<li><strong>9. Meaningful alt text.</strong> Product images described, decorative icons hidden, and no "image023.png" alt attributes.</li>
+<li><strong>10. Third-party widgets tested.</strong> Search, reviews, upsell and loyalty scripts run through the same ten checks. A widget that fails WCAG fails your store.</li>
+</ul>
+<p>Need an accessibility check on your store? See the <a href="/shopify-qa-audit">Shopify QA audit</a>.</p>
 <blockquote>Accessibility work is QA work with a legal deadline. The stores treating it as a one-off project will redo it; the stores building it into QA will be done.</blockquote>
 <p>I run EAA-focused audits that map every finding to its WCAG criterion and its fix — so your developers get tickets, not lectures.</p>
 `,
-    seoTitle: "EAA-Proofing Your Shopify Store in 2026 | Accessibility QA",
+    seoTitle: "European Accessibility Act for Shopify: 2026 Compliance Checklist",
     seoDescription:
-      "The European Accessibility Act is in force. The 7 accessibility failures found on most Shopify stores and a 4-step plan to reach WCAG 2.1 AA.",
+      "What the European Accessibility Act means for Shopify stores: what to test, common failures at checkout, and a practical checklist you can use this week.",
   },
   {
     slug: "responsive-qa-768px-field-guide",
@@ -227,8 +242,8 @@ export const staticBlogPosts: StaticBlogPost[] = [
       "Stores look perfect at phone and desktop sizes — then fall apart on tablets and small laptops. A field guide to the in-between breakpoints where responsive bugs hide.",
     category: "Responsive",
     tags: ["Responsive", "Mobile", "CSS", "Devices"],
-    author: "QA Specialist",
-    publishedAt: "2026-06-22T09:00:00Z",
+    author: "ABDULREHMAN",
+    publishedAt: "2025-02-08T09:00:00Z",
     readMinutes: 6,
     content: `
 <p>Here's a pattern I've seen on dozens of stores: flawless at 390px, flawless at 1440px, quietly broken everywhere between. Tablets, small laptops, unfolded foldables, and resized desktop windows live in the breakpoints nobody designed for. Welcome to the 768px problem.</p>

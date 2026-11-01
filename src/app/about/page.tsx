@@ -3,9 +3,12 @@ import Link from "next/link";
 import { AboutStats } from "@/components/about/AboutStats";
 
 export const metadata: Metadata = {
-  title: "About — QA Specialist | Shopify & Shopify Plus",
+  // Absolute on purpose: the site template appends "| QA Specialist", which
+  // would repeat the phrase in this title (the old "About — QA Specialist |
+  // Shopify & Shopify Plus | QA Specialist").
+  title: { absolute: "About — ABDULREHMAN | Shopify QA Specialist" },
   description:
-    "About the QA specialist behind 100+ Shopify store audits. Specialising in functional, responsive, checkout, and accessibility testing.",
+    "About ABDULREHMAN — the Shopify QA specialist behind 100+ store audits. Functional, responsive, checkout and accessibility testing, documented with evidence.",
   alternates: { canonical: "/about" },
 };
 
@@ -37,7 +40,7 @@ export default function AboutPage() {
         }}
       >
         <div className="container">
-          <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>About</p>
+          <p className="eyebrow" style={{ marginBottom: "0.75rem" }}>About — ABDULREHMAN</p>
           <h1 style={{ maxWidth: "640px", marginBottom: "1.25rem" }}>
             I Don&apos;t Speak.{" "}
             <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>
@@ -45,7 +48,8 @@ export default function AboutPage() {
             </span>
           </h1>
           <p style={{ color: "var(--text-secondary)", maxWidth: "560px", fontSize: "1.0625rem" }}>
-            A QA specialist focused exclusively on Shopify and Shopify Plus e-commerce experiences.
+            I&apos;m Abdul Rehman — a QA specialist focused exclusively on Shopify and Shopify
+            Plus e-commerce experiences.
           </p>
         </div>
       </header>
