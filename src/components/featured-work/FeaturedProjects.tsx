@@ -428,7 +428,6 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                       style={{
                         position: "absolute",
                         inset: 0,
-                        zIndex: 1,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -438,7 +437,14 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                       }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/logo/void-flux-ar.svg" alt="" width={44} height={44} style={{ width: "44px", height: "44px", opacity: 0.55 }} />
+                      <img
+                        className="featured-loading-mark"
+                        src="/logo/void-flux-ar.svg"
+                        alt=""
+                        width={44}
+                        height={44}
+                        style={{ width: "44px", height: "44px", opacity: 0.55, animation: "loading-breathe 2.2s ease-in-out infinite alternate" }}
+                      />
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
@@ -502,25 +508,9 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                           }}
                         />
 
-                        {/* Industry tag */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "0.75rem",
-                            left: "0.75rem",
-                            backgroundColor: "var(--bg-primary)",
-                            border: "1px solid var(--border)",
-                            padding: "0.25rem 0.625rem",
-                            borderRadius: "var(--radius-sm)",
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "0.5625rem",
-                            letterSpacing: "0.1em",
-                            textTransform: "uppercase",
-                            color: "var(--text-secondary)",
-                          }}
-                        >
-                          {p.industry}
-                        </div>
+                        {/* Cyan scan sweep — glides along the wipe's leading
+                            edge as the capture reveals (see .featured-scanline) */}
+                        <div className="featured-scanline" aria-hidden="true" />
                       </div>
                     );
                   })}
@@ -834,27 +824,83 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transform: scale(1.02);
+            transform: scale(1.03);
             visibility: hidden;
             transition:
-              opacity 500ms ease,
-              transform 600ms ease,
-              visibility 0s linear 500ms;
+              opacity 450ms ease,
+              transform 550ms ease,
+              visibility 0s linear 450ms;
             pointer-events: none;
           }
           /* A slide is visible only when it is active AND its capture has
              finished loading — so the image can never pop into a frame the
-             user is already looking at. Its first appearance is always the
-             500ms fade, and the branded placeholder covers everything before. */
+             user is already looking at. Its first appearance is the
+             "capture scan": a left-to-right clip wipe with a slow settle,
+             a cyan scan bar gliding along the leading edge — the QA-scan
+             identity applied to the reveal itself. The placeholder sits
+             underneath and gets painted over by the wipe. */
           .featured-visual-slide[data-active="true"][data-loaded="true"] {
             opacity: 1;
             transform: none;
             visibility: visible;
-            transition:
-              opacity 500ms ease,
-              transform 600ms ease,
-              visibility 0s;
             pointer-events: auto;
+            animation: capture-wipe 950ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+          }
+          .featured-scanline {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(
+              90deg,
+              rgba(61, 242, 255, 0) 40%,
+              rgba(61, 242, 255, 0.28) 47%,
+              rgba(61, 242, 255, 0.95) 50%,
+              rgba(61, 242, 255, 0.28) 53%,
+              rgba(61, 242, 255, 0) 60%
+            );
+            background-size: 220% 100%;
+            background-repeat: no-repeat;
+            mix-blend-mode: screen;
+          }
+          .featured-visual-slide[data-active="true"][data-loaded="true"] .featured-scanline {
+            animation: scan-sweep 950ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+          }
+          @keyframes capture-wipe {
+            0% {
+              clip-path: inset(0 100% 0 0);
+              transform: scale(1.05);
+            }
+            100% {
+              clip-path: inset(0 0% 0 0);
+              transform: scale(1);
+            }
+          }
+          @keyframes scan-sweep {
+            0% {
+              background-position: 100% 0;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            80% {
+              opacity: 1;
+            }
+            100% {
+              background-position: 0% 0;
+              opacity: 0;
+            }
+          }
+          @keyframes loading-breathe {
+            from {
+              transform: scale(1);
+              opacity: 0.45;
+            }
+            to {
+              transform: scale(1.07);
+              opacity: 0.65;
+            }
           }
           /* Details stack: height = tallest panel, so the column never jumps */
           .featured-details-stack {
@@ -884,8 +930,15 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
           @media (prefers-reduced-motion: reduce) {
             .featured-visual-slide,
             .featured-details-slide {
-              transition: none;
+              transition: opacity 300ms ease;
               transform: none;
+              animation: none;
+            }
+            .featured-scanline {
+              display: none;
+            }
+            .featured-loading-mark {
+              animation: none !important;
             }
           }
           @media (max-width: 900px) {
