@@ -127,7 +127,9 @@ export const metadata: Metadata = {
   },
   description:
     "Premium Quality Assurance for Shopify and Shopify Plus stores. 100+ stores tested. Functional, responsive, checkout, and accessibility QA.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  // Resolve relative canonicals against the same origin the sitemap, robots
+  // and structured data already publish (production-first, never localhost).
+  metadataBase: new URL(SITE_URL),
   // Deliberately no default `canonical` here. A layout-level canonical is
   // inherited by every route that does not set its own, so a page that forgot
   // one would silently tell Google "the canonical version of me is the
