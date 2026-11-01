@@ -17,8 +17,10 @@ export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
   primaryKeyword: p.title,
   searchIntent: "informational",
   // These static posts carry their own SEO title/description (the "| …"
-  // brand-suffix era); use them instead of the display title.
+  // brand-suffix era); use them instead of the display title — and emit
+  // them verbatim (absolute) since they are complete titles already.
   metaTitle: p.seoTitle,
+  titleAbsolute: true,
   metaDescription: p.seoDescription,
   heroImage: "",
   heroAlt: p.title,

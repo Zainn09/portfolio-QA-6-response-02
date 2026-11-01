@@ -34,6 +34,13 @@ export interface BlogArticle {
   primaryKeyword: string;
   searchIntent: string;
   metaTitle: string;
+  /**
+   * When true, metaTitle is emitted verbatim as the <title> (absolute),
+   * skipping the site-wide "%s | QA Specialist" template. Used by the
+   * hand-written static posts, whose SEO titles are complete titles
+   * (some carry their own brand suffix).
+   */
+  titleAbsolute?: boolean;
   metaDescription: string;
   heroImage: string;
   heroAlt: string;

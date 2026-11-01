@@ -48,7 +48,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   return {
-    title: a.metaTitle,
+    // Static (hand-written) posts carry complete titles — emit them verbatim
+    // instead of stacking the site template's brand suffix on top.
+    title: a.titleAbsolute ? { absolute: a.metaTitle } : a.metaTitle,
     description: a.metaDescription,
     alternates: { canonical: `/blogs/${a.slug}` },
     openGraph: {
