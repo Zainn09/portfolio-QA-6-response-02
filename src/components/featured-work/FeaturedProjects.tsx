@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import { MotionConfig } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
@@ -54,6 +54,23 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
   }, []);
+
+  // Resolve the active project from the (restored) scroll position BEFORE
+  // first paint. On a reload the browser restores the previous position
+  // briefly; without this the section paints on slide 0 and then
+  // crossfades to the right slide — a visible flash of the wrong capture.
+  useLayoutEffect(() => {
+    if (isMobile) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const total = track.offsetHeight - window.innerHeight;
+    const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+    setProgress(p);
+    const idx = Math.min(projects.length - 1, Math.floor(p * projects.length));
+    prevIdx.current = idx;
+    setActiveIndex(idx);
+  }, [isMobile, projects.length]);
 
   // Desktop scroll driver: track progress maps across all 10 projects
   useEffect(() => {
@@ -396,12 +413,16 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                         data-active={isActive}
                         className="featured-visual-slide"
                       >
-                        {/* Real store capture from the audit */}
+                        {/* Real store capture from the audit.
+                            All ten are eager on purpose: they are preloaded
+                            in the page's <head>, so "eager" is a cache hit —
+                            lazy would defer exactly the frame that pops in
+                            when the section first becomes visible. */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={p.heroImage}
                           alt={`${p.title} — store capture from the QA audit`}
-                          loading={i === 0 ? "eager" : "lazy"}
+                          loading="eager"
                           decoding="async"
                           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
                         />

@@ -47,6 +47,17 @@ export default function HomePage() {
         <link rel="canonical"> tags with different values cancel each other out.
       */}
       <link rel="canonical" href={SITE_HOME} />
+      {/*
+        Preload the ten "10 Stores" captures while the HTML streams. On a
+        reload the browser briefly restores the previous scroll position
+        (before ScrollToTopOnLoad snaps to the top), so without this the
+        pinned section paints with an empty frame and the captures pop in
+        — the first-reload flash. Preloading means the images are already
+        in the cache by the time the frame is ever visible.
+      */}
+      {featuredProjects.map((p) => (
+        <link key={`preload-${p.id}`} rel="preload" as="image" href={p.heroImage} />
+      ))}
       <ScrollToTopOnLoad />
       <Toaster
         position="bottom-right"
