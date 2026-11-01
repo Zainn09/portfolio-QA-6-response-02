@@ -3,9 +3,9 @@ import type { ServicePageContent } from "./types";
 export const shopifyPlusQa: ServicePageContent = {
   slug: "shopify-plus-qa",
 
-  title: "Shopify Plus QA & Enterprise Testing | QA Specialist",
+  title: "Shopify Plus QA Testing: Checkout, Integrations & Releases",
   metaDescription:
-    "QA for complex Shopify Plus builds — custom checkout, ERP/CRM/PIM integrations, multi-market and B2B storefronts, plus launch and release validation.",
+    "Shopify Plus QA for custom checkout, ERP/CRM/PIM integrations, multi-market and B2B storefronts. Launch and release validation from a specialist with 20 Plus projects.",
 
   eyebrow: "Shopify Plus • Enterprise",
   h1: "Shopify Plus QA for Builds Where a Small Defect Has a Large Blast Radius",

@@ -3,9 +3,9 @@ import type { ServicePageContent } from "./types";
 export const shopifyQaAudit: ServicePageContent = {
   slug: "shopify-qa-audit",
 
-  title: "Shopify QA Audit — Full Store Review | QA Specialist",
+  title: "Shopify QA Audit: Find Store Bugs Before Customers Do",
   metaDescription:
-    "A structured Shopify QA audit: captured states, severity-rated findings, reproduction steps and a prioritised fix list, delivered as one report.",
+    "Hire a Shopify QA specialist for a full store audit. Severity-rated findings, reproduction steps and a prioritised fix list in one report. 100+ stores tested.",
 
   eyebrow: "One-off assessment",
   h1: "A Shopify QA Audit: One Structured Pass Over Your Entire Store",
