@@ -16,8 +16,10 @@ export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
   projectTitle: "",
   primaryKeyword: p.title,
   searchIntent: "informational",
-  metaTitle: p.title,
-  metaDescription: p.excerpt ?? p.title,
+  // These static posts carry their own SEO title/description (the "| …"
+  // brand-suffix era); use them instead of the display title.
+  metaTitle: p.seoTitle,
+  metaDescription: p.seoDescription,
   heroImage: "",
   heroAlt: p.title,
   author: "Zain",
