@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
+import { QaLockup } from "@/components/logo/QaLockup";
 import { MegaMenu, type MegaMenuData } from "./MegaMenu";
 
 const navLinks = [
@@ -123,14 +124,10 @@ export function Navbar({ megaData }: { megaData: MegaMenuData }) {
             aria-label="Abdul Rehman — QA Specialist, home"
             style={{ flexShrink: 0, display: "block" }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo/void-flux-ar-lockup.svg"
-              alt=""
-              width={97}
-              height={40}
-              style={{ width: "97px", height: "40px", display: "block" }}
-            />
+            {/* Inline SVG so the chrome lettering tracks the active theme
+                (currentColor -> var(--text-primary)) instead of a fixed
+                near-white that vanishes on the light background. */}
+            <QaLockup width={97} height={40} />
           </Link>
 
           {/* Desktop links */}

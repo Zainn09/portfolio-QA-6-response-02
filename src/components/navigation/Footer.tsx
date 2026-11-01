@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { QaLockup } from "@/components/logo/QaLockup";
 
 const footerLinks = {
   work: [
@@ -68,8 +69,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" aria-label="Abdul Rehman — QA Specialist, home" style={{ display: "inline-block", marginBottom: "1rem", textDecoration: "none" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo/void-flux-ar-lockup.svg" alt="" width={126} height={52} style={{ width: "126px", height: "52px", display: "block" }} />
+              <QaLockup width={126} height={52} />
             </Link>
             <p style={{ fontSize: "0.875rem", color: "var(--text-tertiary)", lineHeight: 1.6, maxWidth: "220px" }}>
               Quality Assurance for Shopify & Shopify Plus.
