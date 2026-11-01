@@ -24,7 +24,7 @@ export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
   metaDescription: p.seoDescription,
   heroImage: "",
   heroAlt: p.title,
-  author: "Zain",
+  author: "ABDULREHMAN",
   authorRole: "Founder & QA Lead",
   publishedAt: p.publishedAt,
   readingTime: p.readMinutes,

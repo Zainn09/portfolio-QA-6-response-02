@@ -91,7 +91,7 @@ const entityGraph = {
     {
       "@type": "Person",
       "@id": `${SITE_URL}/#person`,
-      name: "Zain",
+      name: "ABDULREHMAN",
       jobTitle: "Founder & QA Lead",
       url: absoluteUrl("/about"),
       worksFor: { "@id": `${SITE_URL}/#organization` },
@@ -155,8 +155,8 @@ export const metadata: Metadata = {
     title: "QA Specialist — Shopify & Shopify Plus Quality Assurance",
     description: "I find what your store gets wrong before your customers do.",
   },
-  authors: [{ name: "Zain", url: absoluteUrl("/about") }],
-  creator: "Zain",
+  authors: [{ name: "ABDULREHMAN", url: absoluteUrl("/about") }],
+  creator: "ABDULREHMAN",
   publisher: SITE_NAME,
   category: "Quality Assurance",
   robots: {

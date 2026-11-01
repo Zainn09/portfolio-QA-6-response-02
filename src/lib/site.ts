@@ -77,7 +77,7 @@ export const SITE_URL = resolveSiteUrl();
 export const SITE_HOST = new URL(SITE_URL).host;
 
 /** Site name used across structured data and metadata. */
-export const SITE_NAME = "QA Specialist";
+export const SITE_NAME = "ABDULREHMAN";
 
 /** Absolute URL for any site-relative path. */
 export function absoluteUrl(path = "/"): string {
