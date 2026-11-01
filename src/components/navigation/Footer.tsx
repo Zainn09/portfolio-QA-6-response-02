@@ -148,7 +148,7 @@ export function Footer() {
 
         <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
-            © 2026 QA Portfolio. All rights reserved.
+            © 2026 ABDULREHMAN. All rights reserved.
           </p>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", fontStyle: "italic" }}>
             &quot;Everything works until someone tests it.&quot;
