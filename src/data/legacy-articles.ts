@@ -1,5 +1,6 @@
 import type { BlogArticle } from "@/data/articles";
 import { getAllArticles, searchArticles } from "@/data/articles";
+import { techOutlookArticles } from "@/data/tech-outlook-articles";
 import { staticBlogPosts } from "@/data/blogs";
 import { editorialArticles } from "@/data/editorial-articles";
 
@@ -35,13 +36,28 @@ export const legacyArticles: BlogArticle[] = staticBlogPosts.map((p, i) => ({
 
 /** Every article on the site — generated matrix first-class, legacy posts included. */
 export const allBlogArticles = (): BlogArticle[] =>
-  [...getAllArticles(), ...legacyArticles, ...editorialArticles].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
+  [...getAllArticles(), ...legacyArticles, ...editorialArticles, ...techOutlookArticles].sort(
+    (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
+  );
 
-/** Search across the generated matrix, the legacy posts and the editorial series. */
+/**
+ * The articles a /blogs/category/<slug> hub lists.
+ * Established hubs (categories present in the generated matrix) keep slicing
+ * the matrix, exactly as before. Hand-written clusters introduce new
+ * categories that do not exist in the matrix; their hub aggregates every
+ * git-served source for that category instead.
+ */
+export const getCategoryArticles = (name: string): BlogArticle[] => {
+  const matrix = getAllArticles().filter((a) => a.category === name);
+  if (matrix.length > 0) return matrix;
+  return allBlogArticles().filter((a) => a.category === name);
+};
+
+/** Search across the generated matrix, the legacy posts, the editorial series and the technology cluster. */
 export const searchAllArticles = (q: string): BlogArticle[] => {
   const needle = q.trim().toLowerCase();
   if (!needle) return [];
-  const otherHits = [...legacyArticles, ...editorialArticles].filter(
+  const otherHits = [...legacyArticles, ...editorialArticles, ...techOutlookArticles].filter(
     (a) =>
       a.title.toLowerCase().includes(needle) ||
       a.excerpt.toLowerCase().includes(needle) ||

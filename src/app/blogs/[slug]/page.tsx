@@ -4,6 +4,7 @@ import Link from "next/link";
 import { articles, getArticleBySlug, getRelatedArticles, PREV_NEXT, stubOf, ARTICLE_TYPE_LABEL, type BlogArticle, type ArticleBlock } from "@/data/articles";
 import { legacyArticles } from "@/data/legacy-articles";
 import { editorialArticles } from "@/data/editorial-articles";
+import { techOutlookArticles } from "@/data/tech-outlook-articles";
 import { Toc } from "@/components/blog/Toc";
 import { KeywordVisual } from "@/components/blog/BlogIndex";
 import { staticBlogPosts } from "@/data/blogs";
@@ -16,11 +17,21 @@ interface Props {
 }
 
 function resolveArticle(slug: string): BlogArticle | undefined {
-  return getArticleBySlug(slug) ?? legacyArticles.find((a) => a.slug === slug) ?? editorialArticles.find((a) => a.slug === slug);
+  return (
+    getArticleBySlug(slug) ??
+    legacyArticles.find((a) => a.slug === slug) ??
+    editorialArticles.find((a) => a.slug === slug) ??
+    techOutlookArticles.find((a) => a.slug === slug)
+  );
 }
 
 export function generateStaticParams() {
-  return [...articles.map((a) => ({ slug: a.slug })), ...legacyArticles.map((a) => ({ slug: a.slug })), ...editorialArticles.map((a) => ({ slug: a.slug }))];
+  return [
+    ...articles.map((a) => ({ slug: a.slug })),
+    ...legacyArticles.map((a) => ({ slug: a.slug })),
+    ...editorialArticles.map((a) => ({ slug: a.slug })),
+    ...techOutlookArticles.map((a) => ({ slug: a.slug })),
+  ];
 }
 
 // Slugs not in generateStaticParams fall through to a runtime render, which
@@ -310,7 +321,13 @@ export default async function ArticlePage({ params }: Props) {
     return <DbPostPage post={dbPost} />;
   }
 
-  const related = getRelatedArticles(a, 4);
+  // The hand-written Technology cluster pools every git-served article so the
+  // series ranks against its own siblings; the rest of the site keeps the
+  // original generated-matrix pool, byte for byte.
+  const relatedPool = techOutlookArticles.some((x) => x.slug === a.slug)
+    ? [...articles, ...legacyArticles, ...editorialArticles, ...techOutlookArticles]
+    : undefined;
+  const related = getRelatedArticles(a, 4, relatedPool);
   const { prev, next } = PREV_NEXT(a.slug);
   const toc = a.body.map((b, i) => ({ text: b.type === "h2" && "text" in b ? b.text : "", i })).filter((x) => x.text);
   const showToc = toc.length >= 4;

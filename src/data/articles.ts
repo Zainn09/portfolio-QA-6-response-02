@@ -62,7 +62,7 @@ export interface ArticleStub {
 }
 
 export const ARTICLE_CATEGORIES = [
-  "Shopify", "CRO", "AOV & Merchandising", "AI Commerce", "eCommerce Growth", "UX & Performance",
+  "Shopify", "CRO", "AOV & Merchandising", "AI Commerce", "eCommerce Growth", "UX & Performance", "Technology",
 ] as const;
 
 export const ARTICLE_TYPE_LABEL: Record<ArticleType, string> = {
@@ -408,8 +408,8 @@ export const articleStubs: ArticleStub[] = byDateDesc.map(stubOf);
  * Priority: topic cluster (category) > tag/keyword overlap > same project
  * > type diversity > recency. Curated picks stay possible via the data.
  */
-export function getRelatedArticles(current: BlogArticle, limit = 4): ArticleStub[] {
-  const scored = articles
+export function getRelatedArticles(current: BlogArticle, limit = 4, pool: BlogArticle[] = articles): ArticleStub[] {
+  const scored = pool
     .filter((a) => a.slug !== current.slug)
     .map((a) => {
       let s = 0;

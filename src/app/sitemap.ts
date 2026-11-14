@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/data/projects";
 import { getAllArticles, ARTICLE_CATEGORIES, type BlogArticle } from "@/data/articles";
-import { allBlogArticles } from "@/data/legacy-articles";
+import { allBlogArticles, getCategoryArticles } from "@/data/legacy-articles";
 import { servicePages } from "@/data/services";
 import { getPublishedDbPosts, dbPostToArticle } from "@/lib/blog-html";
 import { categorySlug } from "@/components/blog/categories";
@@ -76,8 +76,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
   );
 
-  // The generated matrix only — this is what the category hubs and their
-  // pagination slice, so category counts must be derived from it.
+  // The generated matrix only — used to track the newest article attached to
+  // each project (case-study lastmod). Category hubs slice their articles
+  // through getCategoryArticles() instead.
   const categorySource = getAllArticles();
 
   const newestPost = posts.length ? parseDate(posts[0].publishedAt) : undefined;
@@ -130,7 +131,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoryRoutes: Entry[] = [];
   for (const category of ARTICLE_CATEGORIES) {
     const slug = categorySlug(category);
-    const inCategory = categorySource.filter((a) => a.category === category);
+    // Established hubs slice the generated matrix; new hand-written clusters
+    // (e.g. Technology) have no matrix articles and list their own series.
+    const inCategory = getCategoryArticles(category);
     const newestInCategory = inCategory.length
       ? parseDate(inCategory[0].publishedAt)
       : undefined;

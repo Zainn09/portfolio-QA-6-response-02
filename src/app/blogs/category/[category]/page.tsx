@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllArticles, stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { stubOf, ARTICLE_CATEGORIES } from "@/data/articles";
+import { getCategoryArticles } from "@/data/legacy-articles";
 import { categoryFromSlug, categorySlug, CLUSTER_COPY } from "@/components/blog/categories";
 import { IndexCard, Pagination, PAGE_SIZE } from "@/components/blog/BlogIndex";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -24,12 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = categoryFromSlug(category);
   if (!name) return {};
   const deck = CLUSTER_COPY[name]?.deck ?? `All ${name} articles from the QA blog.`;
+  const suffix = name === "Technology" ? "Enterprise Tech & QA Analysis" : "Shopify QA Insights, Guides & Case Stories";
   return {
-    title: `${name} Articles — Shopify QA Insights, Guides & Case Stories`,
+    title: `${name} Articles — ${suffix}`,
     description: deck,
     alternates: { canonical: `/blogs/category/${category}` },
     openGraph: {
-      title: `${name} Articles — Shopify QA Insights, Guides & Case Stories`,
+      title: `${name} Articles — ${suffix}`,
       description: deck,
       type: "website",
     },
@@ -41,7 +43,7 @@ export default async function CategoryPage({ params }: Props) {
   const name = categoryFromSlug(category);
   if (!name) notFound();
 
-  let list = getAllArticles().filter((a) => a.category === name);
+  let list = getCategoryArticles(name);
   // Merge the posts written in the /admin editor for this topic (git wins on
   // slug collisions).
   const dbArticles = (await getPublishedDbPosts()).map(dbPostToArticle);

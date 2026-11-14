@@ -31,4 +31,7 @@ export const CLUSTER_COPY: Record<string, { deck: string }> = {
   Shopify: {
     deck: "Platform-specific notes for Shopify merchants: themes, apps, metaobjects, native checkout behaviour and the quirks only QA surfaces.",
   },
+  Technology: {
+    deck: "Enterprise technology through a QA lens: NVIDIA's 2026 silicon cycle, the Outlook transition, Copilot in the inbox, and the validation that separates capability from trust.",
+  },
 };
